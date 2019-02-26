@@ -11,7 +11,9 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" type="text/css" media="screen" href="css/style.0.1.css" />
    <script src="js/jquery-3.2.1.min.js"></script>
-   <script src="js/index.js"></script>
+   <script src="js/register.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
 </head>
 <body class="indigo">
    <section>
@@ -27,28 +29,29 @@
                       <br>
                       <div class="box l-padding white text-indigo radius-2 shadow-5">
                           <h1 class=" center-align">Register</h1>
-                          <form action="#" onsubmit="login();return false;">
+                          <form class="cmxform" action="/" method="POST" id="register">
                             <div class="input-field">
-                                <label for="names">Full names</label>
-                                <input type="text" id="names" placeholder="Your full names" autocomplete="off">
+                                <label for="cname">Full names(3 to 60 charachers)</label>
+                                <input type="text" id="cname" name="names" minlength="3" maxlength="60" placeholder="Your full names" autocomplete="off">
                             </div>
                             <div class="input-field">
+                                    <label for="email">Type email username (5 to 15 charachers)</label>
                                 <div class="s2 emialplaceholer">
-                                    <label for="email">Type email username</label>
-                                    <input type="text" placeholder="Email username" autocomplete="off">
+                                    <input type="text" id="email" name="email" minlength="5" maxlength="15" placeholder="Email username" autocomplete="off">
                                 </div>
                             </div>
                             <div class="clear"></div>
                             <div class="input-field">
                                 <div class="s4 m2 l2">
-                                    <label for="names">Password</label>
-                                    <input type="password" id="password" placeholder="Type your password" autocomplete="off">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" minlength="6" maxlength="15" placeholder="Type your password" autocomplete="off">
                                 </div>
                                 <div class="s4 m2 l2">
-                                    <label for="names">Retype password</label>
-                                    <input type="password" id="password2" placeholder="Retype password" autocomplete="off">
+                                    <label for="password2">Retype password</label>
+                                    <input type="password" id="password2" name="password2" minlength="6" maxlength="15" placeholder="Retype password" autocomplete="off">
                                 </div>
                             </div>
+                            <div class="clear"></div>
                             <div class="input-field">
                                 <button type="submit" value="submit" class="btn indigo text-white bold radius-6 m-text l-padding">Register Now</button>                                    
                             </div>

@@ -340,4 +340,8 @@ table tr:last-child{border-bottom:1px!important}
 
 /* email placeholer */
 .emialplaceholer{position: relative;}
-.emialplaceholer::before{position: absolute;right:-120px;top:40px;content: "@epicmail.com";font-size: 15px;font-weight: bold;}
+.emialplaceholer::before{position: absolute;right:-120px;top:25px;content: "@epicmail.com";font-size: 15px;font-weight: bold;}
+
+/* add error message on form validation */
+#cname-error, #email-error, #password-error, #password2-error
+{color:red}
