@@ -68,20 +68,5 @@
       </div>
       <div class="clear"></div>
   </section>
-  <script>
-        $("#register").validate({
-            // debug: true,
-            rules: {
-                password: "required",
-                password2: {
-                equalTo: "#password"
-            },
-            submitHandler: function(form) {
-                alert();
-                form.submit();
-            }
-            }
-        });
-</script>
 </body>
 </html>
