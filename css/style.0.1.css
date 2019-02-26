@@ -8,7 +8,7 @@ Style V.0.1
 @import url('https://fonts.googleapis.com/css?family=Exo:500|Krub');
 /* preset */
 body{margin:0;font-family: 'Krub', sans-serif;}
-a{color:indigo;text-decoration: none!important}
+a{color:#311B92;text-decoration: none!important}
 article,
 aside,
 footer,
@@ -319,7 +319,7 @@ table tr:last-child{border-bottom:1px!important}
 
 
 .loading{background:#989898;margin: 0;width: 100%;height:4px!important;border-radius: 4px;position: fixed;top:0;left:0;display: none}
-.loading::before{background:#3a1366;width:25px;position: absolute;top:0;left:0;content: "";z-index: 2;height:4px;animation: loading1 1.5s infinite;}
+.loading::before{background:#311B92;width:25px;position: absolute;top:0;left:0;content: "";z-index: 2;height:4px;animation: loading1 1.5s infinite;}
 /*  */
 @keyframes loading1{
     0%{width:0;left:0;}
@@ -331,3 +331,6 @@ table tr:last-child{border-bottom:1px!important}
 #parcels .oneparcel:last-child{border-bottom:none}
 
 .placeholder{margin:0;background: #ededed;width: 100%;border-radius:25px}
+
+.mailer_ui{width:100%;position: absolute;bottom:0;left:0;right:0;margin:0 auto;display:block;max-width:800px;z-index: -1;}
+.mailer_ui img{width:100%;height: auto}
