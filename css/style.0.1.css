@@ -331,6 +331,13 @@ table tr:last-child{border-bottom:1px!important}
 #parcels .oneparcel:last-child{border-bottom:none}
 
 .placeholder{margin:0;background: #ededed;width: 100%;border-radius:25px}
-
+/* mailer ui mockup */
 .mailer_ui{width:100%;position: absolute;bottom:-5px;left:0;right:0;margin:0 auto;display:block;max-width:800px;z-index: -1;}
 .mailer_ui img{width:100%;height: auto}
+
+/* signup/signin box */
+.box{margin:15px auto;width:98%;max-width: 560px;display:block}
+
+/* email placeholer */
+.emialplaceholer{position: relative;}
+.emialplaceholer::before{position: absolute;right:-120px;top:40px;content: "@epicmail.com";font-size: 15px;font-weight: bold;}
