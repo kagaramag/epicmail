@@ -5,9 +5,9 @@ Medium: @kagaramag
 Style V.0.1
 */
 
-@import url('https://fonts.googleapis.com/css?family=Exo:500|Krub');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 /* preset */
-body{margin:0;font-family: 'Krub', sans-serif;}
+body{margin:0;font-family: 'Open Sans', sans-serif;}
 a{color:#311B92;text-decoration: none!important}
 article,
 aside,
@@ -365,5 +365,9 @@ table tr:last-child{border-bottom:1px!important}
 .footer li span{text-align:center;}
 
 /* search mail */
-.search{width:98%;max-width:550px}
+.search{width:100%;margin:11px 0 0px 0;max-width:400px;}
 .search input{width:96%;margin:7px 2%;padding:7px 0;border:none}
+
+/* truncate text */
+.truncate {width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.profileDropDown{padding:15px 0}
