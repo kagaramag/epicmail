@@ -13,11 +13,11 @@ $(function(){
    $(window).bind("resize", function () {
          var w =  $(this).width();
          var h =  $(this).height();
-         $(".mailerContent").css('width', (w-260)+"px");
+         $(".mailerContent").css('width', (w-270)+"px");
          $(".sidebar").css('height', h+"px");
       });
    $(".sidebar").css('height', doc.height+"px");
-   $(".mailerContent").css('width', (doc.width-260)+"px");
+   $(".mailerContent").css('width', (doc.width-270)+"px");
    // console.log(doc.width);
 
    // sidebar nav
