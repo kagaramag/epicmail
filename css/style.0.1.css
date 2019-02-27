@@ -53,7 +53,7 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 /* hide */
 .hide{display: none}
 /* sidebar. */
-.sidebar{width:260px;}
+.sidebar{width:260px;position: fixed;}
 .sidebar li{display:block;padding:0.8em 0;}
 .sidebar li a{padding: 7px 25px;color: #ffffff;opacity: 0.9;}
 .sidebar li .fas{font-size:1.3em;opacity: 0.3;color:#ffffff;margin-right:1.1em}
@@ -360,6 +360,10 @@ table tr:last-child{border-bottom:1px!important}
 
 /* mail footer */
 .footer{position: fixed;margin:0;padding: 0;bottom:0;width:100%;z-index: 150000;}
-.footer li{width:25%;padding:0;margin:0;float: left;display: inline-block;}
+.footer li{width:25%;padding:0;margin:0;float:left;display: inline-block;}
 .footer li a{text-align:center;padding:30px;margin:0 auto}
 .footer li span{text-align:center;}
+
+/* search mail */
+.search{width:98%;max-width:550px}
+.search input{width:96%;margin:7px 2%;padding:7px 0;border:none}
