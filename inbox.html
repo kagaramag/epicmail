@@ -10,6 +10,7 @@
    <meta name="author" content="Gilles Kagarama">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" type="text/css" media="screen" href="css/style.0.1.css" />
+   <link rel="stylesheet" href="css/mailer.css">
    <link rel="stylesheet" href="css/all.css">
    <script src="js/jquery-3.2.1.min.js"></script>
    <script src="js/init.js"></script>
@@ -34,8 +35,23 @@
       <li><a class="text-grey" href="#"> <span class="fas fa-user"></span> Profile</a></li>
       <li><a class="text-grey" href="#"> <span class="fas fa-sign-out-alt"></span> Logout</a></li>
    </ul>
-   <div class="mailerContent red">
-      ff
+   <div class="mailerContent">
+      <div class="row">
+            <div class="s3 m3 l3">
+               <form action="/" method="GET" class="search border b-lite radius-5">
+                  <input type="text" name="search" placeholder="Search mail...">
+               </form>
+            </div>
+            <div class="s1 m1 l1">
+               <div class="row right-align l-padding">
+                  <span class="xxl-h-padding">
+                     <a href="#"> <b>@gilles</b> <span class="fas fa-caret-down"></span></a>
+                  </span>
+               </div>
+            </div>
+      </div>
+      <div class="clear"></div>
+      <div class="mailer"></div>
    </div>
    <!-- <ul class="footer white shadow-4">
       <li class="red"><a href="#"><span class="fas fa-inbox"></span></a></li>
@@ -43,5 +59,6 @@
       <li class="red"><a href="#"><span class="fas fa-sticky-note"></span></a></li>
       <li class="red"><a href="#"><span class="fas fa-user"></span></a></li>
    </ul> -->
+   <script src="js/mailer.js"></script>
 </body>
 </html>
