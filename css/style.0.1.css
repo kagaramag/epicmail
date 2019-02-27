@@ -53,8 +53,10 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 /* hide */
 .hide{display: none}
 /* sidebar. */
-.sidebar li{display:block;padding:1em 0;border-bottom: 1px solid #ededed}
-.sidebar li .fas{font-size:1.3em;color:#6e5874;margin-right:1.5em}
+.sidebar{width:260px;}
+.sidebar li{display:block;padding:0.8em 0;}
+.sidebar li a{padding: 7px 25px;color: #ffffff;opacity: 0.9;}
+.sidebar li .fas{font-size:1.3em;opacity: 0.3;color:#ffffff;margin-right:1.1em}
 
 /* row */
 .row {margin-left:0rem;margin-right:0rem;}
@@ -303,7 +305,7 @@ table td:first-child{width:20px}
 table tr:last-child{border-bottom:1px!important}
 
 /* sidebar menu */
-#sidebar{position: fixed;top:0;left:0;width:220px;height:100%;z-index:20000000}
+#sidebar{position: fixed;top:0;left:0;width:220px;height:100%;z-index:20000000;float: left;}
 
 .move-1{animation: desc 0.5s;position: relative;}
 @keyframes desc{
@@ -345,3 +347,19 @@ table tr:last-child{border-bottom:1px!important}
 /* add error message on form validation */
 #cname-error, #email-error, #password-error, #password2-error
 {color:red}
+
+/* mailer content */
+.mailerContent{float:left;margin:0;position:absolute;top:0;left:260px;width:100%;}
+
+.divider{height:1px;opacity: 0.6;}
+
+/* btn compose */
+
+.btn-compose{color:indigo!important;padding:15px 25px!important}
+.btn-compose span{color:indigo!important}
+
+/* mail footer */
+.footer{position: fixed;margin:0;padding: 0;bottom:0;width:100%;z-index: 150000;}
+.footer li{width:25%;padding:0;margin:0;float: left;display: inline-block;}
+.footer li a{text-align:center;padding:30px;margin:0 auto}
+.footer li span{text-align:center;}
