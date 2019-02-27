@@ -53,10 +53,14 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 /* hide */
 .hide{display: none}
 /* sidebar. */
-.sidebar{width:260px;position: fixed;}
 .sidebar li{display:block;padding:0.8em 0;}
 .sidebar li a{padding: 7px 25px;color: #ffffff;opacity: 0.9;}
 .sidebar li .fas{font-size:1.3em;opacity: 0.3;color:#ffffff;margin-right:1.1em}
+
+/* manage mail wrapper */
+
+.sidebar{float: left;position: relative;}
+.mailerContent{float:left;margin:0}
 
 /* row */
 .row {margin-left:0rem;margin-right:0rem;}
@@ -76,7 +80,10 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 }
 /* media query */
 @media screen and (min-width: 1000px)  {
+    .sidebar{width:15%;}
+    .mailerContent{width:85%;}
     .container {width:98%;}
+    .m_sender{width:68%!important;}
     .hide-on-large{display: none}
     .s1{
         width:auto
@@ -98,6 +105,9 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
     }
 }
 @media screen and (min-width: 761px) and (max-width: 999px){
+    .sidebar{display:none}
+    .mailerContent{width:100%;}
+    .m_sender{width:100%!important}
     .container {width:96%;}
     .hide-on-medium{display: none}
     .s1{
@@ -120,6 +130,9 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
     } 
 }
 @media screen and (max-width: 760px){
+    .sidebar{display:none}
+    .mailerContent{width:100%;}
+    .m_sender{width:100%!important;}
     .container {width:98%;}
     .hide-on-small{display: none}
     .s1{
@@ -348,8 +361,6 @@ table tr:last-child{border-bottom:1px!important}
 #cname-error, #email-error, #password-error, #password2-error
 {color:red}
 
-/* mailer content */
-.mailerContent{float:left;margin:0;position:absolute;top:0;left:260px;width:100%;}
 
 .divider{height:1px;opacity: 0.6;}
 
@@ -360,9 +371,9 @@ table tr:last-child{border-bottom:1px!important}
 
 /* mail footer */
 .footer{position: fixed;margin:0;padding: 0;bottom:0;width:100%;z-index: 150000;}
-.footer li{width:25%;padding:0;margin:0;float:left;display: inline-block;}
-.footer li a{text-align:center;padding:30px;margin:0 auto}
-.footer li span{text-align:center;}
+.footer div{width:25%;padding:0;margin:0;float:left;display: inline-block;}
+.footer div a{padding:20px 0;margin:0 auto}
+.footer div span{padding:20px 0}
 
 /* search mail */
 .search{width:100%;margin:11px 0 0px 0;max-width:400px;}
@@ -370,4 +381,4 @@ table tr:last-child{border-bottom:1px!important}
 
 /* truncate text */
 .truncate {width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-.profileDropDown{padding:15px 0}
+.profileDropDown{padding:15px 10px;float: right;}
