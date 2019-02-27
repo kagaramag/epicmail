@@ -1,14 +1,14 @@
-.mailer{width: 98%;margin:90px 0 0 0;padding:0 1%;}
+.mailer{width: 98%;margin:50px 0 0 0;padding:0 1%;}
 .onemail{width:99%;margin:0;padding:20px 0.5% 5px 0.5%;border-bottom:1px solid #cdcdcd;clear: both;}
 .m_profile, .m_sender, .m_subject, .m_time, .m_action{
    float: left;
 } 
 .m_profile{width:5%;position: relative;}
-.m_profile img{position: relative;top:-8px;border-radius: 50%}
-.m_sender{width:15%;font-weight:600;}
+.m_profile img{position: relative;top:0px;border-radius: 50%}
+/* .m_sender{} */
 .m_subject{width:59%;padding-right:1%}
-.m_time{width:5%}
-.m_action{width:12.5%;}
+.m_time{width:8%;padding:auto 1%}
+.m_action{width:13%;padding:auto 1%;}
    .m_action a{padding:5px 5px;font-size: 20px;color:#656565}
 .onemail:hover .m_action a{color:#311B92}
 .onemail:hover{background:#f7f7f7}
