@@ -17,38 +17,23 @@
 </head>
 <body class="white">
    <!-- SIDEBAR -->
-   <ul class="sidebar indigo nm np">
-      <li>
-         <div class="center-align">
-            <img src="images/logo.svg" style="width:200px" alt="EPICMAIL">
-         </div>
-      </li>
-      <li class="center-align"><a class="btn-compose white radius-5" href="#"><span class="fas fa-plus"></span> Compose</a></li>
-      <li><div class="divider indigo darken-2"></div></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-inbox"></span> Inbox</a></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-location-arrow"></span> Sent</a></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-sticky-note"></span> Drafts</a></li>
-      <li><div class="divider indigo darken-2"></div></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-user-friends"></span> Users</a></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-users"></span> Groups</a></li>
-      <li><div class="divider indigo darken-2"></div></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-user"></span> Profile</a></li>
-      <li><a class="text-grey" href="#"> <span class="fas fa-sign-out-alt"></span> Logout</a></li>
-   </ul>
+   <ul class="sidebar indigo nm np"></ul>
    <div class="mailerContent">
-      <div class="row">
-            <div class="s3 m3 l3">
+      <div class="row white shadow-2" style="position:fixed;width:100%;z-index: 150;">
+            <div class="s1 m1 l1">
+               <h1 class="xl-text text-grey">Inbox</h1>
+            </div>
+            <div class="s2 m2 l2">
                <form action="/" method="GET" class="search border b-lite radius-5">
                   <input type="text" name="search" placeholder="Search mail...">
                </form>
             </div>
             <div class="s1 m1 l1">
-               <div class="row right-align l-padding">
-                  <span class="xxl-h-padding">
-                     <a href="#"> <b>@gilles</b> <span class="fas fa-caret-down"></span></a>
-                  </span>
+               <div class="profileDropDown">
+                     <a href="me.html"> <b>@gilles</b> <span class="fas fa-caret-down"></span></a>
                </div>
             </div>
+            <div class="clear"></div>
       </div>
       <div class="clear"></div>
       <div class="mailer"></div>
