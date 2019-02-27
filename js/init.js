@@ -1,7 +1,7 @@
 $(function(){
    const doc = new function() {
-      this.height = $(document).height();
-      this.width = $(document).width();
+      this.height = $(window).height();
+      this.width = $(window).width();
       // this.resizeHeight = function(){
       //    resize = $(window).bind("resize", function () {
       //       var w =  $(this).width();
@@ -18,5 +18,5 @@ $(function(){
       });
    $(".sidebar").css('height', doc.height+"px");
    $(".mailerContent").css('width', (doc.width-260)+"px");
-   // console.log(doc.resizeHeight());
+   // console.log(doc.width);
 });
