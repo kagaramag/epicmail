@@ -27,7 +27,7 @@ $(document).ready(function(){
    +'<li><a class="text-grey" href="groups.html"> <span class="fas fa-users"></span> Groups</a></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
    +'<li><a class="text-grey" href="me.html"> <span class="fas fa-user"></span> Profile</a></li>'
-   +'<li><a class="text-grey" href="#"> <span class="fas fa-sign-out-alt"></span> Logout</a></li>'
+   +'<li><a class="text-grey" href="#" onclick="logout();"> <span class="fas fa-sign-out-alt"></span> Logout</a></li>'
    )
 
    // footer nav
@@ -46,4 +46,22 @@ fxToBuild = () => {
 // Open Reply Box, Form
 openReplyBox = () => {
    $("#openReplyBox").show();
+}
+
+
+// logout
+logout = () => {
+   localStorage.removeItem('auth');
+   message("You are logout successfully, see you later!",'success');
+   setTimeout(() => {
+      window.location.href = 'login.html';
+   }, 1500);
+}
+// message
+message = (message,state) => {
+   $(".message").hide();
+   $('body').prepend("<div class='message "+state+"'>"+message+"</div>");
+   setTimeout(() => {
+      $(".message").fadeOut();
+   }, 4000);
 }
