@@ -57,12 +57,15 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 .sidebar li a{padding: 7px 25px;color: #ffffff;opacity: 0.9;}
 .sidebar li .fas{font-size:1.3em;opacity: 0.3;color:#ffffff;margin-right:1.1em}
 
-/* manage mail wrapper */
 
+/* sidebar */
 .sidebar{float: left;position: fixed;overflow:hidden;}
 .sidebar:hover{overflow-y:auto;}
 .mailerContent{float:left;margin:0 0 0 15%;padding-bottom:60px}
 
+/* profile nav */
+.profilenav{list-style-type: none;margin:30px 0;padding:0}
+.profilenav li{padding:15px}
 /* row */
 .row {margin-left:0rem;margin-right:0rem;}
 /* grid */
@@ -84,6 +87,7 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
     .sidebar{width:15%;}
     .mailerContent{width:84.5%;}
     .container {width:98%;}
+    .profilenav{display: inline-flex;float: left;}
     .m_sender{width:68%!important;}
     .hide-on-large{display: none}
     .s1{
@@ -110,6 +114,7 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
     .mailerContent{width:99.5%;margin:0}
     .m_sender{width:98%!important;padding:auto 1%}
     .container {width:96%;}
+    .profilenav{display: inline-flex;float: left;}
     .hide-on-medium{display: none}
     .s1{
         width:auto
@@ -135,6 +140,10 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
     .mailerContent{width:99.5%;margin: 0}
     .m_sender{width:98%!important;padding:auto 1%!important}
     .container {width:98%;}
+    .profile{text-align: center!important}
+    .profile img{max-width:120px;}
+    .profilenav{display: block;text-align: center;border-top:1px solid #efefef}
+    .profilenav li{border-bottom:1px solid #efefef}
     .hide-on-small{display: none}
     .s1{
         width:24%!important
@@ -250,7 +259,7 @@ button.btn{padding:1.5em;cursor: pointer;}
 .indigo{background:#311B92} .text-indigo{color:#311B92}
 .jazzberry{background:#F68021} .text-jazzberry{color:#F68021}
 .red{background:#940f0f} .text-red{color:#940f0f}
-.grey.darken-1{background:#757575} .text-grey.text-darken-1{color:#757575}
+.grey.darken-1{background:#efefef} .text-grey.text-darken-1{color:#efefef}
 .grey.darken-2{background:#535353} .text-grey.text-darken-2{color:#535353}
 .grey.darken-3{background:#252525} .text-grey.text-darken-3{color:#252525}
 .indigo.darken-1{background:#311B92} .text-indigo.text-darken-1{color:#311B92}
