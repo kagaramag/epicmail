@@ -59,8 +59,9 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 
 /* manage mail wrapper */
 
-.sidebar{float: left;position: relative;}
-.mailerContent{float:left;margin:0}
+.sidebar{float: left;position: fixed;overflow:hidden;}
+.sidebar:hover{overflow-y:auto;}
+.mailerContent{float:left;margin:0 0 0 15%;padding-bottom:60px}
 
 /* row */
 .row {margin-left:0rem;margin-right:0rem;}
@@ -81,7 +82,7 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 /* media query */
 @media screen and (min-width: 1000px)  {
     .sidebar{width:15%;}
-    .mailerContent{width:85%;}
+    .mailerContent{width:84.5%;}
     .container {width:98%;}
     .m_sender{width:68%!important;}
     .hide-on-large{display: none}
@@ -106,8 +107,8 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 }
 @media screen and (min-width: 761px) and (max-width: 999px){
     .sidebar{display:none}
-    .mailerContent{width:100%;}
-    .m_sender{width:100%!important}
+    .mailerContent{width:99.5%;margin:0}
+    .m_sender{width:98%!important;padding:auto 1%}
     .container {width:96%;}
     .hide-on-medium{display: none}
     .s1{
@@ -131,8 +132,8 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 }
 @media screen and (max-width: 760px){
     .sidebar{display:none}
-    .mailerContent{width:100%;}
-    .m_sender{width:100%!important;}
+    .mailerContent{width:99.5%;margin: 0}
+    .m_sender{width:98%!important;padding:auto 1%!important}
     .container {width:98%;}
     .hide-on-small{display: none}
     .s1{
@@ -363,11 +364,11 @@ table tr:last-child{border-bottom:1px!important}
 
 
 .divider{height:1px;opacity: 0.6;}
-
-/* btn compose */
-
-.btn-compose{color:indigo!important;padding:15px 25px!important}
-.btn-compose span{color:indigo!important}
+/* fixed header */
+.fixheader{padding:18px 0;position:fixed;width:100%;z-index: 150;}
+.fixheader a{float:left;background:#efefef;color:indigo!important;padding:8px 25px!important}
+.fixheader span{color:indigo!important}
+.fixheader h2{width: auto;font-weight:400;float:left;padding:7px 0 3px;margin:0}
 
 /* mail footer */
 .footer{position: fixed;margin:0;padding: 0;bottom:0;width:100%;z-index: 150000;}
@@ -381,4 +382,6 @@ table tr:last-child{border-bottom:1px!important}
 
 /* truncate text */
 .truncate {width: 250px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
-.profileDropDown{padding:15px 10px;float: right;}
+.profileDropDown{padding:20px 5px;float: right;position: relative;}
+.profileDropDown a{padding:15px 0;}
+.profileDropDown span{position: relative;top:6px;}
