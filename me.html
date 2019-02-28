@@ -15,6 +15,7 @@
    <script src="js/jquery-3.2.1.min.js"></script>
    <script src="js/auth.js"></script>
    <script src="js/init.js"></script>
+   <script src="js/me.js"></script>
 </head>
 <body class="white">
    <!-- SIDEBAR -->
@@ -38,8 +39,44 @@
                         <div class="userEmail"></div>
                         <br>
                         <button onclick="fxToBuild();" class="btn grey darken-1 text-indigo bold l-v-margin radius-5">Edit Profile</button><br>
-                        <button onclick="fxToBuild();" class="btn white text-indigo"> <span class="fas fa-key"></span> Change Picture</button>
-                        <button onclick="fxToBuild();" class="btn white text-indigo bold radius-5">Reset Password</button>
+                        <button onclick="btnChangeProfile();" class="btn white text-indigo"> <span class="fas fa-image"></span> Change Picture</button>
+                        <button onclick="btnChangePassword();" class="btn white text-indigo"> <span class="fas fa-key"></span> Reset Password</button>
+                  </div>
+                  <!-- change profile -->
+                  <div class="row hide" id="changePicture">
+                        <form action="/" method="POST" id="changeProfilePicture">
+                              <h3>Change Profile Picture</h3>
+                              <div class="s4 l3 input-field">
+                                    <label for="image">Choose image</label>
+                                    <input type="file" name="image" id="image">
+                              </div>
+                              <div class="s4 l1">                                    
+                                    <input onclick="fxToBuild();" type="button" class="btn radius-5 xl-h-padding indigo text-white" value="submit">
+                              </div>
+                              <div class="clear"></div>
+                        </form>
+                  </div>
+                  <!-- change Password -->
+                  <div class="row hide" id="changePassword">
+                        <form action="/" method="POST" id="setNewPassword">
+                              <h3>Change Password</h3>
+                              <div class="s4 l3 input-field">
+                                    <label for="current_password">Current Password</label>
+                                    <input type="password" name="current_password" id="current_password">
+                              </div>
+                              <div class="s4 l3 input-field">
+                                    <label for="new_password">New Password</label>
+                                    <input type="password" name="new_password" id="new_password">
+                              </div>
+                              <div class="s4 l3 input-field">
+                                    <label for="retype_new_password">Retype new Password</label>
+                                    <input type="password" name="retype_new_password" id="retype_new_password">
+                              </div>
+                              <div class="s4 l1">                                    
+                                    <input onclick="fxToBuild();" type="button" class="btn radius-5 xl-h-padding indigo text-white" value="Change Now">
+                              </div>
+                              <div class="clear"></div>
+                        </form>
                   </div>
                   <div class="clear"></div>
             </div>
