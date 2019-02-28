@@ -278,12 +278,20 @@ form{margin:0.5%;width:99%;clear: both;}
     border:1px solid #959595;
     border-radius: 25px
 }
+.input-field textarea{
+    resize: vertical;
+    min-height:200px
+}
 .input-field input:focus {
+    outline-width: 0;
     border:1px solid #cdcdcd!important;
     outline:none!important;
     box-shadow:0px 0px 10px rgba(0,0,0,0.4)!important;
     -moz-box-shadow:0px 0px 10px rgba(0,0,0,0.4)!important;
     -webkit-box-shadow:0px 0px 10px rgba(0,0,0,0.4)!important;
+}
+*:focus {
+    outline: none;
 }
 .bglogin{padding-bottom:10em;background: url('../../ui/images/login-01.png') no-repeat center bottom}
 
@@ -354,6 +362,9 @@ table tr:last-child{border-bottom:1px!important}
 /* signup/signin box */
 .box{margin:15px auto;width:98%;max-width: 560px;display:block}
 
+/* signup/signin box */
+.card{margin:100px auto 15px auto;padding:2%;width:94%;max-width: 760px;display:block}
+
 /* email placeholer */
 .emialplaceholer{position: relative;}
 .emialplaceholer::before{position: absolute;right:-120px;top:25px;content: "@epicmail.com";font-size: 15px;font-weight: bold;}
@@ -385,3 +396,6 @@ table tr:last-child{border-bottom:1px!important}
 .profileDropDown{padding:20px 5px;float: right;position: relative;}
 .profileDropDown a{padding:15px 0;}
 .profileDropDown span{position: relative;top:6px;}
+
+/* add reply form */
+#openReplyBox{margin:45px 0}

@@ -12,7 +12,7 @@ $(document).ready(function(){
 
    $(".sidebar").css('height', doc.height+"px");
    doc.resize();
-   console.log(doc.resize());
+   // console.log(doc.resize());
    
 
    // sidebar nav
@@ -39,3 +39,11 @@ $(document).ready(function(){
 
 });
 
+// pop message if it is function to be build later
+fxToBuild = () => {
+   confirm("This function will be build upon functionality! Check back soon");
+}
+// Open Reply Box, Form
+openReplyBox = () => {
+   $("#openReplyBox").show();
+}
