@@ -291,7 +291,7 @@ form{margin:0.5%;width:99%;clear: both;}
     resize: vertical;
     min-height:200px
 }
-.input-field input:focus {
+.input-field input:focus,.input-field textarea:focus {
     outline-width: 0;
     border:1px solid #cdcdcd!important;
     outline:none!important;
