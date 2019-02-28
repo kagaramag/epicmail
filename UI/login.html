@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <title>Login - EPIC MAIL</title>
+   <link rel="icon" href="images/icon.png">
+   <meta name="description" content="Welcome to EPICMAIL">
+   <meta name="keywords" content="Homepage">
+   <meta name="author" content="Gilles Kagarama">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" type="text/css" media="screen" href="css/style.0.1.css" />
+   <script src="js/jquery-3.2.1.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/additional-methods.min.js"></script>
+   <script src="js/init.js"></script>
+   <script src="js/login.js"></script>
+</head>
+<body class="indigo">
+   <section>
+      <div class="row ">
+          <div class="container"> 
+              <div class="s4 m4 l6 ">
+                  <div class="xl-padding move-1">
+                      <div class="row center-align">
+                           <div class="image move-2">
+                              <img src="images/logo.svg" style="width:219px;height:60px" alt="EPICMAIL">
+                        </div>
+                      </div>
+                      <br>
+                      <div class="box l-padding white text-indigo radius-2 shadow-5">
+                          <h1 class=" center-align">Login</h1>
+                          <form class="cmxform" action="/" method="POST" id="login">
+                            <div class="input-field">
+                                <label for="email">Enter your email</label>
+                                <input type="email" id="email" name="email" minlength="5" maxlength="60" value="kagarama@epicmail.com" placeholder="Email username" autocomplete="off">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="input-field">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" minlength="6" maxlength="15" placeholder="Type your password" autocomplete="off">
+                            </div>
+                            <div class="clear"></div>
+                            <div class="input-field">
+                                <button type="submit" value="submit" class="btn indigo text-white bold radius-6 m-text l-padding">Login Now</button>                                    
+                            </div>
+                            <div class="row">
+                                <div class="l-padding">
+                                    Haven't account yet? <a href="./register.html" class="bold">Register</a>
+                                </div>
+                            </div>
+                        </form>                           
+                      </div>
+                  </div>
+              </div>            
+          </div>
+      </div>
+      <div class="clear"></div>
+  </section>
+</body>
+</html>
