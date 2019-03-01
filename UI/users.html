@@ -3,7 +3,7 @@
 <head>
    <meta charset="utf-8" />
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <title>Read - EPIC MAIL</title>
+   <title>Groups - EPIC MAIL</title>
    <link rel="icon" href="images/icon.png">
    <meta name="description" content="Welcome to EPICMAIL">
    <meta name="keywords" content="Homepage">
@@ -22,33 +22,26 @@
    <div class="mailerContent">
       <div class="fixheader white shadow-3">
             <a class="btn l-h-margin l-h-padding radius-5" href="#"><span class="fas fa-plus"></span> <span class="hide-on-small">Compose</span></a>
-            <h2><span class="fas fa-user"></span> Profile</h2>
+            <h2><span class="fas fa-user-friends"></span> Users</h2>
       </div>
       <div class="clear"></div>
       <div class="card white shadow-4 radius-1">
             <!-- PROFILE -->
-            <div class="row profile">
-                  <div class="s4 m1 l1">
-                        <div class="image center">
-                              <img src="images/user.png" alt="Profile">
-                        </div>
-                  </div>
-                  <div class="s4 m3 l3">
-                        <h1 class="">Gilles</h1>
-                        <div class="userEmail"></div>
-                        <br>
-                        <button onclick="fxToBuild();" class="btn grey darken-1 text-indigo bold l-v-margin radius-5">Edit Profile</button><br>
-                        <button onclick="fxToBuild();" class="btn white text-indigo"> <span class="fas fa-key"></span> Change Picture</button>
-                        <button onclick="fxToBuild();" class="btn white text-indigo bold radius-5">Reset Password</button>
-                  </div>
-                  <div class="clear"></div>
-            </div>
             <div class="row">
-                  <ul class="profilenav">
-                        <li><a href="users.html"> Users </a></li>
-                        <li><a href="groups.html"> Groups </a></li>
-                        <li><a href="#" onclick="logout();"> Logout </a></li>
-                  </ul>
+                  <h1 class="">Users</h1>
+                  <!-- one Group -->
+                  <div class="l-v-padding onegroup">
+                        <ul class="list-block border b-lite">
+                              <li class="l-v-padding oneuser"><span>eric@epicmail.com</span>
+                                    <a href="#" onclick="fxToBuild();" class="right l-h-padding">Remove</a>
+                              </li>
+                              <li class="l-v-padding oneuser"><span>darius@epicmail.com</span>
+                                    <a href="#" onclick="fxToBuild();" class="right l-h-padding">Remove</a>
+                              </li>
+                        </ul>
+                  </div>
+                  
+                  <div class="clear"></div>
             </div>
             <div class="clear"></div>
    </div>
