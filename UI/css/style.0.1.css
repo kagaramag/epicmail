@@ -414,3 +414,5 @@ table tr:last-child{border-bottom:1px!important}
 .message.error{color:red}
 .message.info{color:orange}
 .message.success{color:green}
+
+.oneuser, .onegroup{border-bottom: 1px solid #efefef}
