@@ -1,0 +1,51 @@
+{
+   "swagger": "2.0",
+   "info": {
+     "version": "1.0.0",
+     "title": "Project: EPICMAIL",
+     "description": "EPICMAIL API Documentation",
+     "license": {
+       "name": "MIT",
+       "url": "https://opensource.org/licenses/MIT"
+     },
+     "contact": {
+       "Author": "Gilles Kagarama"
+     }
+   },
+   "host": "localhost:3000",
+   "basePath": "/",   
+  "tags": [
+   {
+     "name": "EPICMAIL Landing Page",
+     "description": "EPICMAIL - Welcome Message"
+   }
+  ],  
+  "schemes": [
+   "http",
+   "https"
+   ],
+   "paths": {
+      "/": {
+      "get": {
+         "tags": [
+            "Home"
+         ],
+         "summary": "Welcome",
+         "produces": [
+            "application/json"
+         ],
+         "responses": {
+            "200": {
+              "description": "successful"
+            },
+            "400": {
+              "description": "Invalid information supplied"
+            },
+            "default": {
+              "description": "Error message"
+            }
+          }
+         }
+      }
+   }
+}
