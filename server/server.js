@@ -7,34 +7,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Parse incoming request bodies in a middleware 
+import bodyParser from 'body-parser';
 const PORT = process.env.PORT || 3000;
 
+// import routes
+import routers from './routes/index';
+app.use(routers);
 
-// Register Swagger
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './../swagger.json';
 
-app.use('/docs', swaggerUi.serve);
-app.get('/docs', swaggerUi.setup(swaggerDocument));
-
-app.get('/', (req, res) => {
-   res.status(200).send({
-      status:200,
-      message:"Welcome to EPICMAIL"
-   })
-});
-// error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-app.use((err, req, res, next) => {
-  res.status(500).send({
-    message: err.message,
-  });
-});
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.json());
 
 app.listen(PORT, () => {
   console.log(`Server started with Port: ${PORT}`);
