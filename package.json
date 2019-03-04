@@ -4,7 +4,7 @@
   "description": "EPICMAIL",
   "main": "server.js",
   "scripts": {
-    "test": "test",
+    "test": "nyc --require babel-core/register mocha server/test/*.js --timeout 15000 --exit",
     "start": "node  --exec babel-node  server/server.js",
     "dev": "nodemon --exec babel-node  server/server.js"
   },
@@ -30,7 +30,7 @@
     "eslint-plugin-import": "^2.14.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.10",
-    "nyc": "^13.1.0"
+    "nyc": "^13.3.0"
   },
   "dependencies": {
     "@babel/preset-es2015": "^7.0.0-beta.53",
