@@ -1,11 +1,11 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
+
+const app = express();
+
+import Welcome from '../controllers/welcome';
 
 const welcomeRouter = Router();
 
-welcomeRouter.get('/', (req, res) => {
-   res.status(200).send({
-      status:200,
-      message:"Welcome to EPICMAIL"
-   })
-});
+welcomeRouter.get('/', Welcome.getWelcome);
+
 export default welcomeRouter;
