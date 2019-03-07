@@ -13,7 +13,7 @@ import authethicate from './../middleware/authethicate';
 
 const usersRouter = Router();
 
-usersRouter.get(`${version}users`, Users.getAllUsers);
+usersRouter.get(`${version}users`, authethicate, Users.getAllUsers);
 usersRouter.post(`/auth/signup`, Auth.signup);
 usersRouter.post(`/auth/login`, Auth.login);
 

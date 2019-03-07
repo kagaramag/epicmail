@@ -1,5 +1,6 @@
 // user controller
 import users from "../data/users";
+import contacts from "../data/contacts";
 
 // encryption
 import bcrypt from "bcrypt";
@@ -50,6 +51,7 @@ class Auth {
     }
 
     // check if user not exist in database
+    
     let new_user = users.find(item => item.username === user.username);
     if (new_user)
       return res
@@ -57,7 +59,9 @@ class Auth {
         .send({
           status: 400,
           error: "Username has been already taken, try another one"
-        });
+      });
+
+
 
     // generate random data
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT));
@@ -66,13 +70,39 @@ class Auth {
     user.password = await bcrypt.hash(user.password, salt);
 
     // save new user in the db
-    users.push(user);
-    
-   var file = fs.createWriteStream('server/data/users.js');
-   file.write('const users = \n');
-   file.write(JSON.stringify(users));
-   file.write('\n export default users;');
-   file.end();
+    try{
+      users.push(user);    
+      var file = fs.createWriteStream('server/data/users.js');
+      file.write('const users = \n');
+      file.write(JSON.stringify(users));
+      file.write('\n export default users;');
+      file.end();
+      try{
+      // // make contact
+        const contact = {
+          id: users.length,
+          email: user.username+"@epicmail.com",
+          firstName: user.firstName,
+          lastName: user.lastName,
+          createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
+        };
+
+        contacts.push(contact);
+
+        var contactFile = fs.createWriteStream('server/data/contacts.js');
+        contactFile.write('const contacts =\n');
+        contactFile.write(JSON.stringify(contacts));
+        contactFile.write('\nexport default contacts;');
+        contactFile.end();
+      }catch(err){
+        console.log("cant not push into contact");
+      }
+    }catch(err){
+      console.log("cant not push into uses");
+    }
+
+
+
 
     // logging in a new user
     const verify = bcrypt.compare(user.password, user.password);
