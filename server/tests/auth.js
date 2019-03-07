@@ -74,6 +74,7 @@ describe("Sign up a user with invalid username", () => {
             });
       });
 });
+
 describe("Sign up a user with invalid name", () => {
       const user =  {
             firstName: "Donielle",
@@ -96,6 +97,77 @@ describe("Sign up a user with invalid name", () => {
                   expect(res.body).to.have.haveOwnProperty("error");
                   expect(res.body.status).to.be.equal(400);
                   expect(res.body.error).to.be.a("string");
+                  done();
+                  });
+            });
+      });
+});
+// login
+describe("Login a user", () => {
+      const user =  {
+            password: "123122",
+            email: "djallas@epicmail.com"
+      }
+      // get a welcome message
+      describe("/POST Login a user", () => {
+            it("it should authethicate a user", done => {
+                  chai
+                  .request(server)
+                  .post("/auth/login")
+                  .send(user)
+                  .end((err, res) => {
+                  res.should.have.status(200);
+                  res.body.should.be.a("object");
+                  expect(res.body.data).to.be.a("array");
+                  expect(res.body).to.have.haveOwnProperty("data");
+                  expect(res.body.data[0].token).to.be.a("string");
+                  console.log(res.body)
+                  done();
+                  });
+            });
+      });
+});
+// fake login
+describe("Login a fake user", () => {
+      const user =  {
+            password: "123122",
+            email: "fake_email"
+      }
+      // get a welcome message
+      describe("/POST Login a fake user", () => {
+            it("it should not authethicate a user with no email", done => {
+                  chai
+                  .request(server)
+                  .post("/auth/login")
+                  .send(user)
+                  .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a("object");
+                  expect(res.body).to.have.haveOwnProperty("error").equal('Email must be valid and registered under "@epicmail.com"');
+                  expect(res.body).to.have.haveOwnProperty("status").equal(400);
+                  done();
+                  });
+            });
+      });
+});
+// fake login
+describe("Login with email of other company", () => {
+      const user =  {
+            password: "123122",
+            email: "djallas@gmail.com"
+      }
+      // get a welcome message
+      describe("/POST Login an email of other company", () => {
+            it("it should authethicate a user with emails registered under @epicmail.com", done => {
+                  chai
+                  .request(server)
+                  .post("/auth/login")
+                  .send(user)
+                  .end((err, res) => {
+                  res.should.have.status(400);
+                  res.body.should.be.a("object");
+                  expect(res.body).to.have.haveOwnProperty("error").equal('Email must be valid and registered under "@epicmail.com"');
+                  expect(res.body).to.have.haveOwnProperty("status").equal(400);
                   done();
                   });
             });

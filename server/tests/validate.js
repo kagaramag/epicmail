@@ -42,7 +42,7 @@ describe("Test validator helper", () => {
     });
    // Name  
    describe("/phone", () => {
-      it("it should be 3 to 25 characters", () => {
+      it("Must be numeric", () => {
       //   assert.ok(Validate.username("y"));
       Validate.phone(user.phone).should.be.a("object");
       // console.log()
@@ -50,17 +50,24 @@ describe("Test validator helper", () => {
     });
    // email  
    describe("/email", () => {
-      it("it should be 3 to 25 characters", () => {
+      it("Email should contain @epicmail.com", () => {
       //   assert.ok(Validate.username("y"));
-      Validate.phone(user.email).should.be.a("object");
+      Validate.email(user.email).should.be.a("object");
       // console.log()
       });
     });
    // title  
-   describe("/email", () => {
-      it("it should be 3 to 25 characters", () => {
+   describe("/title", () => {
+      it("it should be alphanumeric", () => {
       //   assert.ok(Validate.username("y"));
-      Validate.phone(user.title).should.be.a("object");
+      Validate.title(user.title).should.be.a("object");
+      // console.log()
+      });
+    });
+   describe("/loginEmail", () => {
+      it("it should be a valid email and registered under '@epicmail.com'", () => {
+      //   assert.ok(Validate.username("y"));
+      Validate.loginEmail(user.loginEmail).should.be.a("object");
       // console.log()
       });
     });

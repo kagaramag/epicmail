@@ -83,6 +83,19 @@ class Validate {
        error: 'Name must be between 3 to 25 characters',
      };
    };
+   static loginEmail(email){     
+    //  check if email is not empty
+     if(email && typeof email === 'string' && email.indexOf("@") !== -1 && email.match(/\S+@\S+\.\S+/i) && email.indexOf("@epicmail.com") !== -1){
+       return {
+         isValid: true,
+       };
+     };
+    // throw error
+    return {
+      isValid: false,
+      error: 'Email must be valid and registered under "@epicmail.com"',
+    };
+   };
  };
  
  export default Validate;
