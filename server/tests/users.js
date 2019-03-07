@@ -21,6 +21,7 @@ describe("Get all users", () => {
                   chai
                   .request(server)
                   .get(version + "users")
+                  .set('Authorization','Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoyLCJ0eXBlIjoidXNlciIsImlhdCI6MTU1MTk5NTU5M30.US1gCEYGvt9fyD6Aw44SNhIPCDyyrdGTJLitagjJQqM')
                   .send(Users)
                   .end((err, res) => {
                   should.not.exist(err);
