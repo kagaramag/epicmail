@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nyc --require babel-core/register mocha server/tests/*.js --timeout 15000 --exit",
     "start": "babel-node server/server.js",
-    "dev": "nodemon --exec babel-node  server/server.js",
+    "dev": "SET NODE_ENV=development && nodemon --exec babel-node  server/server.js",
     "coveralls": "npm test  && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -41,13 +41,16 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.2.0",
     "errorhandler": "^1.5.0",
-    "express-handlebars": "^3.0.0",
     "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
     "joi": "^14.3.0",
+    "jsonwebtoken": "^8.5.0",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "swagger-node-express": "^2.1.3",
     "swagger-ui-express": "^4.0.2"
