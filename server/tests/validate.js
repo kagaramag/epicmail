@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 
 // Validator
 import Validate from "../helpers/validation";

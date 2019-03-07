@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 //Require the dev-dependencies
 import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
