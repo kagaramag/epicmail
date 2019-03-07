@@ -4,7 +4,7 @@
   "description": "EPICMAIL",
   "main": "server.js",
   "scripts": {
-    "test": "SET NODE_ENV=test && nyc --require babel-core/register mocha server/tests/*.js --timeout 15000 --exit",
+    "test": "nyc --require babel-core/register mocha server/tests/*.js --timeout 15000 --exit",
     "start": "babel-node server/server.js",
     "dev": "SET NODE_ENV=development && nodemon --exec babel-node  server/server.js",
     "coveralls": "npm test  && nyc report --reporter=text-lcov | coveralls"
