@@ -39,8 +39,8 @@ class Validate {
      if (!input && !required) {
        return {
          isValid: true,
-       }
-     }
+       };
+     };
      if (input.match(/\S+@\S+\.\S+/i) && input.length >= 11 && input.length <= 45) {
        return true;
      }
@@ -54,13 +54,13 @@ class Validate {
      if (!input && !required) {
        return {
          isValid: true,
-       }
-     }
+       };
+     };
      if (input.match(/[a-z0-9]{2}/i) && !input.match(/[|}{~`^=]/)) {
        return {
          isValid: true,
        };
-     }
+     };
      return {
        isValid: false,
        error: 'Please enter valid characters!',
@@ -71,8 +71,8 @@ class Validate {
      if (!input && !required) {
        return {
          isValid: true,
-       }
-     }
+       };
+     };
      if (input.length >= 3 && input.length <= 25) {
        return {
          isValid: true,
@@ -82,7 +82,7 @@ class Validate {
        isValid: false,
        error: 'Name must be between 3 to 25 characters',
      };
-   }
- }
+   };
+ };
  
  export default Validate;
