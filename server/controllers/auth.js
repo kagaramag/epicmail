@@ -19,7 +19,6 @@ import jwt from "jsonwebtoken";
 
 
 import fs from 'fs';
-// import stream from 'stream';
 
 class Auth {
   static async signup(req, res) {
@@ -94,26 +93,98 @@ class Auth {
    }
 
    static async login(req, res) {
-      const user = users.find(item => item.username === req.body.username);
-      if (!user){
-         return res.status(400).send({
-         status: 400,
-         error: "Invalid username"
-         });
+
+    const user = {
+       email:req.body.email,
+       password: req.body.password
+    }
+    //  Validate email
+    let checkInputs = [];
+    checkInputs.push(Validate.loginEmail(user.email));
+
+    for (let i = 0; i < checkInputs.length; i += 1) {
+      if (checkInputs[i].isValid === false) {
+        return res.status(400).json({
+          status: 400,
+          error: checkInputs[i].error,
+        });
       }
-
-      const validPassword = await bcrypt.compare(req.body.password, user.password);
-      if (!validPassword)
-         return res.status(400).send({
-         status: 400,
-         error: "Invalid username or password"
-         });
-
-      res.send({
-         status: 200,
-         error: "user successfully signed in"
+    }
+    
+    const user_in_db = users.find(item => item.email === user.email);
+    if (!user_in_db){
+        return res.status(400).send({
+        status: 400,
+        error: "Invalid username"
+        });
+    }
+    
+    // compare passowrd with bcrypt
+    const verify = await bcrypt.compare(user.password, user_in_db.password);
+    // if passwowrd match, auth user
+    if (verify){
+      const token = jwt.sign({ user: user_in_db.id, type: user_in_db.type }, process.env.SECRET);
+        return res.status(200).send({
+            status: 200,
+            data: [{
+              token: token
+            }]
+        });
+      }
+      
+      return  res.status(400).send({
+        status: 400,
+        error: "Invalid password"
       });
    }
+   
+
+   static async logout(req, res) {
+
+    const user = {
+       email:req.body.email,
+       password: req.body.password
+    }
+    //  Validate email
+    let checkInputs = [];
+    checkInputs.push(Validate.loginEmail(user.email));
+
+    for (let i = 0; i < checkInputs.length; i += 1) {
+      if (checkInputs[i].isValid === false) {
+        return res.status(400).json({
+          status: 400,
+          error: checkInputs[i].error,
+        });
+      }
+    }
+    
+    const user_in_db = users.find(item => item.email === user.email);
+    if (!user_in_db){
+        return res.status(400).send({
+        status: 400,
+        error: "Invalid username"
+        });
+    }
+    
+    // compare passowrd with bcrypt
+    const verify = await bcrypt.compare(user.password, user_in_db.password);
+    // if passwowrd match, auth user
+    if (verify){
+      const token = jwt.sign({ user: user_in_db.id, type: user_in_db.type }, process.env.SECRET);
+        return res.status(200).send({
+            status: 200,
+            data: [{
+              token: token
+            }]
+        });
+      }
+      
+      return  res.status(400).send({
+        status: 400,
+        error: "Invalid password"
+      });
+   }
+
 }
 
 export default Auth;
