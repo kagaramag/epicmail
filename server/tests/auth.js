@@ -116,12 +116,12 @@ describe("Login a user", () => {
                   .post("/auth/login")
                   .send(user)
                   .end((err, res) => {
-                  // res.should.have.status(200);
-                  // res.body.should.be.a("object");
-                  // expect(res.body.data).to.be.a("array");
-                  // expect(res.body).to.have.haveOwnProperty("data");
-                  // expect(res.body.data[0].token).to.be.a("string");
-                  console.log(res.body)
+                  res.should.have.status(200);
+                  res.body.should.be.a("object");
+                  expect(res.body.data).to.be.a("array");
+                  expect(res.body).to.have.haveOwnProperty("data");
+                  expect(res.body.data[0].token).to.be.a("string");
+                  // console.log(res.body)
                   done();
                   });
             });

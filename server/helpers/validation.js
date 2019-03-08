@@ -17,7 +17,6 @@ class Validate {
    }
  
    static phone(input, required) {
-     console.log(input)
      if (input && required && input.match(/[0-9+]{2}/i) && !input.match(/[a-z!$%*|}{:><?~`_&#^=]/i)) {
        return {
          isValid: true,
@@ -65,6 +64,44 @@ class Validate {
        error: 'Name must be between 2 to 30 characters',
      };
    };
+
+   static string(type, string, required, min, max){ 
+    //  check if email is not empty
+     if(
+        string && 
+        required && 
+        typeof string === 'string' &&
+        string.length >= min &&
+        string.length <= max
+     ){
+       return {
+         isValid: true,
+       };
+     };
+    // throw error
+    return {
+      isValid: false,
+      error: `${type} is required and must be alphanumeric. Characters between ${min} and ${max}`,
+    };
+   };
+
+   static number(type, number, required){ 
+    //  check if email is not empty
+     if(
+        number && 
+        required
+     ){
+       return {
+         isValid: true,
+       };
+     };
+    // throw error
+    return {
+      isValid: false,
+      error: `${type} is required and must be a number`,
+    };
+   };
+
    static loginEmail(email){     
     //  check if email is not empty
      if(email && typeof email === 'string' && email.indexOf("@") !== -1 && email.match(/\S+@\S+\.\S+/i) && email.indexOf("@epicmail.com") !== -1){
@@ -78,6 +115,7 @@ class Validate {
       error: 'Email must be valid and registered under "@epicmail.com"',
     };
    };
+
  };
  
  export default Validate;
