@@ -98,7 +98,7 @@ class Group {
    
     // // check if user not exist in database
     
-    let user_exist = users.find(item => item.id === user.id);
+    let user_exist = await users.find(item => item.id === user.id);
     if (!user_exist)
       return res
         .status(400)
