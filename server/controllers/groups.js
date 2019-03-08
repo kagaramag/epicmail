@@ -69,9 +69,7 @@ class Group {
       // return group created
       return res.status(200).send({
          status: 200,
-         data: [{
-            group:group
-         }]
+         data:group
       });
     }catch(err){
       return res.status(400).send({
@@ -83,7 +81,17 @@ class Group {
 
    // get all groups
    static async getAllGroup(req, res){
-      console.log("under construction")
+    // Verify if you are admin
+    let check = Role.admin(req.token);
+    if(!check) return res.send({
+      status:400,
+      error: "Error"
+    })
+    // get all groups
+    res.status(200).send({
+      status:200,
+      data:groups
+   })
    }
 }
 
