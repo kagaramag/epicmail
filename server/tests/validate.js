@@ -22,7 +22,10 @@ describe("Test validator helper", () => {
          firstName: "Donielle",
          lastName: "Koeppke",
          password: "S7EiPah7",
-         username: "iwacu"
+         username: "iwacu",
+         email: "iwacu@epicmail.com",
+         tile: "Imagine if chicken can dance hip hop",
+         phone:788202020
    }
    // Username  
    describe("/Username", () => {
