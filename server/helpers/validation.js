@@ -1,6 +1,6 @@
 class Validate {
    static username(input, required) {
-     if (!input && !required && input.length >= 3 && input.length <= 25) {
+     if (input && required && input.length >= 3 && input.length <= 25) {
        return {
          isValid: true,
        }
@@ -17,7 +17,7 @@ class Validate {
    }
  
    static phone(input, required) {
-     if (!input && !required) {
+     if (input && required) {
        return {
          isValid: true,
        }
@@ -36,7 +36,7 @@ class Validate {
    }
  
    static email(input, required) {
-     if (!input && !required) {
+     if (input && required) {
        return {
          isValid: true,
        };
@@ -51,7 +51,7 @@ class Validate {
    }
  
    static title(input, required) {
-     if (!input && !required) {
+     if (input && required) {
        return {
          isValid: true,
        };
@@ -68,19 +68,14 @@ class Validate {
    }
 
    static name(input, required) {
-     if (!input && !required) {
+     if (input && required && input.length >= 2 && input.length <= 30) {
        return {
          isValid: true,
-       };
-     };
-     if (input.length >= 3 && input.length <= 25) {
-       return {
-         isValid: true,
-       };
+       }
      }
      return {
        isValid: false,
-       error: 'Name must be between 3 to 25 characters',
+       error: 'Name must be between 2 to 30 characters',
      };
    };
    static loginEmail(email){     
