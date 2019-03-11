@@ -9,6 +9,40 @@ Style V.0.1
 /* preset */
 body{margin:0;font-family: 'Open Sans', sans-serif;}
 a{color:#311B92;text-decoration: none!important}
+
+/* app loader */
+.appcontainer{display: none}
+.apploader{position: absolute;top: 0;bottom:0;left:0;right:0;margin:auto;width:300px;height:85px;animation: all 2s infinite;}
+.apploader img{position: absolute;top: 0;bottom:0;margin:auto;width:140px;height:85px}
+.apploader img:nth-child(1){left:0;top:10px;animation: flies 0.5s;}
+.apploader img:nth-child(2){left:140px;top:-35px;animation:cover 1s;transform: rotateX(0deg);}
+.apploader img:nth-child(3){left:140px;top:35px;animation:envelope 1s;}
+
+@keyframes all{
+    0%{opacity: 0.2;}
+    50%{opacity:1;}
+    100%{opacity:0.2;}
+}
+
+@keyframes flies{
+    0%{left:-600px}
+    10%{left:-400px}
+    100%{left:15px;opacity: 0.2;}
+}
+
+@keyframes cover{
+    0%{display: none;top:-250px;transform: rotateX(180deg);}
+    100%{transform: rotateX(0deg);top:-35px}
+}
+
+@keyframes envelope{
+    0%{display: none;top:200px}
+    10%{display: block;}
+    100%{top:35px}
+}
+
+
+
 article,
 aside,
 footer,
