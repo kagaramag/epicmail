@@ -10,7 +10,7 @@ errorRouter.use((req, res, next) => {
 });
 
 // Handle unrecognized endpoints
-errorRouter.use((err, req, res, next) => {
+errorRouter.use((err, req, res) => {
   res.status(500).send({
     status:500,
     message: err.message,

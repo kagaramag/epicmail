@@ -7,7 +7,7 @@
     "test": "nyc --require babel-core/register mocha server/tests/*.js --timeout 15000 --exit",
     "start": "babel-node server/server.js",
     "dev": "SET NODE_ENV=development && nodemon --exec babel-node  server/server.js",
-    "coveralls": "npm test  && nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
