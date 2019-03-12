@@ -3,7 +3,11 @@ $(function(){
    $.getJSON(url, function(data) {
       var mails = Object.values(data);
       var  $mailer = $('.mailer');
-      $.map(mails, function(mail, i) {
+      $.map(mails, function(mail, i) {        
+          setTimeout(() => {
+            $('.appcontainer').show();
+            $('.apploader').hide();         
+        }, 2000);
          $mailer.append('<div class="onemail">'
          +'<div class="m_profile hide-on-medium hide-on-small"><img src="http://via.placeholder.com/32x32.png?text=M" alt="Profile"></div>'
          +'<div class="m_sender truncate" onclick="readmail('+mail.id+');"><span class="bold">'+mail.fullnames+'<span class="nobold hide-on-large text-grey"> - '+formatDateTime(mail.created_at)+'</span></span><br><span class="m-text text-grey text-darken-2">'+mail.subject+'</span></div>'
@@ -15,10 +19,7 @@ $(function(){
          +'<a href="#"><span class="fas fa-comment-alt" title="Instant Reply"></span></a>'
          +'</div>'
          +'<div class="clear"></div></div>');
-     });      
-   //    $.each(mails, function (i, mail) {
-   //       $mailer.append('<div class="onemail">Email</div>');
-   //   });
+     });    
    })
 })  
 
