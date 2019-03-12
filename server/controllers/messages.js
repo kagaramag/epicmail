@@ -15,6 +15,15 @@ import moment from "moment";
 import fs from 'fs';
 
 class Message {
+  // list of emails sent
+  // static getAllMessages(req, res){
+  //   console.log("hano")
+    // res.status(200).send({
+    //    status:200,
+    //    data:messages
+    // })
+//  }
+  // compose email
   static async compose(req, res) {
     // create user info object
     
@@ -115,21 +124,7 @@ class Message {
       });
     }   
    }
-
-   // get all groups
-  //  static async getAllGroup(req, res){
-  //   // Verify if you are admin
-  //   let check = Role.admin(req.token);
-  //   if(!check) return res.send({
-  //     status:400,
-  //     error: "Error"
-  //   })
-  //   // get all groups
-  //   res.status(200).send({
-  //     status:200,
-  //     data:groups
-  //  })
-  //  }
 }
 
-export default Message;
+export default
+  Message

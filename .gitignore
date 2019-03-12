@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+# data
+server/data/receivers.js
+server/data/messages.js
+server/data/groups.js
