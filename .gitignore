@@ -60,7 +60,12 @@ typings/
 # next.js build output
 .next
 
+<<<<<<< HEAD
 # data
 server/data/receivers.js
 server/data/messages.js
 server/data/groups.js
+=======
+.server/data/users.js
+ server/data/contacts.js
+>>>>>>> 8adb3cef038aa63c50826222fdcc1c3c07d33f6c
