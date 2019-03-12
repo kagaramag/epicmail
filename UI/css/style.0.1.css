@@ -420,8 +420,8 @@ table tr:last-child{border-bottom:1px!important}
 .divider{height:1px;opacity: 0.6;}
 /* fixed header */
 .fixheader{padding:18px 0;position:fixed;width:100%;z-index: 150;}
-.fixheader a{float:left;background:#efefef;color:indigo!important;padding:8px 25px!important}
-.fixheader span{color:indigo!important}
+.fixheader a{float:left;background:#efefef;color:#311B92!important;padding:8px 25px!important}
+.fixheader span{color:#311B92!important}
 .fixheader h2{width: auto;font-weight:400;float:left;padding:7px 0 3px;margin:0}
 
 /* mail footer */
