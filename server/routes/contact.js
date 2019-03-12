@@ -13,6 +13,6 @@ import authethicate from './../middleware/authethicate';
 
 const contactRouter = Router();
 
-contactRouter.get(`${version}contacts`, authethicate, Contact.getAllContacts);
+contactRouter.get(`${version}contacts`, Contact.getAllContacts);
 
 export default contactRouter;
