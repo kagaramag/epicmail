@@ -16,13 +16,13 @@ import fs from 'fs';
 
 class Message {
   // list of emails sent
-  // static getAllMessages(req, res){
-  //   console.log("hano")
-    // res.status(200).send({
-    //    status:200,
-    //    data:messages
+  static async getAllMessages(req, res){
+    await console.log("hano")
+    // await res.status(200).send({
+    //   status:200,
+    //   data:messages
     // })
-//  }
+  }
   // compose email
   static async compose(req, res) {
     // create user info object
@@ -126,5 +126,4 @@ class Message {
    }
 }
 
-export default
-  Message
+export default Message
