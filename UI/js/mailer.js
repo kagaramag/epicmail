@@ -3,8 +3,7 @@ $(function(){
    $.getJSON(url, function(data) {
       var mails = Object.values(data);
       var  $mailer = $('.mailer');
-      $.map(mails, function(mail, i) {
-        
+      $.map(mails, function(mail, i) {        
           setTimeout(() => {
             $('.appcontainer').show();
             $('.apploader').hide();         
@@ -20,10 +19,7 @@ $(function(){
          +'<a href="#"><span class="fas fa-comment-alt" title="Instant Reply"></span></a>'
          +'</div>'
          +'<div class="clear"></div></div>');
-     });      
-   //    $.each(mails, function (i, mail) {
-   //       $mailer.append('<div class="onemail">Email</div>');
-   //   });
+     });    
    })
 })  
 

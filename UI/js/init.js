@@ -36,8 +36,6 @@ $(document).ready(function(){
    +'<div><a href="draft.html"><span class="fas fa-sticky-note"></span></a></div>'
    +'<div><a href="me.html"><span class="fas fa-bars"></span></a></div>'
    )
-
-   // app loader
    $('.apploader').append('<img src="images/app_anim_1.svg" alt="EPICMAIL"><img src="images/app_anim_2.svg" alt="EPICMAIL"><img src="images/app_anim_3.svg" alt="EPICMAIL">');
 });
 
