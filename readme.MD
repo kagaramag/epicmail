@@ -5,7 +5,7 @@ EPIC Mail is web app that help people to send and receice emails. It uses Twilio
 
 # App Links
 
-### [UI](https://djallas.github.io/epicmail/)
+### [UI](https://djallas.github.io/epicmail/UI)
 
 # Languages
 
