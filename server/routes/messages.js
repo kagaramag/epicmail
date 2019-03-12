@@ -12,6 +12,7 @@ import authethicate from './../middleware/authethicate';
 
 const messageRouter = Router();
 
-messageRouter.post(`${version}messages`, authethicate, Message.compose);
+messageRouter.post(`${version}messages`, Message.compose);
+messageRouter.get(`${version}messages`, Message.getAllMessages);
 
 export default messageRouter;
