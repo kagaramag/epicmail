@@ -18,15 +18,14 @@ dotenv.config();
 // Web token
 import jwt from "jsonwebtoken";
 
-
-import fs from 'fs';
+import fs from "fs";
 
 class Auth {
   static async signup(req, res) {
     // create user info object
     const user = {
       id: users.length + 1,
-      email: req.body.username+"@epicmail.com",
+      email: req.body.username + "@epicmail.com",
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       type: "user",
@@ -45,23 +44,19 @@ class Auth {
       if (checkInputs[i].isValid === false) {
         return res.status(400).json({
           status: 400,
-          error: checkInputs[i].error,
+          error: checkInputs[i].error
         });
       }
     }
 
     // check if user not exist in database
-    
+
     let new_user = users.find(item => item.username === user.username);
     if (new_user)
-      return res
-        .status(400)
-        .send({
-          status: 400,
-          error: "Username has been already taken, try another one"
+      return res.status(400).send({
+        status: 400,
+        error: "Username has been already taken, try another one"
       });
-
-
 
     // generate random data
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT));
@@ -70,18 +65,18 @@ class Auth {
     user.password = await bcrypt.hash(user.password, salt);
 
     // save new user in the db
-    try{
-      users.push(user);    
-      var file = fs.createWriteStream('server/data/users.js');
-      file.write('const users = \n');
+    try {
+      users.push(user);
+      var file = fs.createWriteStream("server/data/users.js");
+      file.write("const users = \n");
       file.write(JSON.stringify(users));
-      file.write('\n export default users;');
+      file.write("\n export default users;");
       file.end();
-      try{
-      // // make contact
+      try {
+        // // make contact
         const contact = {
           id: users.length,
-          email: user.username+"@epicmail.com",
+          email: user.username + "@epicmail.com",
           firstName: user.firstName,
           lastName: user.lastName,
           createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
@@ -89,45 +84,46 @@ class Auth {
 
         contacts.push(contact);
 
-        var contactFile = fs.createWriteStream('server/data/contacts.js');
-        contactFile.write('const contacts =\n');
+        var contactFile = fs.createWriteStream("server/data/contacts.js");
+        contactFile.write("const contacts =\n");
         contactFile.write(JSON.stringify(contacts));
-        contactFile.write('\nexport default contacts;');
+        contactFile.write("\nexport default contacts;");
         contactFile.end();
-      }catch(err){
+      } catch (err) {
         console.log("cant not push into contact");
       }
-    }catch(err){
+    } catch (err) {
       console.log("cant not push into uses");
     }
 
-
-
-
     // logging in a new user
     const verify = bcrypt.compare(user.password, user.password);
-      if(verify) {
-         const token = jwt.sign({ user: user.id, type: user.type }, process.env.SECRET);
-         return res.status(200).send({
-            status: 200,
-            data: [{
-               token: token
-            }]
-         });
-      }else{
-         return res.status(400).send({
-         status: 400,
-         error: "We could not authethicate you, try login form."
-         });
-      }
-   }
-
-   static async login(req, res) {
-
-    const user = {
-       email:req.body.email,
-       password: req.body.password
+    if (verify) {
+      const token = jwt.sign(
+        { user: user.id, type: user.type },
+        process.env.SECRET
+      );
+      return res.status(200).send({
+        status: 201,
+        data: [
+          {
+            token: token
+          }
+        ]
+      });
+    } else {
+      return res.status(400).send({
+        status: 400,
+        error: "We could not authethicate you, try login form."
+      });
     }
+  }
+
+  static async login(req, res) {
+    const user = {
+      email: req.body.email,
+      password: req.body.password
+    };
     //  Validate email
     let checkInputs = [];
     checkInputs.push(Validate.loginEmail(user.email));
@@ -136,45 +132,48 @@ class Auth {
       if (checkInputs[i].isValid === false) {
         return res.status(400).json({
           status: 400,
-          error: checkInputs[i].error,
+          error: checkInputs[i].error
         });
       }
     }
-    
+
     const user_in_db = users.find(item => item.email === user.email);
-    if (!user_in_db){
-        return res.status(400).send({
+    if (!user_in_db) {
+      return res.status(400).send({
         status: 400,
         error: "Invalid username"
-        });
+      });
     }
-    
+
     // compare passowrd with bcrypt
     const verify = await bcrypt.compare(user.password, user_in_db.password);
     // if passwowrd match, auth user
-    if (verify){
-      const token = jwt.sign({ user: user_in_db.id, type: user_in_db.type }, process.env.SECRET);
-        return res.status(200).send({
-            status: 200,
-            data: [{
-              token: token
-            }]
-        });
-      }
-      
-      return  res.status(400).send({
-        status: 400,
-        error: "Invalid password"
+    if (verify) {
+      const token = jwt.sign(
+        { user: user_in_db.id, type: user_in_db.type },
+        process.env.SECRET
+      );
+      return res.status(200).send({
+        status: 200,
+        data: [
+          {
+            token: token
+          }
+        ]
       });
-   }
-   
-
-   static async logout(req, res) {
-
-    const user = {
-       email:req.body.email,
-       password: req.body.password
     }
+
+    return res.status(400).send({
+      status: 400,
+      error: "Invalid password"
+    });
+  }
+
+  static async logout(req, res) {
+    const user = {
+      email: req.body.email,
+      password: req.body.password
+    };
     //  Validate email
     let checkInputs = [];
     checkInputs.push(Validate.loginEmail(user.email));
@@ -183,38 +182,42 @@ class Auth {
       if (checkInputs[i].isValid === false) {
         return res.status(400).json({
           status: 400,
-          error: checkInputs[i].error,
+          error: checkInputs[i].error
         });
       }
     }
-    
+
     const user_in_db = users.find(item => item.email === user.email);
-    if (!user_in_db){
-        return res.status(400).send({
+    if (!user_in_db) {
+      return res.status(400).send({
         status: 400,
         error: "Invalid username"
-        });
+      });
     }
-    
+
     // compare passowrd with bcrypt
     const verify = await bcrypt.compare(user.password, user_in_db.password);
     // if passwowrd match, auth user
-    if (verify){
-      const token = jwt.sign({ user: user_in_db.id, type: user_in_db.type }, process.env.SECRET);
-        return res.status(200).send({
-            status: 200,
-            data: [{
-              token: token
-            }]
-        });
-      }
-      
-      return  res.status(400).send({
-        status: 400,
-        error: "Invalid password"
+    if (verify) {
+      const token = jwt.sign(
+        { user: user_in_db.id, type: user_in_db.type },
+        process.env.SECRET
+      );
+      return res.status(200).send({
+        status: 200,
+        data: [
+          {
+            token: token
+          }
+        ]
       });
-   }
+    }
 
+    return res.status(400).send({
+      status: 400,
+      error: "Invalid password"
+    });
+  }
 }
 
 export default Auth;
