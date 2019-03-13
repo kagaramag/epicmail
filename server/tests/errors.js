@@ -17,10 +17,8 @@ describe('Testing Erros', () => {
             chai.request(server)
             .get(version+'foo')
             .end((err, res) => {
-                  // should.not.exist(err);
-                  // res.should.have.status(404);
-                  // res.body.should.be.a('object');
-                  console.log(res.body)
+                  should.not.exist(err);
+                  res.body.should.be.a('object');
             done();
             });
       });

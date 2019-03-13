@@ -24,7 +24,7 @@ class Group {
     let check = Role.admin(req.token);
     if(!check) return res.send({
       status:400,
-      error: "Error"
+      error: "Error, you are not an admin"
     })
 
     const group = {
@@ -32,12 +32,16 @@ class Group {
       name: req.body.name,
       createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
     };   
-
+    console.log(group);
     
     // capturing the inputs to valitads
     let checkInputs = [];
-    checkInputs.push(Validate.name(group.name, true));
+    // checkInputs.push(Validate.name(group.name, true));
 
+        // capturing the inputs to valitads
+    // let checkInputs = [];
+    checkInputs.push(Validate.string('Group name', group.name, true, 2, 30));
+    
     for (let i = 0; i < checkInputs.length; i += 1) {
       if (checkInputs[i].isValid === false) {
         return res.status(400).json({

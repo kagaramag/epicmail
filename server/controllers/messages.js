@@ -15,6 +15,33 @@ import moment from "moment";
 import fs from 'fs';
 
 class Message {
+  // list of received emails
+  static async receivedEmails(req, res){
+    if(messages){
+       Object.keys(messages).map(function(key){        
+        const senderId = {senderId: 1};
+        const receiverId = {receiverId: 1};
+        return messages[key] = {...messages[key], ...senderId, ...receiverId};
+      });
+      return await res
+      .status(201)
+      .send({
+        status:201,
+        data: messages
+      })
+    }else{
+      return await res
+      .status(401)
+      .send({
+        status:401,
+        error: "Sorry, No emails found"
+      })
+    }   
+
+  }
+
+  
+  // compose email
   static async compose(req, res) {
     // create user info object
     
@@ -29,7 +56,7 @@ class Message {
     
     // something sent
     if(!req.body) return res.status(400).send({
-      status:200,
+      status:301,
       error: "Nothing to be sent, check your inputs"
     });
     // capturing the inputs to valitads
@@ -103,9 +130,9 @@ class Message {
           createdOn: message.createdOn
       }
       // return group created
-      return res.status(200).send({
-         status: 200,
-         data:messageToReturn
+      return res.status(201).send({
+         status: 201,
+         data: [ messageToReturn ]
       });
 
     }catch(err){
@@ -115,21 +142,6 @@ class Message {
       });
     }   
    }
-
-   // get all groups
-  //  static async getAllGroup(req, res){
-  //   // Verify if you are admin
-  //   let check = Role.admin(req.token);
-  //   if(!check) return res.send({
-  //     status:400,
-  //     error: "Error"
-  //   })
-  //   // get all groups
-  //   res.status(200).send({
-  //     status:200,
-  //     data:groups
-  //  })
-  //  }
 }
 
-export default Message;
+export default Message

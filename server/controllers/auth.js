@@ -33,6 +33,7 @@ class Auth {
       createdOn: moment().format("MM-DD-YYYY hh:mm:ss"),
       username: req.body.username
     };
+    console.log(user);
     // capturing the inputs to valitads
     let checkInputs = [];
     checkInputs.push(Validate.username(user.username, true));
