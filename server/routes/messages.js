@@ -10,9 +10,9 @@ import Message from './../controllers/messages';
 // check authethication
 import authethicate from './../middleware/authethicate';
 
-const messageRouter = Router();
+const messageRouter = Router(); 
 
 messageRouter.post(`${version}messages`, Message.compose);
-messageRouter.get(`${version}messages`, Message.getAllMessages);
+messageRouter.get(`${version}messages`, Message.receivedEmails);
 
 export default messageRouter;
