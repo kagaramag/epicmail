@@ -2,9 +2,6 @@ import messages from "../data/messages";
 import senders from "../data/senders";
 import receivers from "../data/receivers";
 
-// encryption
-import bcrypt from "bcrypt";
-
 // Validator
 import Validate from "../helpers/validation";
 
@@ -43,9 +40,9 @@ class Message {
   static async unreadEmails(req, res) {
     if (messages) {
       let emails = messages.filter(message => {
-        if (message.status  === 'sent') {
-           return message; 
-          }
+        if (message.status === "sent") {
+          return message;
+        }
       });
       // console.log(emails);
       return await res.status(201).send({
@@ -64,9 +61,9 @@ class Message {
   static async sentEmails(req, res) {
     if (messages) {
       let emails = messages.filter(message => {
-        if (message.status  !== 'draft') {
-           return message; 
-          }
+        if (message.status !== "draft") {
+          return message;
+        }
       });
       // console.log(emails);
       return await res.status(201).send({
@@ -112,8 +109,8 @@ class Message {
 
   // compose email
   static async compose(req, res) {
-    // create user info object
 
+    // create user info object
     const message = {
       id: messages.length + 1,
       subject: req.body.subject,
