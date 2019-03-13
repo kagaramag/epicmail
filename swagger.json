@@ -25,18 +25,22 @@
    "https"
    ],
    "paths": {
-      "/": {
+      "/api/v1/users": {
       "get": {
          "tags": [
-            "Home"
-         ],
-         "summary": "Welcome",
+            "Users"
+         ],         
+        "consumes": ["application/json", "application/xml"],
+         "summary": "Get users",
          "produces": [
             "application/json"
-         ],
+         ],         
          "responses": {
             "200": {
-              "description": "successful"
+              "description": "Get users list",
+              "schema": {
+                "$ref": "#/definitions/data"
+              }
             },
             "400": {
               "description": "Invalid information supplied"
@@ -47,5 +51,10 @@
           }
          }
       }
-   }
+   },
+   
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
 }
