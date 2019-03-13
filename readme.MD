@@ -61,6 +61,7 @@ npm start
 | /GET | /api/v1/messages | Fetch all received emails |
 | /GET | /api/v1/messages/unread | Fetch all unread emails |
 | /GET | /api/v1/messages/sent | Fetch all sent emails |
+| /DELETE | /api/v1/messages/<message-id> | Delete a specific email |
 | /POST | /api/v1/groups | Create a group |
 | /GET | /api/v1/groups | Get a list of group |
 
