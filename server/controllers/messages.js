@@ -130,9 +130,9 @@ class Message {
           createdOn: message.createdOn
       }
       // return group created
-      return res.status(200).send({
+      return res.status(201).send({
          status: 201,
-         data:messageToReturn
+         data: [ messageToReturn ]
       });
 
     }catch(err){
