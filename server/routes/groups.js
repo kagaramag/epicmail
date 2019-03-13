@@ -13,7 +13,7 @@ import authethicate from './../middleware/authethicate';
 
 const groupRouter = Router();
 
-groupRouter.post(`${version}groups`, authethicate, Group.createGroup);
-groupRouter.get(`${version}groups`, authethicate, Group.getAllGroup);
+groupRouter.post(`${version}groups`,  Group.createGroup);
+groupRouter.get(`${version}groups`, Group.getAllGroup);
 
 export default groupRouter;

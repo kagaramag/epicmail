@@ -63,6 +63,46 @@ describe("Emails", () => {
          done();
          });
    });
+   // get unread emails
+   it("it should GET all unread emails", done => {
+         chai
+         .request(server)
+         .get(version + "messages")
+         .end((err, res) => {
+         should.not.exist(err);
+         res.should.have.status(201);
+         res.body.should.be.a("object");
+         expect(res.body.data).to.be.a("array");
+         expect(res.body).to.have.haveOwnProperty("data");
+         expect(res.body.data[0].subject).to.be.a("string");
+         expect(res.body.data[0].message).to.be.a("string");
+         expect(res.body.data[0].status).equal("sent");
+         expect(res.body.data[0].parentMessageId).to.be.a("number");
+         expect(res.body.data[0].senderId).to.be.a("number");
+         expect(res.body.data[0].receiverId).to.be.a("number");
+         done();
+         });
+   });
+   // get sent emails
+   it("it should GET all sent emails", done => {
+         chai
+         .request(server)
+         .get(version + "messages/sent")
+         .end((err, res) => {
+         should.not.exist(err);
+         res.should.have.status(201);
+         res.body.should.be.a("object");
+         expect(res.body.data).to.be.a("array");
+         expect(res.body).to.have.haveOwnProperty("data");
+         expect(res.body.data[0].subject).to.be.a("string");
+         expect(res.body.data[0].message).to.be.a("string");
+         expect(res.body.data[0].status).not.equal("draft");
+         expect(res.body.data[0].parentMessageId).to.be.a("number");
+         expect(res.body.data[0].senderId).to.be.a("number");
+         expect(res.body.data[0].receiverId).to.be.a("number");
+         done();
+         });
+   });
 });
 
 module.exports = server;
