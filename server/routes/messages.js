@@ -14,5 +14,6 @@ const messageRouter = Router();
 
 messageRouter.post(`${version}messages`, Message.compose);
 messageRouter.get(`${version}messages`, Message.receivedEmails);
+messageRouter.delete(`${version}messages/:id`, Message.deleteEmail);
 
 export default messageRouter;
