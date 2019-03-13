@@ -160,11 +160,12 @@ class Auth {
         { user: user_in_db.id, type: user_in_db.type },
         process.env.SECRET
       );
-      return res.status(200).send({
-        status: 200,
+      return res.status(201).send({
+        status: 201,
         data: [
           {
             // token: token
+            token : "ahd64jfhHG7832KFM5"
           }
         ]
       });
