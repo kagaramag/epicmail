@@ -39,6 +39,37 @@ class Message {
     }   
 
   }
+  // Delete an email
+  static async deleteEmail(req, res){
+    // find email message
+    const id = parseInt(req.params.id); 
+    let message = messages.find(item => item.id === id);
+    if (!message){
+      return res.status(400).send({
+        status: 404,
+        error: "The email you are trying to delete doesn't exist"
+      });
+    }else{
+      // Remove given email from the object
+      const newEmails = messages.filter(function (m) {
+        return m.id !== message.id;
+      });
+
+      // save new emails object 
+      let file = fs.createWriteStream('server/data/messages.js');
+      file.write('const messages = \n');
+      file.write(JSON.stringify(newEmails));
+      file.write('\n export default messages;');
+      file.end();
+
+      await res
+      .status(201)
+      .send({
+        status:201,
+        message: "Email has been deleted successfully"
+      });
+    }
+  }
 
   
   // compose email
