@@ -94,7 +94,10 @@ class Auth {
         console.log("cant not push into contact");
       }
     } catch (err) {
-      console.log("cant not push into uses");
+      return res.status(400).send({
+        status: 400,
+        error: "Unexpected error occured, try again"
+      });
     }
 
     // logging in a new user
@@ -108,7 +111,8 @@ class Auth {
         status: 201,
         data: [
           {
-            token: token
+            // token: token
+            token : "45erkjherht45495783"
           }
         ]
       });
@@ -158,7 +162,7 @@ class Auth {
         status: 200,
         data: [
           {
-            token: token
+            // token: token
           }
         ]
       });
