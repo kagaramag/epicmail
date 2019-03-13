@@ -21,18 +21,18 @@ class Group {
     // create user info object
     
     // Verify if you are admin
-    let check = Role.admin(req.token);
-    if(!check) return res.send({
-      status:400,
-      error: "Error, you are not an admin"
-    })
+    // let check = Role.admin(req.token);
+    // if(!check) return res.send({
+    //   status:400,
+    //   error: "Error, you are not an admin"
+    // })
 
     const group = {
       id: groups.length + 1,
       name: req.body.name,
       createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
     };   
-    console.log(group);
+    // console.log(group);
     
     // capturing the inputs to valitads
     let checkInputs = [];
@@ -52,13 +52,12 @@ class Group {
     }
 
     // check if user not exist in database
-    
     let new_group = groups.find(item => item.name === group.name);
     if (new_group)
       return res
-        .status(400)
+        .status(409)
         .send({
-          status: 400,
+          status: 409,
           error: "Group already exists, try another one"
       });
 
@@ -71,8 +70,8 @@ class Group {
       file.write('\n export default groups;');
       file.end();
       // return group created
-      return res.status(200).send({
-         status: 200,
+      return res.status(201).send({
+         status: 201,
          data:group
       });
     }catch(err){
@@ -86,14 +85,14 @@ class Group {
    // get all groups
    static async getAllGroup(req, res){
     // Verify if you are admin
-    let check = Role.admin(req.token);
-    if(!check) return res.send({
-      status:400,
-      error: "Error"
-    })
+    // let check = Role.admin(req.token);
+    // if(!check) return res.send({
+    //   status:400,
+    //   error: "Error"
+    // })
     // get all groups
-    res.status(200).send({
-      status:200,
+    res.status(201).send({
+      status:201,
       data:groups
    })
    }
