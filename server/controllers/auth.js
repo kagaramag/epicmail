@@ -33,7 +33,6 @@ class Auth {
       createdOn: moment().format("MM-DD-YYYY hh:mm:ss"),
       username: req.body.username
     };
-    console.log(user);
     // capturing the inputs to valitads
     let checkInputs = [];
     checkInputs.push(Validate.username(user.username, true));
@@ -91,7 +90,10 @@ class Auth {
         contactFile.write("\nexport default contacts;");
         contactFile.end();
       } catch (err) {
-        console.log("cant not push into contact");
+        return res.status(400).send({
+          status: 400,
+          error: "cant not save user into contact"
+        });
       }
     } catch (err) {
       return res.status(400).send({
