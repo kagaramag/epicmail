@@ -106,6 +106,23 @@ class Message {
       });
     }
   }
+  // Delete an email
+  static async specificEmail(req, res) {
+    // find email message
+    const id = parseInt(req.params.id);
+    let message = messages.find(item => item.id === id);
+    if (!message) {
+      return res.status(409).send({
+        status: 409,
+        error: "The requested email doesn't not exit"
+      });
+    } else {
+      return res.status(201).send({
+        status: 201,
+        data: [message]
+      });
+    }
+  }
 
   // compose email
   static async compose(req, res) {
