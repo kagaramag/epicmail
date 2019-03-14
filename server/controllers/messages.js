@@ -42,7 +42,7 @@ class Message {
         }
       });
       // console.log(emails);
-      return await res.status(200).send({
+      return await res.status(201).send({
         status: 200,
         data: emails
       });
@@ -139,8 +139,8 @@ class Message {
       file.write("\n export default messages;");
       file.end();
 
-      await res.status(201).send({
-        status: 201,
+      await res.status(200).send({
+        status: 200,
         message: "Email has been deleted successfully"
       });
     }
@@ -255,8 +255,8 @@ class Message {
         createdOn: message.createdOn
       };
       // return group created
-      return res.status(201).send({
-        status: 201,
+      return res.status(200).send({
+        status: 200,
         data: [messageToReturn]
       });
     } catch (err) {
