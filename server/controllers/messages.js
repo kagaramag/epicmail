@@ -15,22 +15,19 @@ class Message {
   // list of received emails
   static async receivedEmails(req, res) {
     if (messages) {
-      Object.keys(messages).map(function(key) {
-        const senderId = { senderId: 1 };
-        const receiverId = { receiverId: 1 };
-        return (messages[key] = {
-          ...messages[key],
-          ...senderId,
-          ...receiverId
-        });
-      });
-      return await res.status(201).send({
-        status: 201,
-        data: messages
+      const emails = messages.filter(message => {
+        if (message.status === "unread" || message.status === "read") {
+          return message;
+        }
+      });  
+      // console.log(emails);    
+      return await res.status(200).send({
+        status: 200,
+        data: emails
       });
     } else {
-      return await res.status(400).send({
-        status: 400,
+      return await res.status(404).send({
+        status: 404,
         error: "Sorry, No emails found"
       });
     }
@@ -40,19 +37,40 @@ class Message {
   static async unreadEmails(req, res) {
     if (messages) {
       let emails = messages.filter(message => {
-        if (message.status === "sent") {
+        if (message.status === "unread") {
           return message;
         }
       });
       // console.log(emails);
-      return await res.status(201).send({
-        status: 201,
+      return await res.status(200).send({
+        status: 200,
         data: emails
       });
     } else {
-      return await res.status(400).send({
-        status: 400,
+      return await res.status(404).send({
+        status: 404,
         error: "Sorry, No emails found"
+      });
+    }
+  }
+
+  // list of read messages
+  static async readEmails(req, res) {
+    if (messages) {
+      let emails = messages.filter(message => {
+        if (message.status === "read") {
+          return message;
+        }
+      });
+      // console.log(emails);
+      return await res.status(200).send({
+        status: 200,
+        data: emails
+      });
+    } else {
+      return await res.status(404).send({
+        status: 404,
+        error: "Sorry, No email found"
       });
     }
   }
@@ -61,19 +79,40 @@ class Message {
   static async sentEmails(req, res) {
     if (messages) {
       let emails = messages.filter(message => {
-        if (message.status !== "draft") {
+        if (message.status === "sent") {
           return message;
         }
       });
       // console.log(emails);
-      return await res.status(201).send({
-        status: 201,
+      return await res.status(200).send({
+        status: 200,
         data: emails
       });
     } else {
-      return await res.status(400).send({
-        status: 400,
-        error: "Sorry, No emails found"
+      return await res.status(404).send({
+        status: 404,
+        error: "Sorry, No email found"
+      });
+    }
+  }
+
+  // list of sent emails
+  static async draftEmails(req, res) {
+    if (messages) {
+      let emails = messages.filter(message => {
+        if (message.status === "draft") {
+          return message;
+        }
+      });
+      // console.log(emails);
+      return await res.status(200).send({
+        status: 200,
+        data: emails
+      });
+    } else {
+      return await res.status(404).send({
+        status: 404,
+        error: "Sorry, No email found"
       });
     }
   }
