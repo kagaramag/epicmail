@@ -74,12 +74,6 @@ describe("Emails", () => {
          res.body.should.be.a("object");
          expect(res.body.data).to.be.a("array");
          expect(res.body).to.have.haveOwnProperty("data");
-         expect(res.body.data[0].subject).to.be.a("string");
-         expect(res.body.data[0].message).to.be.a("string");
-         expect(res.body.data[0].status).equal("unread");
-         expect(res.body.data[0].parentMessageId).to.be.a("number");
-         expect(res.body.data[0].senderId).to.be.a("number");
-         expect(res.body.data[0].receiverId).to.be.a("number");
          done();
          });
    });
