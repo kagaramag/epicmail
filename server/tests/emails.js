@@ -67,7 +67,7 @@ describe("Emails", () => {
    it("it should GET all unread emails", done => {
          chai
          .request(server)
-         .get(version + "messages")
+         .get(version + "messages/unread")
          .end((err, res) => {
          should.not.exist(err);
          res.should.have.status(201);
