@@ -15,8 +15,8 @@
    "host": "epicmailbox.herokuapp.com",
    "basePath": "/",
   "schemes": [
-   "http",
-   "https"
+   "https",
+   "http"
    ],
    "paths": {
       "/api/v1/users": {
