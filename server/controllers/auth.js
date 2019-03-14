@@ -53,8 +53,8 @@ class Auth {
 
     let new_user = users.find(item => item.username === user.username);
     if (new_user)
-      return res.status(400).send({
-        status: 400,
+      return res.status(409).send({
+        status: 409,
         error: "Username has been already taken, try another one"
       });
 
@@ -90,9 +90,9 @@ class Auth {
         contactFile.write("\nexport default contacts;");
         contactFile.end();
       } catch (err) {
-        return res.status(400).send({
-          status: 400,
-          error: "cant not save user into contact"
+        return res.status(403).send({
+          status: 403,
+          error: "Unexpect error occured"
         });
       }
     } catch (err) {
@@ -110,7 +110,7 @@ class Auth {
         process.env.SECRET
       );
       return res.status(200).send({
-        status: 201,
+        status: 200,
         data: [
           {
             // token: token
@@ -119,8 +119,8 @@ class Auth {
         ]
       });
     } else {
-      return res.status(400).send({
-        status: 400,
+      return res.status(401).send({
+        status: 401,
         error: "We could not authethicate you, try login form."
       });
     }
@@ -146,8 +146,8 @@ class Auth {
 
     const user_in_db = users.find(item => item.email === user.email);
     if (!user_in_db) {
-      return res.status(400).send({
-        status: 400,
+      return res.status(401).send({
+        status: 401,
         error: "Invalid username"
       });
     }
@@ -171,58 +171,8 @@ class Auth {
       });
     }
 
-    return res.status(400).send({
-      status: 400,
-      error: "Invalid password"
-    });
-  }
-
-  static async logout(req, res) {
-    const user = {
-      email: req.body.email,
-      password: req.body.password
-    };
-    //  Validate email
-    let checkInputs = [];
-    checkInputs.push(Validate.loginEmail(user.email));
-
-    for (let i = 0; i < checkInputs.length; i += 1) {
-      if (checkInputs[i].isValid === false) {
-        return res.status(400).json({
-          status: 400,
-          error: checkInputs[i].error
-        });
-      }
-    }
-
-    const user_in_db = users.find(item => item.email === user.email);
-    if (!user_in_db) {
-      return res.status(400).send({
-        status: 400,
-        error: "Invalid username"
-      });
-    }
-
-    // compare passowrd with bcrypt
-    const verify = await bcrypt.compare(user.password, user_in_db.password);
-    // if passwowrd match, auth user
-    if (verify) {
-      const token = jwt.sign(
-        { user: user_in_db.id, type: user_in_db.type },
-        process.env.SECRET
-      );
-      return res.status(200).send({
-        status: 200,
-        data: [
-          {
-            token: token
-          }
-        ]
-      });
-    }
-
-    return res.status(400).send({
-      status: 400,
+    return res.status(401).send({
+      status: 401,
       error: "Invalid password"
     });
   }

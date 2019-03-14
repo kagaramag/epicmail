@@ -7,7 +7,7 @@ const isAutheticated = (req, res, next) =>{
      next();
    } else {
      res.status(403).send({
-         status:400,
+         status:403,
          error:"Whoochs, Access denied. Try to login first!"
      });
    }

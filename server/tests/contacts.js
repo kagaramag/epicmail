@@ -25,7 +25,7 @@ describe("Get all contacts", () => {
                   .send(contacts)
                   .end((err, res) => {
                   should.not.exist(err);
-                  res.should.have.status(200);
+                  res.should.have.status(201);
                   res.body.should.be.a("object");
                   expect(res.body.data).to.be.a("array");
                   expect(res.body).to.have.haveOwnProperty("data");
