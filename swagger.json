@@ -12,7 +12,7 @@
        "Author": "Gilles Kagarama"
      }
    },
-   "host": "epicmailbox.herokuapp.com",
+   "host": "https://epicmailbox.herokuapp.com",
    "basePath": "/",
   "schemes": [
    "http",
@@ -275,6 +275,41 @@
                 "description": "Sorry, error occured"
               }
             }
+           },
+        "get": {
+           "tags": [
+              "Messages"
+           ], 
+           "summary": "View a specific email",
+           "description": "",
+           "produces": [
+             "application/json"
+           ],  
+           "parameters": [
+            {
+              "in": "path",
+              "name": "id",
+              "description": "",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/detailEmail"
+              }
+             }          
+           ],     
+           "responses": {
+              "201": {
+                "description": "Message have be retrieved successfully"
+              },
+              "409": {
+                "description": "The email you are trying to view doesn't exist"
+              },
+              "400": {
+                "description": "Error occured while processing your request"
+              },
+              "default": {
+                "description": "Sorry, error occured"
+              }
+            }
            }
       },
       "/api/v1/groups": {
@@ -370,6 +405,14 @@
       }
     },
     "deteleEmail": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      }
+    },
+    "detailEmail": {
       "type": "object",
       "properties": {
         "id": {
