@@ -32,8 +32,8 @@
             "201": {
               "description": "Get list of users"
             },
-            "400": {
-              "description": "Invalid information supplied"
+            "404": {
+              "description": "User not found"
             },
             "default": {
               "description": "Sorry, error occured"
@@ -66,14 +66,17 @@
            }          
          ],     
          "responses": {
-            "201": {
-              "description": "Return a token"
+            "200": {
+              "description": "User created successfully"
             },
             "400": {
               "description": "Invalid information supplied"
             },
+            "409": {
+              "description": "User already exists"
+            },
             "default": {
-              "description": "Sorry, error occured"
+              "description": "Something went wrong"
             }
           }
          }
@@ -104,13 +107,13 @@
          ],     
          "responses": {
             "201": {
-              "description": "Return a token"
+              "description": "User logged in successfully"
             },
             "400": {
               "description": "Invalid Username or password"
             },
             "default": {
-              "description": "Sorry, error occured"
+              "description": "Something went wrong"
             }
           }
          }
@@ -125,14 +128,11 @@
            "application/json"
          ],       
          "responses": {
-            "201": {
+            "200": {
               "description": "Get list of contacts"
             },
-            "400": {
-              "description": "Invalid information supplied"
-            },
             "default": {
-              "description": "Sorry, error occured"
+              "description": "Something went wrong"
             }
           }
          }
@@ -147,10 +147,10 @@
            "application/json"
          ],       
          "responses": {
-            "201": {
-              "description": "Fetch email reveived"
+            "200": {
+              "description": "Received emails retreived successfully"
             },
-            "400": {
+            "404": {
               "description": "No email found"
             },
             "default": {
@@ -183,7 +183,10 @@
         ],     
         "responses": {
             "201": {
-              "description": "Email sent"
+              "description": "Email sent successfully"
+            },
+            "204": {
+              "description": "No content provided"
             },
             "400": {
               "description": "Invalid information supplied"
@@ -205,10 +208,10 @@
            "application/json"
          ],       
          "responses": {
-            "201": {
+            "200": {
               "description": "Fetch unread emails"
             },
-            "400": {
+            "404": {
               "description": "No email found"
             },
             "default": {
@@ -228,7 +231,7 @@
            "application/json"
          ],       
          "responses": {
-            "201": {
+            "200": {
               "description": "Fetch unread emails"
             },
             "400": {
@@ -251,7 +254,7 @@
            "application/json"
          ],       
          "responses": {
-            "201": {
+            "200": {
               "description": "Fetch sent emails"
             },
             "400": {
@@ -288,7 +291,7 @@
              }          
            ],     
            "responses": {
-              "201": {
+              "200": {
                 "description": "Email has been deleted successfully"
               },
               "400": {
@@ -320,17 +323,14 @@
              }          
            ],     
            "responses": {
-              "201": {
+              "200": {
                 "description": "Message have be retrieved successfully"
               },
               "409": {
                 "description": "The email you are trying to view doesn't exist"
               },
-              "400": {
-                "description": "Error occured while processing your request"
-              },
               "default": {
-                "description": "Sorry, error occured"
+                "description": "Error occured while processing your request"
               }
             }
            }
@@ -345,7 +345,7 @@
              "application/json"
            ],       
            "responses": {
-              "201": {
+              "200": {
                 "description": "List of groups"
               },
               "409": {
