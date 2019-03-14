@@ -12,11 +12,11 @@
        "Author": "Gilles Kagarama"
      }
    },
-   "host": "epicmailbox.herokuapp.com",
+   "host": "localhost:3000",
    "basePath": "/",
   "schemes": [
-   "https",
-   "http"
+   "http",
+   "https"
    ],
    "paths": {
       "/api/v1/users": {
@@ -195,6 +195,29 @@
         }
       },
       "/api/v1/messages/unread": {
+      "get": {
+         "tags": [
+            "Messages"
+         ], 
+         "summary": "Get all unread emails",
+         "description": "This endpoints fetch all unread emails. It looks for every email that has 'sent' as status",
+         "produces": [
+           "application/json"
+         ],       
+         "responses": {
+            "201": {
+              "description": "Fetch unread emails"
+            },
+            "400": {
+              "description": "No email found"
+            },
+            "default": {
+              "description": "Sorry, error occured"
+            }
+          }
+         }
+      },
+      "/api/v1/messages/read": {
       "get": {
          "tags": [
             "Messages"
