@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/djallas/epicmail.svg?branch=develop)](https://travis-ci.org/djallas/epicmail)
 [![Coverage Status](https://coveralls.io/repos/github/djallas/epicmail/badge.svg?branch=develop&kill_cache=1)](https://coveralls.io/github/djallas/epicmail)
 [![Maintainability](https://api.codeclimate.com/v1/badges/7f987f44da1233229618/maintainability)](https://codeclimate.com/github/djallas/epicmail/maintainability)
+[![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
 EPIC Mail is web app that help people to send and receice emails. It uses Twilio to notify the arrival of email.
 
