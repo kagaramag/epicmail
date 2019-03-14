@@ -42,7 +42,7 @@ class Message {
         }
       });
       // console.log(emails);
-      return await res.status(201).send({
+      return await res.status(200).send({
         status: 200,
         data: emails
       });
