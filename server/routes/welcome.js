@@ -1,8 +1,9 @@
-import express, { Router } from 'express';
+/* eslint linebreak-style: ["error", "windows"] */
+import express, { Router } from "express";
+import Welcome from "../controllers/welcome";
 
 const app = express();
 
-import Welcome from '../controllers/welcome';
 
 // register route
 const welcomeRouter = Router();
