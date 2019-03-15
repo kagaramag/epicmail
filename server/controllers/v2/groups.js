@@ -6,12 +6,12 @@ import groups from "../../data/groups";
 import bcrypt from "bcrypt";
 
 // Validator
-import Validate from "../../helpers/V2/validation";
+import Validate from "../../helpers/v2/validation";
 
 // generate date with js
 import moment from "moment";
 
-import Role from '../../helpers/V2/role'
+import Role from '../../helpers/v2/role'
 
 
 import fs from 'fs';
