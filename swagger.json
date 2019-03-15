@@ -15,8 +15,8 @@
    "host": "localhost:3000",
    "basePath": "/",
   "schemes": [
-   "https",
-   "http"
+   "http",
+   "https"
    ],
    "paths": {
       "/api/v1/users": {

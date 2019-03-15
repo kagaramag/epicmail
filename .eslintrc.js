@@ -1,3 +1,7 @@
 module.exports = {
-   extends: "airbnb-base"
- };
+   extends: "airbnb-base",
+   "rules": {
+    "quotes": ["error", "double"],
+    "indent": ["error", 2]
+  }
+};
