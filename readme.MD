@@ -48,23 +48,46 @@ npm start
 
 # Table of API Endpoints
 
-## HTTP Verbs
+# HTTP Verbs
+
+##API VERSION 1
 
 | Methods | Endpoints | Actions |
 | :----- | :----- | ----- |
 | /GET | / | Welcome message |
-| /GET | /docs | API Documentation |
+| /GET | /api/v1/docs | Swagger Documentation |
+| /POST | /api/v1/auth/signup | Sign up a new user |
+| /POST | /api/v1/auth/login | Get list of contactsLogin a user |
 | /GET | /api/v1/users | Get list of users |
-| /GET | /api/v1/contacts | Get list of contacts |
-| /POST | /auth/signup | Sign up a new user |
-| /POST | /auth/login | Get list of contactsLogin a user |
 | /POST | /api/v1/messages | Send an amail |
 | /GET | /api/v1/messages | Fetch all received emails |
 | /GET | /api/v1/messages/unread | Fetch all unread emails |
 | /GET | /api/v1/messages/sent | Fetch all sent emails |
-| /DELETE | /api/v1/messages/<message-id> | Delete a specific email |
+| /DELETE | /api/v1/messages/{messageId} | Delete a specific email |
+| /GET | /api/v1/messages/{messageId} | Get a specific email |
 | /POST | /api/v1/groups | Create a group |
 | /GET | /api/v1/groups | Get a list of group |
+| /GET | /api/v1/contacts | Get list of contacts |
+
+
+##API VERSION 2
+
+| Methods | Endpoints | Actions |
+| :----- | :----- | ----- |
+| /GET | / | Welcome message |
+| /GET | /api/v2/docs | Swagger Documentation |
+| /POST | /api/v2/auth/signup | Sign up a new user |
+| /POST | /api/v2/auth/login | Get list of contactsLogin a user |
+| /GET | /api/v2/users | Get list of users |
+| /POST | /api/v2/messages | Send an amail |
+| /GET | /api/v2/messages | Fetch all received emails |
+| /GET | /api/v2/messages/unread | Fetch all unread emails |
+| /GET | /api/v2/messages/sent | Fetch all sent emails |
+| /DELETE | /api/v2/messages/{messageId} | Delete a specific email |
+| /GET | /api/v2/messages/{messageId} | Get a specific email |
+| /POST | /api/v2/groups | Create a group |
+| /GET | /api/v2/groups | Get a list of group |
+| /GET | /api/v2/contacts | Get list of contacts |
 
 # Validations
 

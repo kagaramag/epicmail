@@ -1,9 +1,16 @@
 /* eslint linebreak-style: ["error", "windows"] */
+
 import express from "express";
 import morgan from "morgan";
 import "babel-polyfill";
 
 import cors from "cors";
+import path from "path";
+import exphbs from "express-handlebars";
+import bodyParser from "body-parser";
+// import routes
+import routesV1 from "./routes/v1/index";
+import routersV2 from "./routes/v2/index";
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
@@ -11,22 +18,13 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Parse incoming request bodies in a middleware
-import bodyParser from "body-parser";
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 
-import path from "path";
-
-import exphbs from "express-handlebars";
-var hbs = exphbs.create({
-  helpers: {
-    foo: function() {
-      return "FOO!";
-    }
-  }
-});
+const hbs = exphbs.create();
 app.set("views", path.join(__dirname, "views"));
 
 app.engine(
@@ -42,9 +40,6 @@ app.set("view engine", "handlebars");
 // Register `hbs.engine` with the Express app.
 app.engine("handlebars", hbs.engine);
 
-// import routes
-import routers from "./routes/index";
-
 // CORS
 app.use(cors());
 app.use((req, res, next) => {
@@ -56,8 +51,14 @@ app.use((req, res, next) => {
   );
   next();
 });
+// Welcome controller
+app.get("/", (req, res) => {
+  res.status(200).render("index");
+});
 
-app.use(routers);
+// let express use routes
+app.use("/api/v1/", routesV1);
+app.use("/api/v2/", routersV2);
 
 app.listen(PORT, () => {
   console.log(`Server started with Port: ${PORT}`);
