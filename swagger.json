@@ -12,7 +12,7 @@
        "Author": "Gilles Kagarama"
      }
    },
-   "host": "epicmailbox.herokuapp.com",
+   "host": "localhost:3000",
    "basePath": "/",
   "schemes": [
    "https",
