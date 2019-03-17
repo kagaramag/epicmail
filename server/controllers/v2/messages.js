@@ -194,7 +194,6 @@ class Message {
           // start sending email to the users
           let receiverIdArray = [];
           if(req.body.group !== 0){
-
             // create array of users from group
             receiverIdArray = [2, 5]
           }else{
