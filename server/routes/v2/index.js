@@ -14,6 +14,8 @@ import Group from "./../../controllers/v2/groups";
 import Message from "./../../controllers/v2/messages";
 // check authethication
 import authethicate from "./../../middleware/authethicate";
+import isAdmin from './../../middleware/isAdmin'
+
 
 // Register Swagger
 import swaggerUi from "swagger-ui-express";
@@ -23,25 +25,34 @@ import swaggerDocument from "../../swagger/v2/swagger.json";
 const router = Router();
 
 // users routes
-router.get("/users", Users.getAllUsers);
-router.post("/auth/signup", Auth.signup);
-router.post("/auth/login", Auth.login);
+router.get("/users", authethicate, isAdmin, Users.getAllUsers); //OK
+router.post("/auth/signup", Auth.signup); //OK
+router.post("/auth/login", Auth.login); //OK
+router.post("/auth/reset", Auth.reset);
+router.post("/auth/verify", Auth.verify);
+router.put("/auth/new-passowrd", Auth.newPassword);
+router.put("/profile", authethicate, Auth.updateProfile);
 
 // contact routes
-router.get("/contacts", Contact.getAllContacts);
+router.get("/contacts", authethicate, Contact.getAllContacts);
 
 // group routes
-router.post("/groups", Group.createGroup);
-router.get("/groups", Group.getAllGroup);
+router.post("/groups", authethicate, isAdmin, Group.createGroup); //OK
+router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
+router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup);
+router.patch("/groups", authethicate, isAdmin, Group.editGroup);
+router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
+router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
+router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGroup);
 
 // email routes
-router.post("/messages", Message.compose);
-router.get("/messages", Message.receivedEmails);
-router.get("/messages/unread", Message.unreadEmails);
-router.get("/messages/read", Message.readEmails);
-router.get("/messages/sent", Message.sentEmails);
-router.delete("/messages/:id", Message.deleteEmail);
-router.get("/messages/:id", Message.specificEmail);
+router.post("/messages", authethicate, Message.compose);
+router.get("/messages", authethicate, Message.receivedEmails);
+router.get("/messages/unread", authethicate, Message.unreadEmails);
+router.get("/messages/read", authethicate, Message.readEmails);
+router.get("/messages/sent", authethicate, Message.sentEmails);
+router.delete("/messages/:id", authethicate, Message.deleteEmail);
+router.get("/messages/:id", authethicate, Message.specificEmail);
 
 // Swagger documentation
 router.use("/docs", swaggerUi.serve);
