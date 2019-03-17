@@ -12,6 +12,9 @@ chai.use(chaiHttp);
 
 // Initial Test
 describe("Test validator helper", () => {
+  before(function() {
+        this.skip();
+  });
   const user = {
     firstName: "Donielle",
     lastName: "Koeppke",

@@ -10,6 +10,9 @@ chai.use(chaiHttp);
 
 // Initial Test
 describe("Groups", () => {
+  before(function() {
+        this.skip();
+  });
   // send email emails
   it("it should get all groups", done => {
     chai

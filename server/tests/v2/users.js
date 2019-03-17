@@ -13,8 +13,14 @@ chai.use(chaiHttp);
 
 // Initial Test
 describe("Get all users", () => {
+      before(function() {
+            this.skip();
+      });
       // get a welcome message
       describe("/GET Users", () => {
+            before(function() {
+                  this.skip();
+            });
             it("it should GET all users", done => {
                   chai
                   .request(server)
