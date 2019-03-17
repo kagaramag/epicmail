@@ -1,3 +1,4 @@
+import  ST  from '../config/status'
 const isAutheticated = (req, res, next) =>{ 
    const bearerHeader = req.headers["authorization"];
    if (typeof bearerHeader !== 'undefined') {
@@ -6,11 +7,12 @@ const isAutheticated = (req, res, next) =>{
      req.token = bearerToken;
      next();
    } else {
-     res.status(403).send({
-         status:403,
-         error:"Whoochs, Access denied. Try to login first!"
+     res.status(ST.UNAUTHORIZED).send({
+         status:ST.UNAUTHORIZED,
+         error:"Whoochs, Try to login first!"
      });
    }
 }
+
 
 export default isAutheticated

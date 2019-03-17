@@ -1,101 +1,113 @@
-// user controller
-import users from "../../data/users";
-import groups from "../../data/groups";
+/* eslint linebreak-style: ["error", "windows"] */
+// Joi, validation helper
+import Joi from "joi";
+import pool from "../../config/db";
 
-// encryption
-import bcrypt from "bcrypt";
-
-// Validator
-import Validate from "../../helpers/v2/validation";
-
-// generate date with js
-import moment from "moment";
-
-import Role from '../../helpers/v2/role'
-
-
-import fs from 'fs';
+import ST from "../../config/status";
 
 class Group {
   static async createGroup(req, res) {
-    // create user info object
-    
-    // Verify if you are admin
-    // let check = Role.admin(req.token);
-    // if(!check) return res.send({
-    //   status:400,
-    //   error: "Error, you are not an admin"
-    // })
+    // validate inputs
+    const { error } = validateGroup(req.body);
+    if(error) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
     const group = {
-      id: groups.length + 1,
       name: req.body.name,
-      createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
-    };   
-    // console.log(group);
-    
-    // capturing the inputs to valitads
-    let checkInputs = [];
-    // checkInputs.push(Validate.name(group.name, true));
+    };
+    const query = "INSERT INTO groups(name) VALUES($1) RETURNING *";
+    const inputs = [group.name];
 
-        // capturing the inputs to valitads
-    // let checkInputs = [];
-    checkInputs.push(Validate.string('Group name', group.name, true, 2, 30));
-    
-    for (let i = 0; i < checkInputs.length; i += 1) {
-      if (checkInputs[i].isValid === false) {
-        return res.status(400).json({
-          status: 400,
-          error: checkInputs[i].error,
+    pool
+      .query(query, inputs)
+      .then(response => {
+        return res.status(ST.CREATED).send({
+          status: ST.CREATED,
+          message: "Group created successfully"
         });
-      }
-    }
-
-    // check if user not exist in database
-    let new_group = groups.find(item => item.name === group.name);
-    if (new_group)
-      return res
-        .status(409)
-        .send({
-          status: 409,
-          error: "Group already exists, try another one"
+      })
+      .catch((e) => {
+        if (e.routine === "_bt_check_unique")
+          return res
+            .status(ST.EXIST)
+            .send({ status: ST.EXIST, error: e.detail });
+        if (e.routine === "scanner_yyerror")
+          return res
+            .status(ST.BAD_REQUEST)
+            .send({
+              status: ST.BAD_REQUEST,
+              error: "Error occured, check your SQL Query"
+            });
+        if (e)
+          return res
+            .status(ST.BAD_REQUEST)
+            .send({
+              status: ST.BAD_REQUEST,
+              error: "Whoops, unexpected error occured. Try again"
+            });
       });
+    req.setTimeout(30000);
+  }
 
-    // save new user in the db
-    try{
-      groups.push(group);    
-      var file = fs.createWriteStream('server/data/groups.js');
-      file.write('const groups = \n');
-      file.write(JSON.stringify(groups));
-      file.write('\n export default groups;');
-      file.end();
-      // return group created
-      return res.status(201).send({
-         status: 201,
-         data:group
+  // get all groups
+  static async getAllGroup(req, res) {
+    const query = "SELECT * FROM groups";
+    pool
+      .query(query)
+      .then(data => {
+        if(data.rowCount === 0){ 
+          res.status(204).send({
+            status: ST.NO_CONTENT,
+            error: "No groups created yet!" 
+          });
+          return;
+        }
+        res.status(ST.OK).send({
+          status: ST.OK,
+          data: data.rows
+        });
+      })
+      .catch(e => {
+        if(e.routine === 'parserOpenTable') return res.status(ST.NO_CONTENT).send({status: "No database table found!" });
+        if (e.routine === "scanner_yyerror")
+          return res
+            .status(ST.BAD_REQUEST)
+            .send({
+              status: ST.BAD_REQUEST,
+              error: "Error in your query occured"
+            });
+        if (e)
+        console.log(e);
+          return res
+            .status(ST.BAD_REQUEST)
+            .send({ status: ST.BAD_REQUEST, error: "Something went wrong!" });
       });
-    }catch(err){
-      return res.status(400).send({
-         status: 400,
-         error: "Error occured, try again."
-      });
-    }   
-   }
-
-   // get all groups
-   static async getAllGroup(req, res){
-    // Verify if you are admin
-    // let check = Role.admin(req.token);
-    // if(!check) return res.send({
-    //   status:400,
-    //   error: "Error"
-    // })
-    // get all groups
-    res.status(201).send({
-      status:201,
-      data:groups
-   })
-   }
+  }
+  // assign user to group
+  static async assignUserGroup(req, res){
+    res.send("magic will run here...")
+  }
+  // assign user to group
+  static async editGroup(req, res){
+    res.send("magic will run here...")
+  }
+  // assign user to group
+  static async deleteGroup(req, res){
+    res.send("magic will run here...")
+  }
+  // assign user from group
+  static async deleteUserFromGroup(req, res){
+    res.send("magic will run here...")
+  }
+}
+// validate groups
+function validateGroup(group) {
+  const schema = {
+    name: Joi.string()
+      .min(2)
+      .max(30)
+      .required()
+  };
+  return Joi.validate(group, schema);
 }
 
 export default Group;

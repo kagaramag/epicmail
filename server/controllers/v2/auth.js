@@ -1,181 +1,145 @@
-// user controller
-import users from "../../data/users";
-import contacts from "../../data/contacts";
-
+/* eslint linebreak-style: ["error", "windows"] */
 // encryption
-import bcrypt from "bcrypt";
-
-// Validator
-import Validate from "../../helpers/v2/validation";
-
-// generate date with js
-import moment from "moment";
-
-// register envirnoment variables
-import dotenv from "dotenv";
-dotenv.config();
-
 // Web token
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+// register envirnoment variables
+import dotenv from "dotenv";
+// validator
+import Joi from "joi";
+// Status code
+import ST from "../../config/status";
+import pool from "../../config/db";
 
-import fs from "fs";
+dotenv.config();
 
 class Auth {
-  static async signup(req, res) {
-    // create user info object
-    const user = {
-      id: users.length + 1,
-      email: req.body.username + "@epicmail.com",
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      type: "user",
-      password: req.body.password,
-      createdOn: moment().format("MM-DD-YYYY hh:mm:ss"),
-      username: req.body.username
-    };
-    // capturing the inputs to valitads
-    let checkInputs = [];
-    checkInputs.push(Validate.username(user.username, true));
-    checkInputs.push(Validate.name(user.firstName, true));
-    checkInputs.push(Validate.name(user.lastName, true));
-    checkInputs.push(Validate.name(user.password, true));
-
-    for (let i = 0; i < checkInputs.length; i += 1) {
-      if (checkInputs[i].isValid === false) {
-        return res.status(400).json({
-          status: 400,
-          error: checkInputs[i].error
-        });
-      }
-    }
-
-    // check if user not exist in database
-
-    let new_user = users.find(item => item.username === user.username);
-    if (new_user)
-      return res.status(409).send({
-        status: 409,
-        error: "Username has been already taken, try another one"
-      });
-
-    // generate random data
-    const salt = await bcrypt.genSalt(parseInt(process.env.SALT));
-
-    // create a random data to the password before encrypting
-    user.password = await bcrypt.hash(user.password, salt);
-
-    // save new user in the db
+  static async signup(req, res) {    
+    // validate inputs    
+    const { error } = validateUser(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
     try {
-      users.push(user);
-      var file = fs.createWriteStream("server/data/users.js");
-      file.write("const users = \n");
-      file.write(JSON.stringify(users));
-      file.write("\n export default users;");
-      file.end();
-      try {
-        // // make contact
-        const contact = {
-          id: users.length,
-          email: user.username + "@epicmail.com",
-          firstName: user.firstName,
-          lastName: user.lastName,
-          createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
-        };
-
-        contacts.push(contact);
-
-        var contactFile = fs.createWriteStream("server/data/contacts.js");
-        contactFile.write("const contacts =\n");
-        contactFile.write(JSON.stringify(contacts));
-        contactFile.write("\nexport default contacts;");
-        contactFile.end();
-      } catch (err) {
-        return res.status(403).send({
-          status: 403,
-          error: "Unexpect error occured"
-        });
-      }
+      // hashing the password      
+      // generate random data
+      const salt = await bcrypt.genSalt(parseInt(process.env.SALT));
+      // create a random data to the password before encrypting
+      const hash = await bcrypt.hash(req.body.password, salt);
+      const user = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: hash,
+        email: `${req.body.username}@epicmail.com`,
+        isadmin: false
+      };
+      const text =
+        "INSERT INTO users( firstname, lastname, email, password, isadmin) VALUES($1, $2, $3, $4, $5) RETURNING *";
+      const values = [user.firstname, user.lastname, user.email, user.password, user.isadmin];
+      
+     await pool.query(text, values)
+      .then(response => {
+        const admin = response.rows[0].isadmin;
+        const verify = bcrypt.compare(hash, req.body.password);
+        if (verify) {
+          const token = jwt.sign({ user: user.id, admin: admin }, process.env.SECRET );
+          return res
+          .status(ST.CREATED)
+          .send({
+            status: ST.CREATED,
+            data: [
+              {
+                token: token
+              }
+            ]
+          });
+        } else {
+          return res.status(ST.BAD_REQUEST).send({
+            status: ST.BAD_REQUEST,
+            error: "We could not authethicate you, try login form."
+          });
+        }
+      })
+      .catch(e => {
+        if(e.routine === "scanner_yyerror") return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: "Error in your query occured" });
+        if(e.routine === "_bt_check_unique") return res.status(ST.EXIST).send({ status: ST.EXIST, error:e.detail});
+        if(e) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error:e});
+      }); 
     } catch (err) {
-      return res.status(400).send({
-        status: 400,
-        error: "Unexpected error occured, try again"
-      });
-    }
-
-    // logging in a new user
-    const verify = bcrypt.compare(user.password, user.password);
-    if (verify) {
-      const token = jwt.sign(
-        { user: user.id, type: user.type },
-        process.env.SECRET
-      );
-      return res.status(200).send({
-        status: 200,
-        data: [
-          {
-            // token: token
-            token : "45erkjherht45495783"
-          }
-        ]
-      });
-    } else {
-      return res.status(401).send({
-        status: 401,
-        error: "We could not authethicate you, try login form."
+      res.send({
+        message: `Whoochs, Error occured. Try again later`
       });
     }
   }
 
   static async login(req, res) {
+      // validate inputs    
+      const { error } = validateLogin(req.body);
+      if (error)
+        return res
+          .status(ST.BAD_REQUEST)
+          .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+    
     const user = {
       email: req.body.email,
       password: req.body.password
     };
-    //  Validate email
-    let checkInputs = [];
-    checkInputs.push(Validate.loginEmail(user.email));
-
-    for (let i = 0; i < checkInputs.length; i += 1) {
-      if (checkInputs[i].isValid === false) {
-        return res.status(400).json({
-          status: 400,
-          error: checkInputs[i].error
-        });
+    pool
+    .query(`SELECT * from users where email = $1 LIMIT 1`, [user.email])
+    .then(response =>{          
+      if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Account not exist'});     
+      const { userId } = response.rows[0].id;      
+      const admin = response.rows[0].isadmin;
+      const verify = bcrypt.compare(user.password, response.rows[0].password)
+      if(verify){
+        const token = jwt.sign({ user: user.id, admin: admin }, process.env.SECRET );
+        return res.status(ST.OK).send({status:ST.OK, data: [token]});
+      }else{
+          return res.status(401).send({
+              message:"Sorry, your password is incorrect."
+          })
       }
-    }
-
-    const user_in_db = users.find(item => item.email === user.email);
-    if (!user_in_db) {
-      return res.status(401).send({
-        status: 401,
-        error: "Invalid username"
-      });
-    }
-
-    // compare passowrd with bcrypt
-    const verify = await bcrypt.compare(user.password, user_in_db.password);
-    // if passwowrd match, auth user
-    if (verify) {
-      const token = jwt.sign(
-        { user: user_in_db.id, type: user_in_db.type },
-        process.env.SECRET
-      );
-      return res.status(200).send({
-        status: 200,
-        data: [
-          {
-            // token: token
-            token : "ahd64jfhHG7832KFM5"
-          }
-        ]
-      });
-    }
-
-    return res.status(401).send({
-      status: 401,
-      error: "Invalid password"
-    });
+  }).catch(err =>{
+      console.log(err.stack);
+      res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: e.stack})
+  }); 
   }
+  // request to reset password
+  static async reset(req, res){
+    res.send("magic will run here...")
+  }
+  // verify your identity to reset your password
+  static async verify(req, res){
+    res.send("magic will run here...");
+  }
+  // set new password
+  static async newPassword(req, res){
+    res.send("magic will run here...");
+  }
+  // Update Profile
+  static async updateProfile(req, res){
+    res.send("magic will run here...");
+  }
+}
+// validate:create user
+function validateUser(user) {
+  const schema = {
+    firstname: Joi.string().min(2).max(30).required(),
+    lastname: Joi.string().min(2).max(30).required(),
+    username: Joi.string().min(2).max(30).required(),
+    password: Joi.string().min(6).max(15).required()
+  };
+  return Joi.validate(user, schema);
+}
+
+// validate:create user
+function validateLogin(user) {
+  const schema = {
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).max(15).required()
+  };
+  return Joi.validate(user, schema);
 }
 
 export default Auth;

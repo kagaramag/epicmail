@@ -266,6 +266,10 @@ class Message {
       });
     }
   }
+  // send message to a group
+  static async sendEmailGroup(req, res){
+    res.send("magic will run here...");
+  }
 }
 
 export default Message;

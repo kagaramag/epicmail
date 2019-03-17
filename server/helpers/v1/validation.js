@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 class Validate {
    static username(input, required) {
      if (input && required && input.length >= 3 && input.length <= 25) {
