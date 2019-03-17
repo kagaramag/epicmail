@@ -1,15 +1,12 @@
-import messages from "../../data/messages";
-import senders from "../../data/senders";
-import receivers from "../../data/receivers";
 
-// Validator
-import Validate from "../../helpers/v2/validation";
-
-// generate date with js
-import moment from "moment";
-
-// file writer
-import fs from "fs";
+// validator
+import Joi from "joi";
+import jwt from "jsonwebtoken";
+// encryption
+import bcrypt from "bcrypt";
+// Status code
+import ST from "../../config/status";
+import pool from "../../config/db";
 
 class Message {
   // list of received emails
@@ -164,112 +161,90 @@ class Message {
   }
 
   // compose email
-  static async compose(req, res) {
+  static async compose(req, res, next) {
+    // validate email   
+    const { error } = validateEmail(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
-    // create user info object
-    const message = {
-      id: messages.length + 1,
-      subject: req.body.subject,
-      message: req.body.message,
-      parentMessageId: req.body.parentMessageId,
-      status: req.body.status,
-      createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
-    };
-
-    // something sent
-    if (!req.body)
-      return res.status(204).send({
-        status: 204,
-        error: "Nothing to be sent, check your inputs"
-      });
-    // capturing the inputs to valitads
-    let checkInputs = [];
-    checkInputs.push(Validate.string("subject", message.subject, true, 5, 50));
-    checkInputs.push(
-      Validate.string("message", message.message, true, 5, 2000)
-    );
-    checkInputs.push(
-      Validate.number("parentMessageId", message.parentMessageId, true)
-    );
-    checkInputs.push(Validate.string("status", message.status, true, 2, 30));
-
-    for (let i = 0; i < checkInputs.length; i += 1) {
-      if (checkInputs[i].isValid === false) {
-        return res.status(400).json({
-          status: 400,
-          error: checkInputs[i].error
-        });
+    // check parent message
+    pool
+    .query(`SELECT * from messages where id = $1 LIMIT 1`, [req.body.parentmessageid])
+    .then(response => {    
+      if(req.body.parentmessageid !== 0) if(response.rowCount === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'You can not reply to the email which does not exist!'});
+      const message = {
+        // sender: jwt.decode(req.token).payload,
+        parentmessageid:req.body.parentmessageid,
+        subject: req.body.subject,
+        message: req.body.message
       }
-    }
+      // save email first
+         // check message status
+      const text ="INSERT INTO messages(subject, message, status, parentmessageid) VALUES($1, $2, $3, $4) RETURNING *";
+      const values = [message.subject, message.message, 'sent', message.parentmessageid];
+      
+      pool
+      .query(text, values, (err, response) => {
+          if (err) return console.log(err);
 
-    // save new user in the db
-    try {
-      // send an email
-      messages.push(message);
-      let file = fs.createWriteStream("server/data/messages.js");
-      file.write("const messages = \n");
-      file.write(JSON.stringify(messages));
-      file.write("\n export default messages;");
-      file.end();
+          const messageid = response.rows[0].id;
 
-      const sender = {
-        id: senders.length + 1,
-        senderId: req.body.senderId,
-        messageId: message.id,
-        parentMessageId: message.parentMessageId,
-        createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
-      };
+          // start sending email to the users
+          let receiverIdArray = [];
+          if(req.body.group !== 0){
+            // create array of users from group
+            receiverIdArray = [2, 5]
+          }else{
+            if(req.body.receiverid === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'No receiver identified' });     
+            receiverIdArray = [ req.body.receiverid ]
+          }
+          console.log("User id..");
+          console.log(jwt.decode(req.token, {complete: true}).payload.user);
 
-      // record the sender
-      senders.push(sender);
-      let fileSender = fs.createWriteStream("server/data/senders.js");
-      fileSender.write("const senders = \n");
-      fileSender.write(JSON.stringify(senders));
-      fileSender.write("\n export default senders;");
-      fileSender.end();
+          // regiter who send email;
+          const send ="INSERT INTO sent(senderid, messageid) VALUES($1, $2) RETURNING *";
+          pool
+          .query(send, [jwt.decode(req.token, {complete: true}).payload.user, messageid], (err, res) =>{
+            console.log(err)
+            // if (err) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: err });
+          });
+          // Record email receiver by their id
 
-      const receiver = {
-        id: senders.length + 1,
-        receiverId: req.body.receiversId,
-        messageId: message.id,
-        parentMessageId: message.parentMessageId,
-        phone: req.body.phone,
-        createdOn: moment().format("MM-DD-YYYY hh:mm:ss")
-      };
-      // record the receiver
-      receivers.push(receiver);
-      var fileReceiver = fs.createWriteStream("server/data/receivers.js");
-      fileReceiver.write("const receivers = \n");
-      fileReceiver.write(JSON.stringify(receivers));
-      fileReceiver.write("\n export default receivers;");
-      fileReceiver.end();
+          for (let i = 0; i < receiverIdArray.length; i += 1) {            
+            const receive ="INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) RETURNING *";
+            pool
+            .query(receive, [receiverIdArray[i], messageid], (err, res) =>{
+              if (err) console.log(err);
+            });
+          }
+        });
 
-      const messageToReturn = {
-        id: message.id,
-        subject: message.subject,
-        message: message.message,
-        parentMessageId: message.parentMessageId,
-        senderId: sender.id,
-        receiverId: receiver.id,
-        status: message.status,
-        createdOn: message.createdOn
-      };
-      // return group created
-      return res.status(200).send({
-        status: 200,
-        data: [messageToReturn]
-      });
-    } catch (err) {
-      return res.status(400).send({
-        status: 400,
-        error: "Error occured, try again."
-      });
-    }
+    })
+    .catch(e => {
+      console.log(e);
+    })
+
+
+
+    ;
   }
   // send message to a group
   static async sendEmailGroup(req, res){
     res.send("magic will run here...");
   }
+}
+// validate:create user
+function validateEmail(email) {
+  const schema = {
+    subject: Joi.string().min(2).max(60).required(),
+    message: Joi.string().min(3).max(1600).required(),
+    parentmessageid: Joi.number().integer().required(),
+    receiverid: Joi.number().integer().required(),
+    group: Joi.number().integer().required()
+  };
+  return Joi.validate(email, schema);
 }
 
 export default Message;

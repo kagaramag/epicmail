@@ -1,7 +1,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
-// encryption
 // Web token
 import jwt from "jsonwebtoken";
+// encryption
 import bcrypt from "bcrypt";
 // register envirnoment variables
 import dotenv from "dotenv";
@@ -40,10 +40,9 @@ class Auth {
       
      await pool.query(text, values)
       .then(response => {
-        const admin = response.rows[0].isadmin;
         const verify = bcrypt.compare(hash, req.body.password);
         if (verify) {
-          const token = jwt.sign({ user: user.id, admin: admin }, process.env.SECRET );
+          const token = jwt.sign({ user: response.rows[0].id, admin: response.rows[0].isadmin }, process.env.SECRET );
           return res
           .status(ST.CREATED)
           .send({
@@ -89,11 +88,11 @@ class Auth {
     .query(`SELECT * from users where email = $1 LIMIT 1`, [user.email])
     .then(response =>{          
       if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Account not exist'});     
-      const { userId } = response.rows[0].id;      
+ 
       const admin = response.rows[0].isadmin;
       const verify = bcrypt.compare(user.password, response.rows[0].password)
       if(verify){
-        const token = jwt.sign({ user: user.id, admin: admin }, process.env.SECRET );
+        const token = jwt.sign({ user: response.rows[0].id, admin: admin }, process.env.SECRET );
         return res.status(ST.OK).send({status:ST.OK, data: [token]});
       }else{
           return res.status(401).send({

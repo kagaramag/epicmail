@@ -19,13 +19,29 @@ const drop = () => {
   const groupMemberTable = "DROP TABLE IF EXISTS groupMembers CASCADE";
   const smsTable = "DROP TABLE IF EXISTS sms CASCADE";
   const resetCode = "DROP TABLE IF EXISTS resetCode CASCADE";
-  const dropTables = `${usersTable};${messagesTable};${inboxTable};${sentTable};${sentTable};${groupsTable};${groupMemberTable};${smsTable};${resetCode}`;
+  const dropTables = `${usersTable};${messagesTable};${inboxTable};${sentTable};${groupsTable};${groupMemberTable};${smsTable};${resetCode}`;
 
   pool.query(`${dropTables}`, err => {
     if(err){
       console.log(err);
     } else {
       console.log("All database tables have been dropped successfully!");
+    }
+    pool.end();
+  });
+};
+
+const truncate = () => {
+  const messagesTable = "TRUNCATE table messages restart identity";
+  const inboxTable = "TRUNCATE table inbox restart identity";
+  const sentTable = "TRUNCATE table sent restart identity";
+  const truncateTables = `${messagesTable};${inboxTable};${sentTable};`;
+
+  pool.query(`${truncateTables}`, err => {
+    if(err){
+      console.log(err);
+    } else {
+      console.log("Tables truncated");
     }
     pool.end();
   });
@@ -51,8 +67,7 @@ const create = () => {
     id SERIAL PRIMARY KEY,
     "subject" VARCHAR(50) NOT NULL,
     "message" VARCHAR(1600) NOT NULL,
-    "profile" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
     "parentmessageid" INTEGER DEFAULT 0,
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
@@ -68,7 +83,7 @@ const create = () => {
   const sentTable = `CREATE TABLE IF NOT EXISTS
   sent(
     id SERIAL PRIMARY KEY,
-    "receiverid" INTEGER NOT NULL,
+    "senderid" INTEGER NOT NULL,
     "messageid" INTEGER NOT NULL,
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
@@ -116,7 +131,7 @@ const create = () => {
   });
 };
 
-export { drop, create, pool };
+export { drop, create, truncate, pool };
 
 // eslint-disable-next-line eol-last
 require("make-runnable/custom")({
