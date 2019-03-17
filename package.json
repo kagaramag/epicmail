@@ -9,6 +9,7 @@
     "dev": "SET NODE_ENV=test && nodemon --exec babel-node  server/server.js",
     "coveralls": "SET NODE_ENV=test && npm test && nyc report --reporter=text-lcov | coveralls",
     "db:create": "npm run db:drop && babel-node ./server/migrations/index.js create",
+    "db:truncate": "babel-node ./server/migrations/index.js truncate",
     "db:drop": "SET NODE_ENV=dev && babel-node ./server/migrations/index.js drop"
   },
   "repository": {
