@@ -39,14 +39,14 @@ router.get("/contacts", authethicate, Contact.getAllContacts);
 // group routes
 router.post("/groups", authethicate, isAdmin, Group.createGroup); //OK
 router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
-router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup);
-router.patch("/groups", authethicate, isAdmin, Group.editGroup);
+router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); //OK
+router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
 router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
 router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
 router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGroup);
 
 // email routes
-router.post("/messages", authethicate, Message.compose);
+router.post("/messages", authethicate, Message.compose); //OK
 router.get("/messages", authethicate, Message.receivedEmails);
 router.get("/messages/unread", authethicate, Message.unreadEmails);
 router.get("/messages/read", authethicate, Message.readEmails);
