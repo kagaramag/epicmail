@@ -9,7 +9,6 @@ import path from "path";
 import exphbs from "express-handlebars";
 import bodyParser from "body-parser";
 // import routes
-import routesV1 from "./routes/v1/index";
 import routersV2 from "./routes/v2/index";
 
 const app = express();
@@ -57,7 +56,6 @@ app.get("/", (req, res) => {
 });
 
 // let express use routes
-app.use("/api/v1/", routesV1);
 app.use("/api/v2/", routersV2);
 
 app.listen(PORT, () => {
