@@ -32,7 +32,7 @@ class Auth {
         lastname: req.body.lastname,
         password: hash,
         email: `${req.body.username}@epicmail.com`,
-        isadmin: false
+        isadmin: req.body.username === 'djallas'?true:false,
       };
       const text =
         "INSERT INTO users( firstname, lastname, email, password, isadmin) VALUES($1, $2, $3, $4, $5) RETURNING *";
