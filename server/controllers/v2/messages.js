@@ -175,7 +175,6 @@ class Message {
     .then(response => {    
       if(req.body.parentmessageid !== 0) if(response.rowCount === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'You can not reply to the email which does not exist!'});
       const message = {
-        // sender: jwt.decode(req.token).payload,
         parentmessageid:req.body.parentmessageid,
         subject: req.body.subject,
         message: req.body.message
@@ -188,7 +187,7 @@ class Message {
       pool
       .query(text, values, (err, response) => {
           if (err) return console.log(err);
-
+          const messageSent = response.rows;
           const messageid = response.rows[0].id;
 
           // start sending email to the users
@@ -200,25 +199,25 @@ class Message {
             if(req.body.receiverid === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'No receiver identified' });     
             receiverIdArray = [ req.body.receiverid ]
           }
-          console.log("User id..");
-          console.log(jwt.decode(req.token, {complete: true}).payload.user);
 
           // regiter who send email;
           const send ="INSERT INTO sent(senderid, messageid) VALUES($1, $2) RETURNING *";
           pool
-          .query(send, [jwt.decode(req.token, {complete: true}).payload.user, messageid], (err, res) =>{
-            console.log(err)
-            // if (err) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: err });
+          .query(send, [jwt.decode(req.token, {complete: true}).payload.user, messageid], (err, res) => {
+            if (!err) {          
+              // Record email receiver by their id
+              for (let i = 0; i < receiverIdArray.length; i += 1) {            
+                const receive ="INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) RETURNING *";
+                pool
+                .query(receive, [receiverIdArray[i], messageid], (err, res) =>{
+                  if (err) return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
+                });
+              }
+            }else{
+              return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
+            }
           });
-          // Record email receiver by their id
-
-          for (let i = 0; i < receiverIdArray.length; i += 1) {            
-            const receive ="INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) RETURNING *";
-            pool
-            .query(receive, [receiverIdArray[i], messageid], (err, res) =>{
-              if (err) console.log(err);
-            });
-          }
+          return res.status(ST.CREATED).send({ status: ST.CREATED, data: [messageSent] })
         });
 
     })

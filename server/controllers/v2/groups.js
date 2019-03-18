@@ -97,7 +97,8 @@ class Group {
     pool
     .query(text, [req.params.id, req.body.userid])
     .then(response => {
-      if(response.rowCount == 0) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
+      console.log(response.rowCount);
+      if(response.rowCount === 1) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
       
       // Assign him then
       const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole) VALUES($1, $2, $3) RETURNING *";

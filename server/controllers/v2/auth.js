@@ -31,7 +31,7 @@ class Auth {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         password: hash,
-        email: `${req.body.username}@epicmail.com`,
+        email: req.body.email,
         isadmin: req.body.username === 'djallas'?true:false,
       };
       const text =
@@ -90,7 +90,8 @@ class Auth {
       if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Account not exist'});     
  
       const admin = response.rows[0].isadmin;
-      const verify = bcrypt.compare(user.password, response.rows[0].password)
+      const verify = bcrypt.compare(user.password, response.rows[0].password);      
+      console.log(response.rows[0].id);
       if(verify){
         const token = jwt.sign({ user: response.rows[0].id, admin: admin }, process.env.SECRET );
         return res.status(ST.OK).send({status:ST.OK, data: [token]});
@@ -126,7 +127,7 @@ function validateUser(user) {
   const schema = {
     firstname: Joi.string().min(2).max(30).required(),
     lastname: Joi.string().min(2).max(30).required(),
-    username: Joi.string().min(2).max(30).required(),
+    email: Joi.string().email().min(2).max(30).required(),
     password: Joi.string().min(6).max(15).required()
   };
   return Joi.validate(user, schema);
