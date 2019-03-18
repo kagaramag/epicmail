@@ -8,9 +8,7 @@ dotenv.config();
 const isAdmin = (req, res, next) =>{ 
   if(req.token){
     // get the decoded payload and header
-    console.log(req.token);
     var decoded = jwt.decode(req.token, {complete: true});
-    console.log(decoded.payload);
     if (decoded.payload.admin) {
       next();
     } else {

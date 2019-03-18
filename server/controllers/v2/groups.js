@@ -84,11 +84,60 @@ class Group {
   }
   // assign user to group
   static async assignUserGroup(req, res){
-    res.send("magic will run here...")
+    // validate group   
+    const { error } = validateUserAssignGroup(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+
+    // check if user exist in group
+    const text = `SELECT * from groupmembers where userid = $1 AND groupid = $2`;
+    const groupid = req.params.id;
+    pool
+    .query(text, [req.params.id, req.body.userid])
+    .then(response => {
+      if(response.rowCount == 0) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
+      
+      // Assign him then
+      const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole) VALUES($1, $2, $3) RETURNING *";
+      pool
+      .query(userInfo, [groupid, req.body.userid, req.body.userrole])
+      .then(response => {
+        // retrieve users from this group
+        pool
+        .query('SELECT * from groupmembers WHERE groupid = $1', [groupid])
+        .then(response => {
+          return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows});
+        })
+        .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while retrieving group members. '}))
+        
+      })
+      .catch(e => {
+        if(e.routine === 'ri_ReportViolation') return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'Sorry, group or user does not exist'});     
+        return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while assigning the user to the group, contact the adminstrator '});
+      })
+
+    })
+    .catch(e => {
+      res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: "Something went wrong, try again later " })
+    });
   }
   // assign user to group
   static async editGroup(req, res){
-    res.send("magic will run here...")
+    // validate group   
+    const { error } = validateEditGroup(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+    
+    // update group name
+    pool
+    .query("UPDATE groups SET name = $1 WHERE id = $2", [req.body.name, req.params.id])
+    .then(response => res.status(ST.OK).send({ status: ST.OK, data: [response.rows ] }))
+    .catch(e => console.log(e))
+
   }
   // assign user to group
   static async deleteGroup(req, res){
@@ -109,5 +158,19 @@ function validateGroup(group) {
   };
   return Joi.validate(group, schema);
 }
-
+// validate validateUserAssignGroup
+function validateEditGroup(group) {
+  const schema = {
+    name: Joi.string().min(2).max(60).required()
+  };
+  return Joi.validate(group, schema);
+}
+// validate validateUserAssignGroup
+function validateUserAssignGroup(user) {
+  const schema = {
+    userid: Joi.number().integer().required(),
+    userrole: Joi.string().min(2).max(60).required()
+  };
+  return Joi.validate(user, schema);
+}
 export default Group;

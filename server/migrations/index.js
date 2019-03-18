@@ -99,8 +99,11 @@ const create = () => {
   groupMembers(
     id SERIAL PRIMARY KEY,
     "userid" INTEGER NOT NULL,
+    "groupid" INTEGER NOT NULL,
     "userrole" VARCHAR(60) NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_groupid FOREIGN KEY (groupid) REFERENCES groups (id),
+    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id)
   )`;
   // SMS table
   const smsTable = `CREATE TABLE IF NOT EXISTS
