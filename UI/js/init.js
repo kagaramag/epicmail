@@ -16,7 +16,7 @@ $(document).ready(function(){
    
 
    // sidebar nav
-   $('.sidebar').append('<li><div class="center-align"><img src="images/logo.svg" style="width:98%;max-width:200px" alt="EPICMAIL"></div></li>'
+   $('.sidebar').append('<li><div class="center-align"><a href="./inbox.html"><img src="images/logo.svg" style="width:98%;max-width:200px" alt="EPICMAIL"></a></div></li>'
    // +'<li class="center-align "><a class="btn-compose white radius-5" href="#"><span class="fas fa-plus"></span> Compose</a></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
    +'<li><a class="text-grey" href="inbox.html"> <span class="fas fa-inbox"></span> <span class="menulink">Inbox</a></span></li>'
