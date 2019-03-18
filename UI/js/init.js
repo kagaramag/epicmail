@@ -19,15 +19,15 @@ $(document).ready(function(){
    $('.sidebar').append('<li><div class="center-align"><img src="images/logo.svg" style="width:98%;max-width:200px" alt="EPICMAIL"></div></li>'
    // +'<li class="center-align "><a class="btn-compose white radius-5" href="#"><span class="fas fa-plus"></span> Compose</a></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
-   +'<li><a class="text-grey" href="inbox.html"> <span class="fas fa-inbox"></span> Inbox</a></li>'
-   +'<li><a class="text-grey" href="sent.html"> <span class="fas fa-location-arrow"></span> Sent</a></li>'
-   +'<li><a class="text-grey" href="draft.html"> <span class="fas fa-sticky-note"></span> Drafts</a></li>'
+   +'<li><a class="text-grey" href="inbox.html"> <span class="fas fa-inbox"></span> <span class="menulink">Inbox</a></span></li>'
+   +'<li><a class="text-grey" href="sent.html"> <span class="fas fa-location-arrow"></span> <span class="menulink"> Sent</span></a></li>'
+   +'<li><a class="text-grey" href="draft.html"> <span class="fas fa-sticky-note"></span> <span class="menulink"> Drafts</a></span></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
-   +'<li><a class="text-grey" href="users.html"> <span class="fas fa-user-friends"></span> Users</a></li>'
-   +'<li><a class="text-grey" href="groups.html"> <span class="fas fa-users"></span> Groups</a></li>'
+   +'<li><a class="text-grey" href="users.html"> <span class="fas fa-user-friends"></span> <span class="menulink"> Users</span></a></li>'
+   +'<li><a class="text-grey" href="groups.html"> <span class="fas fa-users"></span> <span class="menulink"> Groups</span></a></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
-   +'<li><a class="text-grey" href="me.html"> <span class="fas fa-user"></span> Profile</a></li>'
-   +'<li><a class="text-grey" href="#" onclick="logout();"> <span class="fas fa-sign-out-alt"></span> Logout</a></li>'
+   +'<li><a class="text-grey" href="me.html"> <span class="fas fa-user"></span> <span class="menulink"> Profile</span></a></li>'
+   +'<li class="logout"><a class="text-grey" href="#" onclick="logout();"> <span class="fas fa-sign-out-alt"></span> <span class="menulink"> Logout</span></a></li>'
    )
 
    // footer nav

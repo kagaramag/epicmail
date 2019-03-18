@@ -10,7 +10,7 @@ $(function(){
             window.location.href = "inbox.html";            
          }, 2500);
       }else{
-         message("Username or passowrd incorred, try again!",'error');
+         message("Incorrect username or passowrd, try again!",'error');
       }      
    });
 })
