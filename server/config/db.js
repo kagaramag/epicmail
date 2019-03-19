@@ -3,7 +3,7 @@ require('dotenv').config();
 
 // initiate config
 let config;
-if(process.env.NODE_ENV === 'production'){  
+if(process.env.DATABASE_URL){  
   const url = require('url');
   const params = url.parse(process.env.DATABASE_URL);
   const auth = params.auth.split(':');
