@@ -11,44 +11,28 @@ import pool from "../../config/db";
 class Message {
   // list of received emails
   static async receivedEmails(req, res) {
-    if (messages) {
-      const emails = messages.filter(message => {
-        if (message.status === "unread" || message.status === "read") {
-          return message;
-        }
-      });  
-      // console.log(emails);    
-      return await res.status(200).send({
-        status: 200,
-        data: emails
-      });
-    } else {
-      return await res.status(404).send({
-        status: 404,
-        error: "Sorry, No emails found"
-      });
-    }
+    pool
+    .query(`SELECT * from messages where id = $1`, [jwt.decode(req.token, {complete: true}).payload.user])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages yet'});
+
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => console.log(e));
   }
 
   // list of unread messages
   static async unreadEmails(req, res) {
-    if (messages) {
-      let emails = messages.filter(message => {
-        if (message.status === "unread") {
-          return message;
-        }
-      });
-      // console.log(emails);
-      return await res.status(200).send({
-        status: 200,
-        data: emails
-      });
-    } else {
-      return await res.status(404).send({
-        status: 404,
-        error: "Sorry, No emails found"
-      });
-    }
+    pool
+    .query(`SELECT * from messages where id = $1 and state = 'unread'`, [jwt.decode(req.token, {complete: true}).payload.user])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No unread messages'});
+
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => console.log(e));
   }
 
   // list of read messages
@@ -173,14 +157,13 @@ class Message {
     pool
     .query(`SELECT * from messages where id = $1 LIMIT 1`, [req.body.parentmessageid])
     .then(response => {    
-      if(req.body.parentmessageid !== 0) if(response.rowCount === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'You can not reply to the email which does not exist!'});
+      if(req.body.parentmessageid !== 0 && response.rowCount === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'You can not reply to the email which does not exist!'});
       const message = {
         parentmessageid:req.body.parentmessageid,
         subject: req.body.subject,
         message: req.body.message
       }
       // save email first
-         // check message status
       const text ="INSERT INTO messages(subject, message, status, parentmessageid) VALUES($1, $2, $3, $4) RETURNING *";
       const values = [message.subject, message.message, 'sent', message.parentmessageid];
       
@@ -189,7 +172,6 @@ class Message {
           if (err) return console.log(err);
           const messageSent = response.rows;
           const messageid = response.rows[0].id;
-
           // start sending email to the users
           let receiverIdArray = [];
           if(req.body.group !== 0){
@@ -199,7 +181,8 @@ class Message {
             if(req.body.receiverid === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'No receiver identified' });     
             receiverIdArray = [ req.body.receiverid ]
           }
-
+          
+          if(!jwt.decode(req.token, {complete: true}).payload.user) res.status(ST.UNAUTHORIZED).send({ status: ST.UNAUTHORIZED, error: "Errow occured, try again" })
           // regiter who send email;
           const send ="INSERT INTO sent(senderid, messageid) VALUES($1, $2) RETURNING *";
           pool
@@ -210,14 +193,14 @@ class Message {
                 const receive ="INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) RETURNING *";
                 pool
                 .query(receive, [receiverIdArray[i], messageid], (err, res) =>{
-                  if (err) return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
+                  if (err) res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
                 });
               }
             }else{
-              return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
+             res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
             }
           });
-          return res.status(ST.CREATED).send({ status: ST.CREATED, data: [messageSent] })
+          return res.status(ST.CREATED).send({ status: ST.CREATED, data: messageSent })
         });
 
     })
