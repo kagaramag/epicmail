@@ -12,14 +12,14 @@ class Message {
   // list of received emails
   static async receivedEmails(req, res) {
     pool
-    .query(`SELECT * from messages where id = $1`, [jwt.decode(req.token, {complete: true}).payload.user])
+    .query(`SELECT * from messages WHERE receiverid = $1`, [jwt.decode(req.token, {complete: true}).payload.user])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages yet'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => res.status(ST.OK).send({status: ST.OK, data: response.rows }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
   }
 
   // list of unread messages
@@ -58,45 +58,17 @@ class Message {
 
   // list of sent emails
   static async sentEmails(req, res) {
-    if (messages) {
-      let emails = messages.filter(message => {
-        if (message.status === "sent") {
-          return message;
-        }
-      });
-      // console.log(emails);
-      return await res.status(200).send({
-        status: 200,
-        data: emails
-      });
-    } else {
-      return await res.status(404).send({
-        status: 404,
-        error: "Sorry, No email found"
-      });
-    }
+    pool
+    .query(`SELECT * from messages WHERE senderid = $1 AND status != 'draft'`, [jwt.decode(req.token, {complete: true}).payload.user])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages sent yet'});
+
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
   }
 
-  // list of sent emails
-  static async draftEmails(req, res) {
-    if (messages) {
-      let emails = messages.filter(message => {
-        if (message.status === "draft") {
-          return message;
-        }
-      });
-      // console.log(emails);
-      return await res.status(200).send({
-        status: 200,
-        data: emails
-      });
-    } else {
-      return await res.status(404).send({
-        status: 404,
-        error: "Sorry, No email found"
-      });
-    }
-  }
   // Delete an email
   static async deleteEmail(req, res) {
     // find email message
@@ -129,25 +101,21 @@ class Message {
   // Delete an email
   static async specificEmail(req, res) {
     // find email message
-    const id = parseInt(req.params.id);
-    let message = messages.find(item => item.id === id);
-    if (!message) {
-      return res.status(409).send({
-        status: 409,
-        error: "The requested email doesn't not exit"
-      });
-    } else {
-      return res.status(201).send({
-        status: 201,
-        data: [message]
-      });
-    }
+    pool
+    .query(`SELECT * from messages WHERE id = $1`, [req.params.id])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'The message is not found'});
+
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
   }
 
-  // compose email
+  // compose message
   static async compose(req, res, next) {
-    // validate email   
-    const { error } = validateEmail(req.body);
+    // validate message   
+    const { error } = validateMessage(req.body);
     if (error)
       return res
         .status(ST.BAD_REQUEST)
@@ -168,24 +136,61 @@ class Message {
       pool
       .query(query, values)
       .then(response => {  
-        if(response.rowCount === 1 ) return res.status(ST.OK).send({status: ST.ok, data: [ response.rows ] });
+        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: [ response.rows ] });
       })
       .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e }));
   }
+  // Draft message
+  static async draft(req, res, next) {
+    // validate email   
+    const { error } = validateDraft(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
+    // check parent message
+     const message = {
+        subject: req.body.subject,
+        message: req.body.message,
+        senderid: jwt.decode(req.token, {complete: true}).payload.user
+      }
+      // save email first
+      const query ="INSERT INTO messages(subject, message, senderid, status) VALUES($1, $2, $3, $4) RETURNING *";
+      const values = [message.subject, message.message, message.senderid, 'draft'];
+      
+      pool
+      .query(query, values)
+      .then(response => {  
+        console.log(response)
+        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: [ response.rows ] });
+        
+      })
+      .catch(e => {
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e })
+      });
+  }
   // send message to a group
   static async sendEmailGroup(req, res){
     res.send("magic will run here...");
   }
 }
-// validate:create user
-function validateEmail(email) {
+// validate:message
+function validateMessage(email) {
   const schema = {
     subject: Joi.string().min(2).max(60).required(),
     message: Joi.string().min(3).max(1600).required(),
     parentmessageid: Joi.number().integer().required(),
     receiverid: Joi.number().integer().required(),
     groupid: Joi.number().integer()
+  };
+  return Joi.validate(email, schema);
+}
+// validate:draft
+function validateDraft(email) {
+  const schema = {
+    subject: Joi.string().min(2).max(60).required(),
+    message: Joi.string().min(3).max(1600).required()
   };
   return Joi.validate(email, schema);
 }
