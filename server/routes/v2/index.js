@@ -25,13 +25,14 @@ import swaggerDocument from "../../swagger/v2/swagger.json";
 const router = Router();
 
 // users routes
-router.get("/users", authethicate, isAdmin, Users.getAllUsers); //OK
+router.get("/users", authethicate, isAdmin, Users.all); //OK
 router.post("/auth/signup", Auth.signup); //OK
 router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
 router.post("/auth/verify", Auth.verify);
 router.put("/auth/new-passowrd", Auth.newPassword);
-router.put("/profile", authethicate, Auth.updateProfile);
+router.put("/profile", authethicate, Users.updateProfile);
+router.get("/profile", authethicate, Users.me);
 
 // contact routes
 router.get("/contacts", authethicate, Contact.getAllContacts);
