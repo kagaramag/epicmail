@@ -1,9 +1,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import pg from "pg";
 
-const pool = new pg.Pool({
-  connectionString: "postgres://gilles:123123@localhost:5432/epicdev"
-});
+import pool from "../config/db";
 
 // Conect database
 pool.on("connect",(err, res) => {
