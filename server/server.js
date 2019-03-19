@@ -23,7 +23,6 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 3000;
 
-console.log("yes")
 const hbs = exphbs.create();
 app.set("views", path.join(__dirname, "views"));
 

@@ -31,8 +31,7 @@ class Auth {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         password: hash,
-        email: req.body.email,
-        isadmin: req.body.username === 'djallas'?true:false,
+        email: req.body.email
       };
       const text =
         "INSERT INTO users( firstname, lastname, email, password, isadmin) VALUES($1, $2, $3, $4, $5) RETURNING *";

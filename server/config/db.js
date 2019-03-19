@@ -44,6 +44,5 @@ if(process.env.DATABASE_URL){
     ssl: false
   };
 }
-// console.log(config);
 const pool = new Pool(config);
 export default pool;

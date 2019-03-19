@@ -19,7 +19,7 @@ class Message {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => console.log(e));
+    .catch(e => res.status(ST.OK).send({status: ST.OK, data: response.rows }));
   }
 
   // list of unread messages
@@ -147,71 +147,36 @@ class Message {
   // compose email
   static async compose(req, res, next) {
     // validate email   
-    const { error } = validateEmail(req.body);
-    if (error)
-      return res
-        .status(ST.BAD_REQUEST)
-        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+    // const { error } = validateEmail(req.body);
+    // if (error)
+    //   return res
+    //     .status(ST.BAD_REQUEST)
+    //     .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
     // check parent message
-    pool
-    .query(`SELECT * from messages where id = $1 LIMIT 1`, [req.body.parentmessageid])
-    .then(response => {    
-      if(req.body.parentmessageid !== 0 && response.rowCount === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'You can not reply to the email which does not exist!'});
-      const message = {
-        parentmessageid:req.body.parentmessageid,
+      console.log(req.body);
+     const message = {
+        parentmessageid: req.body.parentmessageid,
         subject: req.body.subject,
-        message: req.body.message
+        message: req.body.message,
+        senderid: req.body.senderid,
+        receiverid: req.body.receiverid,
+        groupid: req.body.groupid
       }
+      console.log(req.body);
       // save email first
-      const text ="INSERT INTO messages(subject, message, status, parentmessageid) VALUES($1, $2, $3, $4) RETURNING *";
-      const values = [message.subject, message.message, 'sent', message.parentmessageid];
+    //   const text ="INSERT INTO messages(subject, message, status, senderid, receiverid, groupid, parentmessageid) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+    //   const values = [message.subject, message.message, 'sent', message.senderid, message.receiverid, message.groupid, message.parentmessageid];
       
-      pool
-      .query(text, values, (err, response) => {
-          if (err) return console.log(err);
-          const messageSent = response.rows;
-          const messageid = response.rows[0].id;
-          // start sending email to the users
-          let receiverIdArray = [];
-          if(req.body.group !== 0){
-            // create array of users from group
-            receiverIdArray = [2, 5]
-          }else{
-            if(req.body.receiverid === 0) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'No receiver identified' });     
-            receiverIdArray = [ req.body.receiverid ]
-          }
-          
-          if(!jwt.decode(req.token, {complete: true}).payload.user) res.status(ST.UNAUTHORIZED).send({ status: ST.UNAUTHORIZED, error: "Errow occured, try again" })
-          // regiter who send email;
-          const send ="INSERT INTO sent(senderid, messageid) VALUES($1, $2) RETURNING *";
-          pool
-          .query(send, [jwt.decode(req.token, {complete: true}).payload.user, messageid], (err, res) => {
-            if (!err) {          
-              // Record email receiver by their id
-              for (let i = 0; i < receiverIdArray.length; i += 1) {            
-                const receive ="INSERT INTO inbox(receiverid, messageid) VALUES($1, $2) RETURNING *";
-                pool
-                .query(receive, [receiverIdArray[i], messageid], (err, res) =>{
-                  if (err) res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
-                });
-              }
-            }else{
-             res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong, try again' });
-            }
-          });
-          return res.status(ST.CREATED).send({ status: ST.CREATED, data: messageSent })
-        });
-
-    })
-    .catch(e => {
-      console.log(e);
-    })
-
-
-
-    ;
+    //   pool
+    //   .query(text, values, (err, response) => {
+    //     console.log(response.rows)
+    //   })
+    // .catch(e => {
+    //   console.log(e);
+    // })
   }
+
   // send message to a group
   static async sendEmailGroup(req, res){
     res.send("magic will run here...");
@@ -223,8 +188,7 @@ function validateEmail(email) {
     subject: Joi.string().min(2).max(60).required(),
     message: Joi.string().min(3).max(1600).required(),
     parentmessageid: Joi.number().integer().required(),
-    receiverid: Joi.number().integer().required(),
-    group: Joi.number().integer().required()
+    receiverid: Joi.number().integer().required()
   };
   return Joi.validate(email, schema);
 }
