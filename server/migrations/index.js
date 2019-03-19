@@ -66,24 +66,12 @@ const create = () => {
     "subject" VARCHAR(50) NOT NULL,
     "message" VARCHAR(1600) NOT NULL,
     "status" TEXT NOT NULL,
-    "parentmessageid" INTEGER DEFAULT 0,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )`;
-  // inbox table
-  const inboxTable = `CREATE TABLE IF NOT EXISTS
-  inbox(
-    id SERIAL PRIMARY KEY,
-    "receiverid" INTEGER NOT NULL,
-    "messageid" INTEGER NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )`;
-  // sent table
-  const sentTable = `CREATE TABLE IF NOT EXISTS
-  sent(
-    id SERIAL PRIMARY KEY,
     "senderid" INTEGER NOT NULL,
-    "messageid" INTEGER NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "receiverid" INTEGER NOT NULL,
+    "groupid" INTEGER NULL,
+    "parentmessageid" INTEGER DEFAULT 0,
+    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id),
   )`;
   // group table
   const groupTable = `CREATE TABLE IF NOT EXISTS
@@ -121,7 +109,7 @@ const create = () => {
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
 
-  const migrationQueries = `${usersTable};${messagesTable};${smsTable};${inboxTable};${sentTable};${groupTable};${groupMembersTable};${resetCodeTable}`;
+  const migrationQueries = `${usersTable};${messagesTable};${smsTable};${groupTable};${groupMembersTable};${resetCodeTable}`;
   pool.query(`${migrationQueries}`, (err, res) => {
     if (err) {
       console.log(err);
