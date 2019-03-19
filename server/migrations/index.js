@@ -11,13 +11,11 @@ pool.on("connect",(err, res) => {
 const drop = () => {
   const usersTable = "DROP TABLE IF EXISTS users CASCADE";
   const messagesTable = "DROP TABLE IF EXISTS messages CASCADE";
-  const inboxTable = "DROP TABLE IF EXISTS inbox CASCADE";
-  const sentTable = "DROP TABLE IF EXISTS sent CASCADE";
   const groupsTable = "DROP TABLE IF EXISTS groups CASCADE";
   const groupMemberTable = "DROP TABLE IF EXISTS groupMembers CASCADE";
   const smsTable = "DROP TABLE IF EXISTS sms CASCADE";
   const resetCode = "DROP TABLE IF EXISTS resetCode CASCADE";
-  const dropTables = `${usersTable};${messagesTable};${inboxTable};${sentTable};${groupsTable};${groupMemberTable};${smsTable};${resetCode}`;
+  const dropTables = `${usersTable};${messagesTable};${groupsTable};${groupMemberTable};${smsTable};${resetCode}`;
 
   pool.query(`${dropTables}`, err => {
     if(err){
@@ -31,9 +29,7 @@ const drop = () => {
 
 const truncate = () => {
   const messagesTable = "TRUNCATE table messages restart identity";
-  const inboxTable = "TRUNCATE table inbox restart identity";
-  const sentTable = "TRUNCATE table sent restart identity";
-  const truncateTables = `${messagesTable};${inboxTable};${sentTable};`;
+  const truncateTables = `${messagesTable};`;
 
   pool.query(`${truncateTables}`, err => {
     if(err){
@@ -65,25 +61,13 @@ const create = () => {
     id SERIAL PRIMARY KEY,
     "subject" VARCHAR(50) NOT NULL,
     "message" VARCHAR(1600) NOT NULL,
-    "status" TEXT NOT NULL,
-    "parentmessageid" INTEGER DEFAULT 0,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )`;
-  // inbox table
-  const inboxTable = `CREATE TABLE IF NOT EXISTS
-  inbox(
-    id SERIAL PRIMARY KEY,
-    "receiverid" INTEGER NOT NULL,
-    "messageid" INTEGER NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  )`;
-  // sent table
-  const sentTable = `CREATE TABLE IF NOT EXISTS
-  sent(
-    id SERIAL PRIMARY KEY,
+    "status" TEXT NULL,
     "senderid" INTEGER NOT NULL,
-    "messageid" INTEGER NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "receiverid" INTEGER NOT NULL,
+    "groupid" INTEGER NULL,
+    "parentmessageid" INTEGER DEFAULT 0,
+    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_senderid FOREIGN KEY (senderid) REFERENCES users (id)
   )`;
   // group table
   const groupTable = `CREATE TABLE IF NOT EXISTS
@@ -121,7 +105,7 @@ const create = () => {
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
 
-  const migrationQueries = `${usersTable};${messagesTable};${smsTable};${inboxTable};${sentTable};${groupTable};${groupMembersTable};${resetCodeTable}`;
+  const migrationQueries = `${usersTable};${messagesTable};${smsTable};${groupTable};${groupMembersTable};${resetCodeTable}`;
   pool.query(`${migrationQueries}`, (err, res) => {
     if (err) {
       console.log(err);

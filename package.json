@@ -4,13 +4,13 @@
   "description": "EPICMAIL",
   "main": "server.js",
   "scripts": {
-    "test": "nyc --require babel-core/register mocha server/tests/**/*.js --timeout 15000 --exit",
+    "test": "npm run db:create && nyc --require babel-core/register mocha server/tests/**/*.js --timeout 15000 --exit",
     "start": "babel-node server/server.js",
-    "dev": "SET NODE_ENV=dev && nodemon --exec babel-node  server/server.js",
+    "dev": "nodemon --exec babel-node  server/server.js",
     "coveralls": "SET NODE_ENV=test && npm test && nyc report --reporter=text-lcov | coveralls",
     "db:create": "npm run db:drop && babel-node ./server/migrations/index.js create",
     "db:truncate": "babel-node ./server/migrations/index.js truncate",
-    "db:drop": "SET NODE_ENV=dev && babel-node ./server/migrations/index.js drop"
+    "db:drop": "babel-node ./server/migrations/index.js drop"
   },
   "repository": {
     "type": "git",
