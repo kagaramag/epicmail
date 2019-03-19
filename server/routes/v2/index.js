@@ -47,10 +47,11 @@ router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGrou
 
 // email routes
 router.post("/messages", authethicate, Message.compose); //OK
-router.get("/messages", authethicate, Message.receivedEmails);
+router.post("/messages/draft", authethicate, Message.draft); //OK
+router.get("/messages", authethicate, Message.receivedEmails); //OK
 router.get("/messages/unread", authethicate, Message.unreadEmails);
-router.get("/messages/read", authethicate, Message.readEmails);
-router.get("/messages/sent", authethicate, Message.sentEmails);
+router.get("/messages/read", authethicate, Message.readEmails); 
+router.get("/messages/sent", authethicate, Message.sentEmails); //OK
 router.delete("/messages/:id", authethicate, Message.deleteEmail);
 router.get("/messages/:id", authethicate, Message.specificEmail);
 

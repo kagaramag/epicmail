@@ -1,4 +1,5 @@
 /* eslint linebreak-style: ["error", "windows"] */
+
 // Web token
 import jwt from "jsonwebtoken";
 // encryption
@@ -14,7 +15,7 @@ import pool from "../../config/db";
 dotenv.config();
 
 class Auth {
-  static async signup(req, res) {    
+  static async signup(req, res) {  
     // validate inputs    
     const { error } = validateUser(req.body);
     if (error)

@@ -62,12 +62,13 @@ const create = () => {
     "subject" VARCHAR(50) NOT NULL,
     "message" VARCHAR(1600) NOT NULL,
     "status" TEXT NULL,
-    "senderid" INTEGER NOT NULL,
-    "receiverid" INTEGER NOT NULL,
+    "senderid" INTEGER NULL,
+    "receiverid" INTEGER NULL,
     "groupid" INTEGER NULL,
     "parentmessageid" INTEGER DEFAULT 0,
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_senderid FOREIGN KEY (senderid) REFERENCES users (id)
+    CONSTRAINT fk_senderid FOREIGN KEY (senderid) REFERENCES users (id),
+    CONSTRAINT fk_receiverid FOREIGN KEY (receiverid) REFERENCES users (id)
   )`;
   // group table
   const groupTable = `CREATE TABLE IF NOT EXISTS
