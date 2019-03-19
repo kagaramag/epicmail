@@ -147,34 +147,30 @@ class Message {
   // compose email
   static async compose(req, res, next) {
     // validate email   
-    // const { error } = validateEmail(req.body);
-    // if (error)
-    //   return res
-    //     .status(ST.BAD_REQUEST)
-    //     .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+    const { error } = validateEmail(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
     // check parent message
-      console.log(req.body);
      const message = {
         parentmessageid: req.body.parentmessageid,
         subject: req.body.subject,
         message: req.body.message,
-        senderid: req.body.senderid,
-        receiverid: req.body.receiverid,
-        groupid: req.body.groupid
+        senderid: jwt.decode(req.token, {complete: true}).payload.user,
+        receiverid: req.body.receiverid
       }
-      console.log(req.body);
       // save email first
-    //   const text ="INSERT INTO messages(subject, message, status, senderid, receiverid, groupid, parentmessageid) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *";
-    //   const values = [message.subject, message.message, 'sent', message.senderid, message.receiverid, message.groupid, message.parentmessageid];
+      const query ="INSERT INTO messages(subject, message, status, senderid, receiverid, parentmessageid) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+      const values = [message.subject, message.message, 'sent', message.senderid, message.receiverid, message.parentmessageid];
       
-    //   pool
-    //   .query(text, values, (err, response) => {
-    //     console.log(response.rows)
-    //   })
-    // .catch(e => {
-    //   console.log(e);
-    // })
+      pool
+      .query(query, values)
+      .then(response => {  
+        if(response.rowCount === 1 ) return res.status(ST.OK).send({status: ST.ok, data: [ response.rows ] });
+      })
+      .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e }));
   }
 
   // send message to a group
@@ -188,7 +184,8 @@ function validateEmail(email) {
     subject: Joi.string().min(2).max(60).required(),
     message: Joi.string().min(3).max(1600).required(),
     parentmessageid: Joi.number().integer().required(),
-    receiverid: Joi.number().integer().required()
+    receiverid: Joi.number().integer().required(),
+    groupid: Joi.number().integer()
   };
   return Joi.validate(email, schema);
 }
