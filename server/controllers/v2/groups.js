@@ -135,19 +135,21 @@ class Group {
     
     // update group name
     pool
-    .query("UPDATE groups SET name = $1 WHERE id = $2", [req.body.name, req.params.id])
-    .then(response => res.status(ST.OK).send({ status: ST.OK, data: [response.rows ] }))
-    .catch(e => console.log(e))
+    .query("UPDATE groups SET name = $1 WHERE id = $2 RETURNING *", [req.body.name, req.params.id])
+    .then(response => {
+      res.status(ST.OK).send({ status: ST.OK, data: response.rows[0]  })
+    })
+    .catch(e => res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: "Error occured, try again" }))
 
   }
-  // assign user to group
-  static async deleteGroup(req, res){
-    res.send("magic will run here...")
-  }
-  // assign user from group
-  static async deleteUserFromGroup(req, res){
-    res.send("magic will run here...")
-  }
+  // // assign user to group
+  // static async deleteGroup(req, res){
+  //   res.send("magic will run here...")
+  // }
+  // // assign user from group
+  // static async deleteUserFromGroup(req, res){
+  //   res.send("magic will run here...")
+  // }
 }
 // validate groups
 function validateGroup(group) {
