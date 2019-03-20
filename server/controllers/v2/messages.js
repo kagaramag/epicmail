@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 // Status code
 import ST from "../../config/status";
 import pool from "../../config/db";
+import moment from "moment";
 
 class Message {
   // list of received emails
@@ -74,22 +75,21 @@ class Message {
 
     // check parent message
      const message = {
-        parentmessageid: req.body.parentmessageid,
         subject: req.body.subject,
         message: req.body.message,
-        senderid: req.userId,
-        receiverid: req.body.receiverid
+        receiverid: req.body.receiverid,
+        createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       }
       // save email first
-      const query ="INSERT INTO messages(subject, message, status, senderid, receiverid, parentmessageid) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
-      const values = [message.subject, message.message, 'sent', message.senderid, message.receiverid, message.parentmessageid];
+      const query ="INSERT INTO messages(subject, message, status, senderid, receiverid, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+      const values = [message.subject, message.message, 'sent', req.userId, message.receiverid, message.createdon];
       
       pool
       .query(query, values)
       .then(response => {  
-        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: [ response.rows ] });
+        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows });
       })
-      .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e }));
+      .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" }));
   }
   // Draft message
   static async draft(req, res, next) {
@@ -122,16 +122,15 @@ class Message {
       });
   }
   // send message to a group
-  static async sendEmailGroup(req, res){
-    res.send("magic will run here...");
-  }
+  // static async sendEmailGroup(req, res){
+  //   res.send("magic will run here...");
+  // }
 }
 // validate:message
 function validateMessage(email) {
   const schema = {
     subject: Joi.string().min(2).max(60).required(),
     message: Joi.string().min(3).max(1600).required(),
-    parentmessageid: Joi.number().integer().required(),
     receiverid: Joi.number().integer().required(),
     groupid: Joi.number().integer()
   };

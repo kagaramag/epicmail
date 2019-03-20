@@ -37,7 +37,6 @@ class Auth {
         isadmin: true,
         createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       };
-      console.log(user)
       const text =
         "INSERT INTO users( firstname, lastname, email, password, isadmin, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
       const values = [user.firstname, user.lastname, user.email, user.password, user.isadmin, user.createdon];
