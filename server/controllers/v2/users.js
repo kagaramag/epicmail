@@ -19,6 +19,16 @@ class Users {
     })
     .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
   }
+  static updateProfile(req, res) {
+    pool
+    .query(`UPDATE  id, firstname, lastname, email, phone, profile, createdon, isadmin  from users where id = $1`, [req.userId])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+  }
   static all(req, res) {
     pool
     .query(`SELECT id, firstname, lastname, email, phone, profile, createdon, isadmin from users`)

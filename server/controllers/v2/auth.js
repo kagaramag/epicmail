@@ -67,7 +67,7 @@ class Auth {
       }); 
     } catch (err) {
       res.send({
-        message: `Whoochs, Error occured. Try again later`
+        message: `Error occured. Try again later`
       });
     }
   }
@@ -107,18 +107,6 @@ class Auth {
   // request to reset password
   static async reset(req, res){
     res.send("magic will run here...")
-  }
-  // verify your identity to reset your password
-  static async verify(req, res){
-    res.send("magic will run here...");
-  }
-  // set new password
-  static async newPassword(req, res){
-    res.send("magic will run here...");
-  }
-  // Update Profile
-  static async updateProfile(req, res){
-    res.send("magic will run here...");
   }
 }
 // validate:create user
