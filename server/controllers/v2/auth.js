@@ -47,11 +47,7 @@ class Auth {
           .status(ST.CREATED)
           .send({
             status: ST.CREATED,
-            data: [
-              {
-                token: token
-              }
-            ]
+            token
           });
         } else {
           return res.status(ST.BAD_REQUEST).send({
