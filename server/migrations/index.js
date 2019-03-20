@@ -21,7 +21,7 @@ const drop = () => {
     if(err){
       console.log(err);
     } else {
-      console.log("All database tables have been dropped successfully!");
+      console.log("Tables dropped");
     }
     pool.end();
   });

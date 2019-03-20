@@ -32,7 +32,8 @@ class Auth {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         password: hash,
-        email: req.body.email
+        email: req.body.email,
+        isadmin: true
       };
       const text =
         "INSERT INTO users( firstname, lastname, email, password, isadmin) VALUES($1, $2, $3, $4, $5) RETURNING *";
@@ -83,11 +84,10 @@ class Auth {
     pool
     .query(`SELECT * from users where email = $1 LIMIT 1`, [user.email])
     .then(response =>{          
-      if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Account not exist'});     
+      if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Sorry, Incorrect email or passowrd.'});     
  
       const admin = response.rows[0].isadmin;
-      const verify = bcrypt.compare(user.password, response.rows[0].password);      
-      console.log(response.rows[0].id);
+      const verify = bcrypt.compare(user.password, response.rows[0].password);   
       if(verify){
         const token = jwt.sign({ user: response.rows[0].id, admin: admin }, process.env.SECRET );
         return res.status(ST.OK).send({status:ST.OK, data: [token]});

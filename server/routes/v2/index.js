@@ -31,30 +31,30 @@ router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
 router.post("/auth/verify", Auth.verify);
 router.put("/auth/new-passowrd", Auth.newPassword);
-router.put("/profile", authethicate, Users.updateProfile);
-router.get("/profile", authethicate, Users.me);
+// router.put("/profile", authethicate, Users.updateProfile);
+router.get("/profile", authethicate, Users.me); // OK
 
 // contact routes
-router.get("/contacts", authethicate, Contact.getAllContacts);
+// router.get("/contacts", authethicate, Contact.getAllContacts);
 
 // group routes
 router.post("/groups", authethicate, isAdmin, Group.createGroup); //OK
 router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
 router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); //OK
 router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
-router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
-router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
-router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGroup);
+// router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
+// router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
+// router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGroup);
 
 // email routes
 router.post("/messages", authethicate, Message.compose); //OK
 router.post("/messages/draft", authethicate, Message.draft); //OK
 router.get("/messages", authethicate, Message.receivedEmails); //OK
-router.get("/messages/unread", authethicate, Message.unreadEmails);
-router.get("/messages/read", authethicate, Message.readEmails); 
+// router.get("/messages/unread", authethicate, Message.unreadEmails);
+// router.get("/messages/read", authethicate, Message.readEmails); 
 router.get("/messages/sent", authethicate, Message.sentEmails); //OK
-router.delete("/messages/:id", authethicate, Message.deleteEmail);
-router.get("/messages/:id", authethicate, Message.specificEmail);
+// router.delete("/messages/:id", authethicate, Message.deleteEmail);
+router.get("/messages/:id", authethicate, Message.specificEmail); //OK
 
 // Swagger documentation
 router.use("/docs", swaggerUi.serve);
