@@ -14,7 +14,8 @@ import Group from "./../../controllers/v2/groups";
 import Message from "./../../controllers/v2/messages";
 // check authethication
 import authethicate from "./../../middleware/authethicate";
-import isAdmin from './../../middleware/isAdmin'
+import isAdmin from './../../middleware/isAdmin';
+import moment from "moment";
 
 
 // Register Swagger
@@ -29,9 +30,9 @@ router.get("/users", authethicate, isAdmin, Users.all); //OK
 router.post("/auth/signup", Auth.signup); //OK
 router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
-router.post("/auth/verify", Auth.verify);
-router.put("/auth/new-passowrd", Auth.newPassword);
-// router.put("/profile", authethicate, Users.updateProfile);
+// router.post("/auth/verify", Auth.verify);
+// router.put("/auth/new-passowrd", Auth.newPassword);
+router.put("/profile", authethicate, Users.updateProfile);
 router.get("/profile", authethicate, Users.me); // OK
 
 // contact routes

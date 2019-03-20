@@ -79,14 +79,13 @@ describe("User able to create an account ", () => {
       .post("/api/v2/messages")
       .set('Authorization',`Bearer ${authToken}`)
       .send({
-        parentmessageid:0,
         subject: "subject one",
         message: "message one",
-        receiverid:1,
+        receiverid:1
       })
       .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body.status).to.be.equal(201);
+        expect(res).to.have.status(ST.CREATED);
+        expect(res.body.status).to.be.equal(ST.CREATED);
         done(err);
       });
   });
@@ -97,10 +96,9 @@ describe("User able to create an account ", () => {
       .post('/api/v2/messages')
       .set('Authorization', '')
       .send({
-        parentmessageid:0,
         subject: "subject one",
         message: "message one",
-        receiverid:1,
+        receiverid:1
       })
       .end((err, res) => {
         expect(res).to.have.status(ST.NOT_FOUNT);
@@ -116,10 +114,9 @@ describe("User able to create an account ", () => {
       .post('/api/v2/messages')
       .set('Authorization',`Bearer ${authToken}`)
       .send({
-        parentmessageid:0,
         subject: "",
         message: "message one",
-        receiverid:1,
+        receiverid:1
       })
       .end((err, res) => {
         expect(res).to.have.status(ST.BAD_REQUEST);
@@ -135,10 +132,9 @@ describe("User able to create an account ", () => {
       .post('/api/v2/messages')
       .set('Authorization',`Bearer ${authToken}`)
       .send({
-        parentmessageid:0,
-        subject: "Subject one",
+        subject: "subject one",
         message: "",
-        receiverid:1,
+        receiverid:1
       })
       .end((err, res) => {
         expect(res).to.have.status(ST.BAD_REQUEST);
@@ -154,10 +150,9 @@ describe("User able to create an account ", () => {
       .post('/api/v2/messages')
       .set('Authorization',`Bearer ${authToken}`)
       .send({
-        parentmessageid:0,
-        subject: "",
+        subject: "subject one",
         message: "message one",
-        receiverid:"",
+        receiverid:""
       })
       .end((err, res) => {
         expect(res).to.have.status(ST.BAD_REQUEST);

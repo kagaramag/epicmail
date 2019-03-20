@@ -11,6 +11,7 @@ import Joi from "joi";
 // Status code
 import ST from "../../config/status";
 import pool from "../../config/db";
+import moment from "moment";
 
 dotenv.config();
 
@@ -33,11 +34,12 @@ class Auth {
         lastname: req.body.lastname,
         password: hash,
         email: req.body.email,
-        isadmin: true
+        isadmin: true,
+        createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       };
       const text =
-        "INSERT INTO users( firstname, lastname, email, password, isadmin) VALUES($1, $2, $3, $4, $5) RETURNING *";
-      const values = [user.firstname, user.lastname, user.email, user.password, user.isadmin];
+        "INSERT INTO users( firstname, lastname, email, password, isadmin, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+      const values = [user.firstname, user.lastname, user.email, user.password, user.isadmin, user.createdon];
       
      await pool.query(text, values)
       .then(response => {
@@ -64,7 +66,7 @@ class Auth {
       }); 
     } catch (err) {
       res.send({
-        message: `Whoochs, Error occured. Try again later`
+        message: `Error occured. Try again later`
       });
     }
   }
@@ -104,18 +106,6 @@ class Auth {
   // request to reset password
   static async reset(req, res){
     res.send("magic will run here...")
-  }
-  // verify your identity to reset your password
-  static async verify(req, res){
-    res.send("magic will run here...");
-  }
-  // set new password
-  static async newPassword(req, res){
-    res.send("magic will run here...");
-  }
-  // Update Profile
-  static async updateProfile(req, res){
-    res.send("magic will run here...");
   }
 }
 // validate:create user

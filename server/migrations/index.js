@@ -52,7 +52,8 @@ const create = () => {
     "phone" INTEGER UNIQUE NULL,
     "profile" TEXT NULL,
     "password" TEXT NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdon" timestamp without time zone NOT NULL,
+    "updatedat" timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "isadmin" BOOLEAN DEFAULT FALSE
   )`;
   // message table
@@ -66,7 +67,8 @@ const create = () => {
     "receiverid" INTEGER NULL,
     "groupid" INTEGER NULL,
     "parentmessageid" INTEGER DEFAULT 0,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdon" timestamp without time zone NOT NULL,
+    "updatedat" timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_senderid FOREIGN KEY (senderid) REFERENCES users (id),
     CONSTRAINT fk_receiverid FOREIGN KEY (receiverid) REFERENCES users (id)
   )`;
@@ -84,7 +86,8 @@ const create = () => {
     "userid" INTEGER NOT NULL,
     "groupid" INTEGER NOT NULL,
     "userrole" VARCHAR(60) NOT NULL,
-    "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdon" timestamp without time zone NOT NULL,
+    "updatedat" timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_groupid FOREIGN KEY (groupid) REFERENCES groups (id),
     CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id)
   )`;
