@@ -7,7 +7,6 @@ const isAutheticated = (req, res, next) =>{
      const bearer = bearerHeader.split(" ");
      const bearerToken = bearer[1];
      if(!bearerToken || !bearerToken.length){
-       console.log("-- hano --")
       res.status(ST.NOT_FOUNT).send({
         status:ST.NOT_FOUNT,
         error:"Token is not provided"
@@ -18,10 +17,9 @@ const isAutheticated = (req, res, next) =>{
       next();
      }
    } else {
-    console.log("-- na hariya --")
      res.status(ST.UNAUTHORIZED).send({
          status:ST.UNAUTHORIZED,
-         error:"Whoochs, Try to login first!"
+         error: "Sorry, Log in first"
      });
    }
 }

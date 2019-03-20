@@ -84,7 +84,7 @@ class Auth {
     pool
     .query(`SELECT * from users where email = $1 LIMIT 1`, [user.email])
     .then(response =>{          
-      if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Account not exist'});     
+      if(!response.rows || !response.rows[0]) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error:'Sorry, Incorrect email or passowrd.'});     
  
       const admin = response.rows[0].isadmin;
       const verify = bcrypt.compare(user.password, response.rows[0].password);   
