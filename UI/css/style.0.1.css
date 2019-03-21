@@ -100,7 +100,7 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 .sidebar{float: left;position: fixed;overflow:hidden;}
 .sidebar:hover{overflow-y:auto;}
 .mailerContent{float:left;margin:0 0 0 15%;padding-bottom:60px}
-
+.m_sender{padding-top:5px;padding-bottom:5px;}
 /* profile nav */
 .profilenav{list-style-type: none;margin:30px 0;padding:0}
 .profilenav li{padding:15px}
