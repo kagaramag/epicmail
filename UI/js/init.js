@@ -1,4 +1,6 @@
 $(document).ready(function(){
+
+   
    // check document height
    const doc = new function() {
       this.height = $(document).height();

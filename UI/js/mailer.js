@@ -10,9 +10,9 @@ $(function(){
         }, 2000);
          $mailer.append('<div class="onemail">'
          +'<div class="m_profile hide-on-medium hide-on-small"><img src="http://via.placeholder.com/32x32.png?text=A" alt="Profile"></div>'
-         +'<div class="m_sender truncate hoverMailToRead" onclick="readmail('+mail.id+');"><span class="bold">'+mail.fullnames+'<span class="nobold hide-on-large text-grey"> - '+formatDateTime(mail.created_at)+'</span></span><br><span class="m-text text-grey text-darken-2">'+mail.subject+'</span></div>'
+         +'<div class="m_sender truncate hoverMailToRead" onclick="readmail('+mail.id+');"><span class="bold">'+mail.fullnames+'<span class="nobold hide-on-large s-text right text-grey"> - '+formatDateTime(mail.created_at)+'</span></span><br><span class="m-text text-grey text-darken-2">'+mail.subject+'</span></div>'
          // +'<div class="m_subject truncate" onclick="readmail('+mail.id+');">'++'</div>'
-         +'<div class="m_time hide-on-medium hide-on-small">'+formatDateTime(mail.created_at)+'</div>'
+         +'<div class="m_time hide-on-medium right s-text hide-on-small">'+formatDateTime(mail.created_at)+'</div>'
          +'<div class="m_action right-align hide-on-medium hide-on-small">'
          +'<a href="#"><span class="fas fa-trash-alt" title="Delete"></span></a>'
          +'<a href="#"><span class="fas fa-undo-alt" title="Retract"></span></a>'
