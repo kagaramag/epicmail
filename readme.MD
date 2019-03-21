@@ -14,9 +14,9 @@ EPIC Mail is web app that help people to send and receice emails. It uses Twilio
 3. Javascript
 
 
-# User Interface
+# User Interface Mockup
 
-![EPIC MAIL](images/EPICMAILINBOX_UI.png "EPIC MAIL")
+![EPIC MAIL](images/responsive.jpg "EPIC MAIL")
 
 ## How to use UI Framework?
 
