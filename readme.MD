@@ -14,6 +14,9 @@ EPIC Mail is web app that help people to send and receice emails. It uses Twilio
 ### [UI](https://djallas.github.io/epicmail/)
 
 
+# User Interface
+
+![EPIC MAIL](images/responsive.jpg "EPIC MAIL")
 
 # Server
 
@@ -48,27 +51,6 @@ npm start
 
 # Table of API Endpoints
 
-# HTTP Verbs
-
-##API VERSION 1
-
-| Methods | Endpoints | Actions |
-| :----- | :----- | ----- |
-| /GET | / | Welcome message |
-| /GET | /api/v1/docs | Swagger Documentation |
-| /POST | /api/v1/auth/signup | Sign up a new user |
-| /POST | /api/v1/auth/login | Get list of contactsLogin a user |
-| /GET | /api/v1/users | Get list of users |
-| /POST | /api/v1/messages | Send an amail |
-| /GET | /api/v1/messages | Fetch all received emails |
-| /GET | /api/v1/messages/unread | Fetch all unread emails |
-| /GET | /api/v1/messages/sent | Fetch all sent emails |
-| /DELETE | /api/v1/messages/{messageId} | Delete a specific email |
-| /GET | /api/v1/messages/{messageId} | Get a specific email |
-| /POST | /api/v1/groups | Create a group |
-| /GET | /api/v1/groups | Get a list of group |
-| /GET | /api/v1/contacts | Get list of contacts |
-
 
 ##API VERSION 2
 
@@ -88,26 +70,6 @@ npm start
 | /POST | /api/v2/groups | Create a group |
 | /GET | /api/v2/groups | Get a list of group |
 | /GET | /api/v2/contacts | Get list of contacts |
-
-# Validations
-
-The validation helper provide tools to validate inputs
-
-## Import the component
-
-```import Validate from "../helpers/validation";```
-
-## How to use it?
-
-
-```
-checkInputs.push(Validate.string('input_name', pattern, boolean, int, int));
-```
-- **input_name** is the name of your input to be validated
-- **pattern** is the value of what you want to be validated
-- **boolean** is the value to indicated if the field is required or not
-- First **int** indicated the minimum number of pattern characters to be validated
-- Last **int** indicated the maximum number of pattern characters to be validated
 
 
 # Author
