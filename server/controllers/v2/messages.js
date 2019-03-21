@@ -13,7 +13,17 @@ class Message {
   // list of received emails
   static async receivedEmails(req, res) {
     pool
-    .query(`select messages.id, messages.subject, messages.message, messages.status, messages.senderid, messages.receiverid, messages.groupid, messages.parentmessageid, messages.createdon, users.email from messages LEFT JOIN users on users.id = messages.receiverid and messages.receiverid = $1`, [req.userId])
+    .query(`
+    SELECT 
+    messages.id, messages.subject, messages.message, 
+    messages.status, messages.senderid, messages.receiverid, 
+    messages.groupid, messages.parentmessageid, messages.createdon, 
+    users.email 
+    FROM messages 
+    LEFT JOIN users on users.id = messages.receiverid 
+    AND 
+    messages.receiverid = $1
+    `, [req.userId])
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
 
@@ -33,7 +43,7 @@ class Message {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => console.log(e));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Something went wrong, try again" }));
   }
 
 
@@ -54,11 +64,24 @@ class Message {
   static async specificEmail(req, res) {
     // find email message
     pool
-    .query(`SELECT * from messages WHERE id = $1`, [req.params.id])
+    .query(`
+    SELECT * from messages 
+    WHERE id = $1    
+    `, [req.params.id])
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'The message is not found'});
-
+      
+      if(req.userId == response.rows[0].receiverid){
+        console.log("updating...")
+        // update status
+        pool
+        .query(`UPDATE messages SET status = 'read' WHERE groupid != '' AND id = $1`, [req.params.id])
+        .then(r => {
+          next();
+        })
+      }
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
 
     })
     .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
