@@ -12,6 +12,7 @@ import Joi from "joi";
 import ST from "../../config/status";
 import pool from "../../config/db";
 import moment from "moment";
+import { stat } from "fs";
 
 dotenv.config();
 
@@ -99,13 +100,12 @@ class Auth {
           })
       }
   }).catch(err =>{
-      console.log(err.stack);
       res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: e.stack})
   }); 
   }
   // request to reset password
   static async reset(req, res){
-    res.send("magic will run here...")
+    res.send({ status: ST.OK, message: " Feature under construction. Check back soon" })
   }
 }
 // validate:create user

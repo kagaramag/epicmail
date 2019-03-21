@@ -76,7 +76,6 @@ class Group {
               error: "Error in your query occured"
             });
         if (e)
-        console.log(e);
           return res
             .status(ST.BAD_REQUEST)
             .send({ status: ST.BAD_REQUEST, error: "Something went wrong!" });
@@ -97,7 +96,6 @@ class Group {
     pool
     .query(text, [req.params.id, req.body.userid])
     .then(response => {
-      console.log(response.rowCount);
       if(response.rowCount === 1) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
       
       // Assign him then
