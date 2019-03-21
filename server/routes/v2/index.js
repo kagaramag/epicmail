@@ -32,7 +32,7 @@ router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
 // router.post("/auth/verify", Auth.verify);
 // router.put("/auth/new-passowrd", Auth.newPassword);
-router.put("/profile", authethicate, Users.updateProfile);
+router.put("/profile", authethicate, Users.updateProfile); //OK
 router.get("/profile", authethicate, Users.me); // OK
 
 // contact routes
@@ -52,7 +52,7 @@ router.post("/messages", authethicate, Message.compose); //OK
 router.post("/messages/draft", authethicate, Message.draft); //OK
 router.get("/messages", authethicate, Message.receivedEmails); //OK
 // router.get("/messages/unread", authethicate, Message.unreadEmails);
-// router.get("/messages/read", authethicate, Message.readEmails); 
+router.get("/messages/read", authethicate, Message.readEmails); //OK
 router.get("/messages/sent", authethicate, Message.sentEmails); //OK
 // router.delete("/messages/:id", authethicate, Message.deleteEmail);
 router.get("/messages/:id", authethicate, Message.specificEmail); //OK
