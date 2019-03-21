@@ -72,8 +72,6 @@ class Message {
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'The message is not found'});
       
       if(req.userId == response.rows[0].receiverid){
-        console.log("updating...")
-        // update status
         pool
         .query(`UPDATE messages SET status = 'read' WHERE groupid != '' AND id = $1`, [req.params.id])
         .then(r => {
@@ -163,7 +161,6 @@ class Message {
       pool
       .query(query, values)
       .then(response => {  
-        console.log(response)
         if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: [ response.rows ] });
         
       })
