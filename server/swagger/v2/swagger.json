@@ -30,7 +30,7 @@
     },
     {
       "name": "Contact",
-      "description": "Users can create a contact, it requires x-access-token be sent in header"
+      "description": "Users can create a contact, it requires Bearer be sent in header"
     }
   ],
   "schemes": [
@@ -175,9 +175,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           },
           {
@@ -226,9 +226,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer",
             "required": true
           }
         ],
@@ -270,9 +270,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           }
         ],
@@ -314,9 +314,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           }
         ],
@@ -358,9 +358,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           },
           {
@@ -408,9 +408,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           },
           {
@@ -519,9 +519,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-access-token",
+            "name": "Bearer",
             "type": "string",
-            "description": "Token gotten from login or sign up is placed in x-access-token ",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
             "required": true
           },
           {
