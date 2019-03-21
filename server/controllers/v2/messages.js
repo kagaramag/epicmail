@@ -13,7 +13,7 @@ class Message {
   // list of received emails
   static async receivedEmails(req, res) {
     pool
-    .query(`SELECT * from messages WHERE receiverid = $1`, [req.userId])
+    .query(`select messages.id, messages.subject, messages.message, messages.status, messages.senderid, messages.receiverid, messages.groupid, messages.parentmessageid, messages.createdon, users.email from messages LEFT JOIN users on users.id = messages.receiverid and messages.receiverid = $1`, [req.userId])
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
 
