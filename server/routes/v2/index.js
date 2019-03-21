@@ -45,7 +45,7 @@ router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); 
 router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
 // router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
 // router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
-// router.post("/groups/:id/messages", authethicate, isAdmin, Message.sendEmailGroup);
+router.post("/groups/:id/messages", authethicate, Message.sendEmailGroup);
 
 // email routes
 router.post("/messages", authethicate, Message.compose); //OK
