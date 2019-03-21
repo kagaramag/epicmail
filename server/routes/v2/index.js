@@ -32,7 +32,7 @@ router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
 // router.post("/auth/verify", Auth.verify);
 // router.put("/auth/new-passowrd", Auth.newPassword);
-router.put("/profile", authethicate, Users.updateProfile); //OK
+router.patch("/profile", authethicate, Users.updateProfile); //OK
 router.get("/profile", authethicate, Users.me); // OK
 
 // contact routes
