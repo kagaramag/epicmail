@@ -91,6 +91,33 @@ class Message {
       })
       .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" }));
   }
+  // send to group
+  static async sendEmailGroup(req, res, next) {
+    // validate message   
+    const { error } = validateMessageForGroup(req.body);
+    if (error)
+      return res
+        .status(ST.BAD_REQUEST)
+        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+
+    // check parent message
+     const message = {
+        subject: req.body.subject,
+        message: req.body.message,
+        groupid: req.body.groupid,
+        createdon: moment().format("YYYY-MM-DD HH:mm:ss")
+      }
+      // save email first
+      const query ="INSERT INTO messages(subject, message, status, senderid, groupid, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+      const values = [message.subject, message.message, 'sent', req.userId, message.groupid, message.createdon];
+      
+      pool
+      .query(query, values)
+      .then(response => {  
+        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows });
+      })
+      .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" }));
+  }
   // Draft message
   static async draft(req, res, next) {
     // validate email   
@@ -133,6 +160,15 @@ function validateMessage(email) {
     message: Joi.string().min(3).max(1600).required(),
     receiverid: Joi.number().integer().required(),
     groupid: Joi.number().integer()
+  };
+  return Joi.validate(email, schema);
+}
+// validate:message for group
+function validateMessageForGroup(email) {
+  const schema = {
+    subject: Joi.string().min(2).max(60).required(),
+    message: Joi.string().min(3).max(1600).required(),
+    groupid: Joi.number().integer().required()
   };
   return Joi.validate(email, schema);
 }
