@@ -71,18 +71,16 @@ class Message {
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'The message is not found'});
       
-      if(req.userId == response.rows[0].receiverid){
+      if(!response.rows[0].groupid && req.userId == response.rows[0].receiverid){
         pool
-        .query(`UPDATE messages SET status = 'read' WHERE groupid != '' AND id = $1`, [req.params.id])
-        .then(r => {
-          next();
-        })
+        .query(`UPDATE messages SET status = 'read' WHERE id = $1`, [req.params.id])
+        .then()
       }
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again later" }));
   }
 
   // compose message
@@ -110,7 +108,9 @@ class Message {
       .then(response => {  
         if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows });
       })
-      .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" }));
+      .catch(e => { 
+        return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" })
+      });
   }
   // send to group
   static async sendEmailGroup(req, res, next) {
@@ -168,10 +168,25 @@ class Message {
         res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e })
       });
   }
-  // send message to a group
-  // static async sendEmailGroup(req, res){
-  //   res.send("magic will run here...");
-  // }
+  // read
+  static async readEmails(req, res){
+    pool
+    .query(`
+    SELECT 
+    *
+    FROM messages
+    where status = 'read' 
+    AND
+    receiverid = $1
+    `, [req.userId])
+    .then(response => {  
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
+
+      return res.status(ST.OK).send({status: ST.OK, data: response.rows });
+
+    })
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+  }
 }
 // validate:message
 function validateMessage(email) {
