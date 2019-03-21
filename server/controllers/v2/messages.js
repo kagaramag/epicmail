@@ -36,14 +36,28 @@ class Message {
   // list of unread messages
   static async unreadEmails(req, res) {
     pool
-    .query(`SELECT * from messages where id = $1 and state = 'unread'`, [req.userId])
+    .query(`SELECT * from messages where receiverid = $1 and status = 'read'`, [req.userId])
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No unread messages'});
-
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
-
-    })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Something went wrong, try again" }));
+    })    
+    .catch(e => {
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Bad request, try again" })
+    });
+  }
+  // delete a message
+  static async deleteEmail(req, res) {
+    console.log()
+    pool
+    .query(`DELETE from messages where senderid = $1 OR receiverid = $1 and id = $2`, [req.userId, parseInt(req.params.id)])
+    .then(response => {  
+      console.log(response);
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No message found'});
+      return res.status(ST.OK).send({status: ST.OK, message: "Message deleted successffully" });
+    })    
+    .catch(e => {
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Bad request, try again" })
+    });
   }
 
 

@@ -2,8 +2,8 @@
 // Joi, validation helper
 import Joi from "joi";
 import pool from "../../config/db";
-
 import ST from "../../config/status";
+import moment from "moment";
 
 class Group {
   static async createGroup(req, res) {
@@ -97,24 +97,30 @@ class Group {
     .query(text, [req.params.id, req.body.userid])
     .then(response => {
       if(response.rowCount === 1) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
-      
+      // console.log(groupid, req.body.userid, req.body.userrole);
       // Assign him then
-      const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole) VALUES($1, $2, $3) RETURNING *";
+      const createdon = moment().format("YYYY-MM-DD HH:mm:ss");
+      const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole, createdon) VALUES($1, $2, $3, $4) RETURNING *";
       pool
-      .query(userInfo, [groupid, req.body.userid, req.body.userrole])
+      .query(userInfo, [groupid, req.body.userid, req.body.userrole, createdon])
       .then(response => {
         // retrieve users from this group
         pool
-        .query('SELECT * from groupmembers WHERE groupid = $1', [groupid])
+        .query(`SELECT * from groupmembers WHERE groupid = $1`, [groupid])
         .then(response => {
-          return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows});
+          // console.log(response)
+          return res.status(ST.OK).send({status: ST.OK, data: response.rows});
         })
-        .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while retrieving group members. '}))
-        
+        .catch(e => {
+          console.log(e)
+          // res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while retrieving group members. '})
+        });
       })
       .catch(e => {
-        if(e.routine === 'ri_ReportViolation') return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'Sorry, group or user does not exist'});     
+        // if(e.routine === 'ri_ReportViolation') return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'Sorry, group or user does not exist'});     
+        
         return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while assigning the user to the group, contact the adminstrator '});
+      
       })
 
     })
