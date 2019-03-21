@@ -1,28 +1,48 @@
 {
-   "swagger": "2.0",
-   "info": {
-     "version": "2.0.0",
-     "title": "Project: EPICMAIL",
-     "description": "EPICMAIL API Documentation",
-     "license": {
-       "name": "MIT",
-       "url": "https://opensource.org/licenses/MIT"
-     },
-     "contact": {
-       "Author": "Gilles Kagarama"
-     }
-   },
-   "host": "localhost:3000",
-   "basePath": "/",
+  
+  "swagger": "2.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "Project: EPICMAIL",
+    "description": "EPICMAIL API Documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "Author": "Gilles Kagarama"
+    }
+  },
+  "host": "epicmailbox.herokuapp.com",
+  "basePath": "/api/v2",
+  "tags": [
+    {
+      "name": "User",
+      "description": "Sign up and log in user"
+    },
+    {
+      "name": "Messages",
+      "description": "Users can interact with messages, it requires token be sent in header"
+    },
+    {
+      "name": "Group",
+      "description": "Users can create a group and add a member, it requires token be sent in header"
+    },
+    {
+      "name": "Contact",
+      "description": "Users can create a contact, it requires Bearer be sent in header"
+    }
+  ],
   "schemes": [
-   "http",
-   "https"
-   ],
-   "paths": {
-      "/api/v1/users": {
+    "https",
+    "http"
+  ],
+  "paths": {
+    
+    "/users": {
       "get": {
          "tags": [
-            "Users"
+            "User"
          ], 
          "summary": "Get a list of all users",
          "produces": [
@@ -41,117 +61,405 @@
           }
          }
       },
-      "/api/v1/auth/signup": {
+    "/auth/signup": {
       "post": {
-         "tags": [
-            "Users"
-         ], 
-         "summary": "Sign up new user",
-         "description": "",
-         "produces": [
-           "application/json"
-         ],  
-         "consumes": [
-           "application/json"
-         ],
-         "parameters": [
+        "tags": [
+          "User"
+        ],
+        "summary": "Sign up a new user",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
           {
             "in": "body",
             "name": "body",
-            "description": "Register new user",
+            "description": "User details to be registered as",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/signup"
+              "$ref": "#/definitions/User"
             }
-           }          
-         ],     
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created succesfull",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "$ref": "#/definitions/token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error is returned when any of the request values are invalid"
+          },
+          "409": {
+            "description": "Error is returned if user already exists i.e conflict"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs in a user",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Email and password required to login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login was successfull",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in login details"
+          },
+          "404": {
+            "description": "User could not be found"
+          }
+        }
+      }
+    },
+    "/messages": {
+      "post": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Sends/creates a message",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "message details to send",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendMessage"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Message has been created/sent,",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "$ref": "#/definitions/SentMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in message details"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Fetch all received emails",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns all messages",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/SentMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is not provided"
+          }
+        }
+      }
+    },
+    "/messages/unread": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "fetch all unread messages",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns all messages with status of unread",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/UnreadMessage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is not provided"
+          }
+        }
+      }
+    },
+    "/messages/sent": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "fetch all sent messages",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns all messages with status of sent",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/SentMessageSent"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is not provided"
+          }
+        }
+      }
+    },
+    "/messages/{id}": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "fetch a specific message",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of message to retrieve",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "returns a specific message",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/SentMessageRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is not provided"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delete specific message",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of message to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete's a specific message",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "data": {
+                  "$ref": "#/definitions/SentMessageReadDelete"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is not provided"
+          }
+        }
+      }
+    },
+
+    "/groups": {
+      "get": {
+         "tags": [
+            "Groups"
+         ], 
+         "summary": "Get all groups",
+         "produces": [
+           "application/json"
+         ],       
          "responses": {
             "200": {
-              "description": "User created successfully"
-            },
-            "400": {
-              "description": "Invalid information supplied"
+              "description": "List of groups"
             },
             "409": {
-              "description": "User already exists"
-            },
-            "default": {
-              "description": "Something went wrong"
-            }
-          }
-         }
-      },
-      "/api/v1/auth/login": {
-      "post": {
-         "tags": [
-            "Users"
-         ], 
-         "summary": "Login a user",
-         "description": "",
-         "produces": [
-           "application/json"
-         ],  
-         "consumes": [
-           "application/json"
-         ],
-         "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Login a user",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/login"
-            }
-           }          
-         ],     
-         "responses": {
-            "201": {
-              "description": "User logged in successfully"
-            },
-            "400": {
-              "description": "Invalid Username or password"
-            },
-            "default": {
-              "description": "Something went wrong"
-            }
-          }
-         }
-      },
-      "/api/v1/contacts": {
-      "get": {
-         "tags": [
-            "Contacts"
-         ], 
-         "summary": "Get all contacts",
-         "produces": [
-           "application/json"
-         ],       
-         "responses": {
-            "200": {
-              "description": "Get list of contacts"
-            },
-            "default": {
-              "description": "Something went wrong"
-            }
-          }
-         }
-      },
-      "/api/v1/messages": {
-      "get": {
-         "tags": [
-            "Messages"
-         ], 
-         "summary": "Get all received messages",
-         "produces": [
-           "application/json"
-         ],       
-         "responses": {
-            "200": {
-              "description": "Received emails retreived successfully"
-            },
-            "404": {
-              "description": "No email found"
+              "description": "Group already exists, try another one"
             },
             "default": {
               "description": "Sorry, error occured"
@@ -160,9 +468,9 @@
          },
       "post": {
         "tags": [
-            "Messages"
+            "Groups"
         ], 
-        "summary": "Send email",
+        "summary": "Create a new group",
         "description": "",
         "produces": [
           "application/json"
@@ -174,19 +482,16 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Send email",
+            "description": "",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/composeEmail"
+              "$ref": "#/definitions/groupInfo"
             }
           }          
         ],     
         "responses": {
             "201": {
-              "description": "Email sent successfully"
-            },
-            "204": {
-              "description": "No content provided"
+              "description": "Group has been created"
             },
             "400": {
               "description": "Invalid information supplied"
@@ -196,254 +501,103 @@
             }
           }
         }
-      },
-      "/api/v1/messages/unread": {
-      "get": {
-         "tags": [
-            "Messages"
-         ], 
-         "summary": "Get all unread emails",
-         "description": "This endpoints fetch all unread emails. It looks for every email that has 'sent' as status",
-         "produces": [
-           "application/json"
-         ],       
-         "responses": {
-            "200": {
-              "description": "Fetch unread emails"
-            },
-            "404": {
-              "description": "No email found"
-            },
-            "default": {
-              "description": "Sorry, error occured"
+      }
+    ,
+    "/contacts": {
+      "post": {
+        "tags": [
+          "Contact"
+        ],
+        "summary": "Creates a new contact",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Bearer",
+            "type": "string",
+            "description": "Token gotten from login or sign up is placed in Bearer ",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "contact details to be created as",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Contact"
             }
           }
-         }
-      },
-      "/api/v1/messages/read": {
-      "get": {
-         "tags": [
-            "Messages"
-         ], 
-         "summary": "Get all unread emails",
-         "description": "This endpoints fetch all unread emails. It looks for every email that has 'sent' as status",
-         "produces": [
-           "application/json"
-         ],       
-         "responses": {
-            "200": {
-              "description": "Fetch unread emails"
-            },
-            "400": {
-              "description": "No email found"
-            },
-            "default": {
-              "description": "Sorry, error occured"
-            }
-          }
-         }
-      },
-      "/api/v1/messages/sent": {
-      "get": {
-         "tags": [
-            "Messages"
-         ], 
-         "summary": "Get all sent emails",
-         "description": "This endpoints fetch all unread emails. It looks for every email that has not 'draft' as status",
-         "produces": [
-           "application/json"
-         ],       
-         "responses": {
-            "200": {
-              "description": "Fetch sent emails"
-            },
-            "400": {
-              "description": "No email found"
-            },
-            "default": {
-              "description": "Sorry, error occured"
-            }
-          }
-         }
-      },   
-      "/api/v1/messages/{id}": {
-        "delete": {
-           "tags": [
-              "Messages"
-           ], 
-           "summary": "Delete a specific email",
-           "description": "",
-           "produces": [
-             "application/json"
-           ],  
-           "consumes": [
-             "application/json"
-           ],
-           "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "description": "",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/deteleEmail"
-              }
-             }          
-           ],     
-           "responses": {
-              "200": {
-                "description": "Email has been deleted successfully"
-              },
-              "400": {
-                "description": "The email you are trying to delete doesn't exist"
-              },
-              "default": {
-                "description": "Sorry, error occured"
-              }
-            }
-           },
-        "get": {
-           "tags": [
-              "Messages"
-           ], 
-           "summary": "View a specific email",
-           "description": "",
-           "produces": [
-             "application/json"
-           ],  
-           "parameters": [
-            {
-              "in": "path",
-              "name": "id",
-              "description": "",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/detailEmail"
-              }
-             }          
-           ],     
-           "responses": {
-              "200": {
-                "description": "Message have be retrieved successfully"
-              },
-              "409": {
-                "description": "The email you are trying to view doesn't exist"
-              },
-              "default": {
-                "description": "Error occured while processing your request"
-              }
-            }
-           }
-      },
-      "/api/v1/groups": {
-        "get": {
-           "tags": [
-              "Groups"
-           ], 
-           "summary": "Get all groups",
-           "produces": [
-             "application/json"
-           ],       
-           "responses": {
-              "200": {
-                "description": "List of groups"
-              },
-              "409": {
-                "description": "Group already exists, try another one"
-              },
-              "default": {
-                "description": "Sorry, error occured"
-              }
-            }
-           },
-        "post": {
-          "tags": [
-              "Groups"
-          ], 
-          "summary": "Create a new group",
-          "description": "",
-          "produces": [
-            "application/json"
-          ],  
-          "consumes": [
-            "application/json"
-          ],
-          "parameters": [
-            {
-              "in": "body",
-              "name": "body",
-              "description": "",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/groupInfo"
-              }
-            }          
-          ],     
-          "responses": {
-              "201": {
-                "description": "Group has been created"
-              },
-              "400": {
-                "description": "Invalid information supplied"
-              },
-              "default": {
-                "description": "Sorry, error occured"
+        ],
+        "responses": {
+          "201": {
+            "description": "Contact has been created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 201
+                },
+                "data": {
+                  "$ref": "#/definitions/ContactResponse"
+                }
               }
             }
           }
         }
-   },
-   
-  "externalDocs": {
-    "description": "Find out more about Swagger",
-    "url": "http://swagger.io"
+      }
+    }
   },
   "definitions": {
-    "signup": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
+    "token": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
         }
       }
     },
-    "login": {
+    "User": {
       "type": "object",
       "properties": {
-        "password": {
-          "type": "string"
-        },
         "email": {
           "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
-    "deteleEmail": {
+    "UserLogin": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer"
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
-    "detailEmail": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer"
-        }
-      }
-    },
-    "composeEmail": {
+    "SendMessage": {
       "type": "object",
       "properties": {
         "subject": {
@@ -452,34 +606,254 @@
         "message": {
           "type": "string"
         },
-        "parentMessageId": {
-          "type": "integer"
-        },
-        "status": {
-          "type": "string",          
-          "default": "sent"
-        },
-        "senderId": {
-          "type": "integer",
-          "default": 1
-        },
         "receiverId": {
-          "type": "integer",
-          "default": 1
+          "type": "string"
         },
-        "phone": {
-          "type": "integer",        
-          "default": 25078800112211
-        }
-      }
-    },
-    "groupInfo": {
-      "type": "object",
-      "properties": {
-        "name": {
+        "parentMessageId": {
           "type": "string"
         }
       }
+    },
+    "SentMessage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdon": {
+            "type": "string",
+            "format": "date"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "parentMessageId": {
+            "type": "integer"
+          },
+          "groupid": {
+            "type": "string"
+          },
+          "receiverid": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "UnreadMessage": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "parentMessageId": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "example": "Unread"
+          }
+        }
+      }
+    },
+    "SentMessageSent": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "parentMessageId": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "example": "Sent"
+          }
+        }
+      }
+    },
+    "SentMessageRead": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "parentMessageId": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "example": "Read"
+          }
+        }
+      }
+    },
+    "SentMessageReadDelete": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        }
+      }
+    },
+    "GroupMember": {
+      "type": "object",
+      "properties": {
+        "groupId": {
+          "type": "string"
+        },
+        "memberId": {
+          "type": "string"
+        }
+      }
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        }
+      }
+    },
+    "GroupResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "newGroup": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "groupName": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "GroupMemberResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "newMember": {
+            "type": "object",
+            "properties": {
+              "groupId": {
+                "type": "string"
+              },
+              "memberId": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ContactResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "newContact": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              }
+            }
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
     }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
   }
 }
