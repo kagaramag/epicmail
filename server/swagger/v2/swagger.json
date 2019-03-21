@@ -61,7 +61,7 @@
           }
          }
       },
-    "auth/signup": {
+    "/auth/signup": {
       "post": {
         "tags": [
           "User"
