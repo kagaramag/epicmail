@@ -101,9 +101,9 @@ describe("User able to create an account ", () => {
         receiverid:1
       })
       .end((err, res) => {
-        expect(res).to.have.status(ST.NOT_FOUNT);
-        expect(res.body.status).to.be.equal(ST.NOT_FOUNT);
-        expect(res.body.error).to.be.equal('Token is not provided');
+        expect(res).to.have.status(ST.UNAUTHORIZED);
+        expect(res.body.status).to.be.equal(ST.UNAUTHORIZED);
+        expect(res.body.error).to.be.equal('Unauthorized access. login or register');
         done(err);
       });
   });
