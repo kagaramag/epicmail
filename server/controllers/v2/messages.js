@@ -165,7 +165,7 @@ class Message {
         
       })
       .catch(e => {
-        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error:e })
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry you can not a message, try again" })
       });
   }
   // read
@@ -185,7 +185,7 @@ class Message {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured while retrieving the messages" }));
   }
 }
 // validate:message

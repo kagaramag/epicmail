@@ -9,7 +9,7 @@ class Contacts {
        return res.status(ST.OK).send({status: ST.OK, data: response.rows });
  
      })
-     .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+     .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Whooops, Error occured. Try again" }));
    }
  }
 

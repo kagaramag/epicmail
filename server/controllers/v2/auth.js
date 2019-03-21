@@ -62,8 +62,8 @@ class Auth {
       })
       .catch(e => {
         if(e.routine === "scanner_yyerror") return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: "Error in your query occured" });
-        if(e.routine === "_bt_check_unique") return res.status(ST.EXIST).send({ status: ST.EXIST, error:e.detail});
-        if(e) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error:e});
+        if(e.routine === "_bt_check_unique") return res.status(ST.EXIST).send({ status: ST.EXIST, error: " Account already exists "});
+        if(e) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: " Error occured "});
       }); 
     } catch (err) {
       res.send({
@@ -100,7 +100,7 @@ class Auth {
           })
       }
   }).catch(err =>{
-      res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: e.stack})
+      res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: "Sorry, Error occured try again"})
   }); 
   }
   // request to reset password

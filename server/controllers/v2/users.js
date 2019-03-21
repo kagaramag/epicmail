@@ -14,7 +14,7 @@ class Users {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry, Error occured try again" }));
   }
   static updateProfile(req, res) {
     // validate inputs    
@@ -37,7 +37,7 @@ class Users {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows[0] });
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry, Error occured try again" }));
   }
   static all(req, res) {
     pool
@@ -47,7 +47,7 @@ class Users {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry, Error occured try again" }));
   }
 }
 

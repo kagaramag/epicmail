@@ -29,7 +29,7 @@ class Group {
         if (e.routine === "_bt_check_unique")
           return res
             .status(ST.EXIST)
-            .send({ status: ST.EXIST, error: e.detail });
+            .send({ status: ST.EXIST, error: "Group already exist" });
         if (e.routine === "scanner_yyerror")
           return res
             .status(ST.BAD_REQUEST)
