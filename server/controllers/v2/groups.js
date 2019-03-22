@@ -4,6 +4,7 @@ import Joi from "joi";
 import pool from "../../config/db";
 
 import ST from "../../config/status";
+import moment from "moment";
 
 class Group {
   static async createGroup(req, res) {
@@ -90,18 +91,11 @@ class Group {
         .status(ST.BAD_REQUEST)
         .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
 
-    // check if user exist in group
-    const text = `SELECT * from groupmembers where userid = $1 AND groupid = $2`;
     const groupid = req.params.id;
-    pool
-    .query(text, [req.params.id, req.body.userid])
-    .then(response => {
-      if(response.rowCount === 1) return res.status(ST.EXIST).send({status: ST.EXIST, error: 'User already exist in this group '});     
-      
       // Assign him then
-      const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole) VALUES($1, $2, $3) RETURNING *";
+      const userInfo = "INSERT INTO groupmembers(groupid, userid, userrole, createdon ) VALUES($1, $2, $3, $4) RETURNING *";
       pool
-      .query(userInfo, [groupid, req.body.userid, req.body.userrole])
+      .query(userInfo, [groupid, req.body.userid, req.body.userrole, moment().format("YYYY-MM-DD HH:mm:ss")])
       .then(response => {
         // retrieve users from this group
         pool
@@ -114,13 +108,9 @@ class Group {
       })
       .catch(e => {
         if(e.routine === 'ri_ReportViolation') return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'Sorry, group or user does not exist'});     
-        return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while assigning the user to the group, contact the adminstrator '});
-      })
-
-    })
-    .catch(e => {
-      res.status(ST.BAD_REQUEST).send({ status:ST.BAD_REQUEST, error: "Something went wrong, try again later " })
-    });
+        console.log(e)
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Something went wrong while assigning the user to the group, contact the adminstrator '});
+      });
   }
   // assign user to group
   static async editGroup(req, res){

@@ -39,7 +39,7 @@ router.get("/profile", authethicate, Users.me); // OK
 // router.get("/contacts", authethicate, Contact.getAllContacts);
 
 // group routes
-router.post("/groups", authethicate, isAdmin, Group.createGroup); //OK
+router.post("/groups", authethicate, Group.createGroup); //OK
 router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
 router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); //OK
 router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
