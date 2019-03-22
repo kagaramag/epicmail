@@ -140,7 +140,7 @@ class Message {
       .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" }));
   }
   // Draft message
-  static async draft(req, res, next) {
+  static async draft(req, res) {
     // validate email   
     const { error } = validateDraft(req.body);
     if (error)
@@ -152,20 +152,22 @@ class Message {
      const message = {
         subject: req.body.subject,
         message: req.body.message,
-        senderid: req.userId
+        senderid: req.userId,
+        createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       }
       // save email first
-      const query ="INSERT INTO messages(subject, message, senderid, status) VALUES($1, $2, $3, $4) RETURNING *";
-      const values = [message.subject, message.message, message.senderid, 'draft'];
+      const query ="INSERT INTO messages(subject, message, senderid, status, createdon) VALUES($1, $2, $3, $4, $5) RETURNING *";
+      const values = [message.subject, message.message, message.senderid, 'draft', message.createdon];
       
       pool
       .query(query, values)
       .then(response => {  
+        console.log(response)
         if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: [ response.rows ] });
-        
       })
       .catch(e => {
-        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry you can not a message, try again" })
+        if(e.routine === 'ri_ReportViolation' ) return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: 'Bad request, try again later' });
+        res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Sorry you can not save the message, try again" })
       });
   }
   // read

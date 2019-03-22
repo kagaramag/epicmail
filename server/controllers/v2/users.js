@@ -33,6 +33,7 @@ class Users {
     .query(`UPDATE users SET firstname=$1, lastname=$2, phone=$3, profile=$4 WHERE id = $5 RETURNING id, email, firstname, lastname, phone, profile, createdon`,
     [user.firstname, user.lastname, user.phone, user.profile, req.userId])
     .then(response => {  
+      console.log(req.userId);
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
       return res.status(ST.OK).send({status: ST.OK, data: response.rows[0] });
 

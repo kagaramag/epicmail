@@ -32,14 +32,14 @@ router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
 // router.post("/auth/verify", Auth.verify);
 // router.put("/auth/new-passowrd", Auth.newPassword);
-router.put("/profile", authethicate, Users.updateProfile); //OK
+router.patch("/profile", authethicate, Users.updateProfile); //OK
 router.get("/profile", authethicate, Users.me); // OK
 
 // contact routes
 // router.get("/contacts", authethicate, Contact.getAllContacts);
 
 // group routes
-router.post("/groups", authethicate, isAdmin, Group.createGroup); //OK
+router.post("/groups", authethicate, Group.createGroup); //OK
 router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
 router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); //OK
 router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
