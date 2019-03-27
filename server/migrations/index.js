@@ -77,6 +77,8 @@ const create = () => {
   groups(
     id SERIAL PRIMARY KEY,
     "name" VARCHAR(600) UNIQUE NOT NULL,
+    "userid" INTEGER NULL,
+    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id),
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
   // group member table
