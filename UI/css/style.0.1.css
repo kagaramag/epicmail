@@ -409,7 +409,7 @@ table tr:last-child{border-bottom:1px!important}
 .box{margin:15px auto;width:98%;max-width: 560px;display:block}
 
 /* signup/signin box */
-.card{margin:100px auto 15px auto;padding:2%;width:94%;max-width: 760px;display:block}
+.card{margin:80px auto 15px auto;padding:2%;width:94%;max-width: 760px;display:block}
 
 /* email placeholer */
 .emialplaceholer{position: relative;}
