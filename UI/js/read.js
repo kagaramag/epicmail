@@ -9,7 +9,7 @@ $(function(){
       var  $readMail = $('#readMail');
       $.map(mails, function(mail, i) {
          if(mail.id == id){
-            $readMail.html('<h1 class="nm l-v-padding">'+mail.subject+'</h1>'
+            $readMail.html('<h1 class="nm nobold l-v-padding capitilize">'+mail.subject+'</h1>'
             +'<b>'+mail.fullnames+'</b> &#60;'+mail.sender+'&#62;<br>'
             +'<span class="grey-text">'+formatDateTime(mail.created_at)+'</span>'
             +'<div class="divider m-v-margin grey"></div>'

@@ -5,7 +5,7 @@ $(document).ready(function(){
    const doc = new function() {
       this.height = $(document).height();
       this.resize = function(){
-         $(window).on('resize',function() {
+         $(document).on('resize',function() {
             var h = $(document).height();
             $(".sidebar").css('height', h+"px");
          })
@@ -25,8 +25,11 @@ $(document).ready(function(){
    +'<li><a class="text-grey" href="sent.html"> <span class="fas fa-location-arrow"></span> <span class="menulink"> Sent</span></a></li>'
    +'<li><a class="text-grey" href="draft.html"> <span class="fas fa-sticky-note"></span> <span class="menulink"> Drafts</a></span></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
-   +'<li><a class="text-grey" href="users.html"> <span class="fas fa-user-friends"></span> <span class="menulink"> Users</span></a></li>'
-   +'<li><a class="text-grey" href="groups.html"> <span class="fas fa-users"></span> <span class="menulink"> Groups</span></a></li>'
+   +'<li><a class="text-grey" href="groups.html"> <span class="fas fa-user-friends"></span> <span class="menulink"> Groups</span></a></li>'
+   +'<li><a class="text-grey truncate" href="groups.html"> <span class="fas fa-angle-right"></span> <span class="menulink"> Rockers </span></a></li>'
+   +'<li><a class="text-grey truncate" href="groups.html"> <span class="fas fa-angle-right"></span> <span class="menulink"> Meat Lovers </span></a></li>'
+   +'<li><a class="text-grey truncate" href="groups.html"> <span class="fas fa-angle-right"></span> <span class="menulink"> Hoddies </span></a></li>'
+   +'<li><a class="text-grey truncate" href="groups.html"> <span class="fas fa-angle-right"></span> <span class="menulink"> DJ Units </span></a></li>'
    +'<li><div class="divider indigo darken-2"></div></li>'
    +'<li><a class="text-grey" href="me.html"> <span class="fas fa-user"></span> <span class="menulink"> Profile</span></a></li>'
    +'<li class="logout"><a class="text-grey" href="#" onclick="logout();"> <span class="fas fa-sign-out-alt"></span> <span class="menulink"> Logout</span></a></li>'
@@ -36,8 +39,19 @@ $(document).ready(function(){
    $('.footer').append('<div><a href="inbox.html"><span class="fas fa-inbox"></span></a></div>'
    +'<div><a href="sent.html"><span class="fas fa-location-arrow"></span></a></div>'
    +'<div><a href="draft.html"><span class="fas fa-sticky-note"></span></a></div>'
-   +'<div><a href="me.html"><span class="fas fa-bars"></span></a></div>'
+   +'<div><a href="groups.html"><span class="fas fa-user-friends"></span></a></div>'
    )
+   $('.fixheader').append('<div class="row">'
+   +'<div class="s3 m3 l3">'
+   +'<a class="btn l-h-padding grey darken-1 radius-5" href="./compose.html"><span class="fas fa-plus"></span> <span class="hide-on-small">Compose</span></a>'
+   +'<span class="text-black l-text hide-on-small">'+$(".fixheader").attr('data-page')+'</span>'
+   +'</div>'
+   +'<div class="s1 m1 l1 right-align">'
+   +'<a class="btn grey darken-1 l-h-padding radius-5" href="./me.html"><span class="fas fa-user"></span> <span class="bold hide-on-small">@Gilles</b></a>'
+   +'</div>'
+   +'</div>'
+   );
+
    $('.apploader').append('<img src="images/app_anim_1.svg" alt="EPICMAIL"><img src="images/app_anim_2.svg" alt="EPICMAIL"><img src="images/app_anim_3.svg" alt="EPICMAIL">');
 });
 

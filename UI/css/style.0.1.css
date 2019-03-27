@@ -89,6 +89,10 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 /* hide */
 .hide{display: none}
 /* sidebar. */
+/* sidebar menu */
+/* #sidebar{position: fixed;top:0;left:0;width:220px;height:100%;z-index:20000000;float: left;} */
+.sidebar{float: left;position: fixed;overflow:hidden;}
+.sidebar:hover{overflow-y:auto}
 .sidebar li{display:block;padding:0.8em 0;position: relative;}
 .sidebar li a{padding:0px 25px;color: #ffffff;opacity: 0.9;display: block;}
 .sidebar li .fas{font-size:1.3em;opacity: 0.3;color:#ffffff;margin-right:1.1em;position: absolute;top:14px;left:20px;}
@@ -96,9 +100,6 @@ h1,h2,h3,h4,h5{font-family: 'Krub', sans-serif;}
 .sidebar li.logout{background: #303030}
 
 
-/* sidebar */
-.sidebar{float: left;position: fixed;overflow:hidden;}
-.sidebar:hover{overflow-y:auto;}
 .mailerContent{float:left;margin:0 0 0 15%;padding-bottom:60px}
 .m_sender{padding-top:5px;padding-bottom:5px;}
 /* profile nav */
@@ -373,8 +374,6 @@ table.bordered td
 table td:first-child{width:20px}
 table tr:last-child{border-bottom:1px!important}
 
-/* sidebar menu */
-#sidebar{position: fixed;top:0;left:0;width:220px;height:100%;z-index:20000000;float: left;}
 
 .move-1{animation: desc 0.5s;position: relative;}
 @keyframes desc{
@@ -424,8 +423,7 @@ table tr:last-child{border-bottom:1px!important}
 .divider{height:1px;opacity: 0.6;}
 /* fixed header */
 .fixheader{padding:18px 0;position:fixed;width:100%;z-index: 150;}
-.fixheader a{float:left;background:#efefef;color:#311B92!important;padding:8px 25px!important}
-.fixheader span{color:#311B92!important}
+/* .fixheader a{float:left;background:#efefef;padding:8px 25px!important} */
 .fixheader h2{width: auto;font-weight:400;float:left;padding:7px 0 3px;margin:0}
 
 /* mail footer */
