@@ -14,8 +14,6 @@ import Group from "./../../controllers/v2/groups";
 import Message from "./../../controllers/v2/messages";
 // check authethication
 import authethicate from "./../../middleware/authethicate";
-import isAdmin from './../../middleware/isAdmin';
-import moment from "moment";
 
 
 // Register Swagger
@@ -26,7 +24,7 @@ import swaggerDocument from "../../swagger/v2/swagger.json";
 const router = Router();
 
 // users routes
-router.get("/users", authethicate, isAdmin, Users.all); //OK
+router.get("/users", authethicate,  Users.all); //OK
 router.post("/auth/signup", Auth.signup); //OK
 router.post("/auth/login", Auth.login); //OK
 router.post("/auth/reset", Auth.reset);
@@ -40,11 +38,11 @@ router.get("/profile", authethicate, Users.me); // OK
 
 // group routes
 router.post("/groups", authethicate, Group.createGroup); //OK
-router.get("/groups", authethicate, isAdmin, Group.getAllGroup); //OK
-router.post("/groups/:id/users", authethicate, isAdmin, Group.assignUserGroup); //OK
-router.patch("/groups/:id/name", authethicate, isAdmin, Group.editGroup); //OK
-// router.delete("/groups/:id", authethicate, isAdmin, Group.deleteGroup);
-// router.delete("/groups/:id/users/:id", authethicate, isAdmin, Group.deleteUserFromGroup);
+router.get("/groups", authethicate,  Group.getAllGroup); //OK
+router.post("/groups/:id/users", authethicate,  Group.assignUserGroup); //OK
+router.patch("/groups/:id/name", authethicate,  Group.editGroup); //OK
+// router.delete("/groups/:id", authethicate,  Group.deleteGroup);
+// router.delete("/groups/:id/users/:id", authethicate,  Group.deleteUserFromGroup);
 router.post("/groups/:id/messages", authethicate, Message.sendEmailGroup);
 
 // email routes
