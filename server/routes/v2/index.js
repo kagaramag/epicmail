@@ -41,8 +41,8 @@ router.post("/groups", authethicate, Group.createGroup); //OK
 router.get("/groups", authethicate,  Group.getAllGroup); //OK
 router.post("/groups/:id/users", authethicate,  Group.assignUserGroup); //OK
 router.patch("/groups/:id/name", authethicate,  Group.editGroup); //OK
-// router.delete("/groups/:id", authethicate,  Group.deleteGroup);
-// router.delete("/groups/:id/users/:id", authethicate,  Group.deleteUserFromGroup);
+router.delete("/groups/:id", authethicate,  Group.deleteGroup);
+router.delete("/groups/:groupid/users/:memberid", authethicate,  Group.deleteUserFromGroup);
 router.post("/groups/:id/messages", authethicate, Message.sendEmailGroup);
 
 // email routes
