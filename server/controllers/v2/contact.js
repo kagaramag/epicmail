@@ -5,7 +5,7 @@ class Contacts {
      pool
      .query(`SELECT id, firstname, lastname, email, phone, profile, createdon from users`)
      .then(response => {  
-       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
+       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'This account is not longer active '});
        return res.status(ST.OK).send({status: ST.OK, data: response.rows });
  
      })

@@ -25,7 +25,7 @@ class Message {
     messages.receiverid = $1
     `, [req.userId])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No messages received yet'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
@@ -38,7 +38,7 @@ class Message {
     pool
     .query(`SELECT * from messages where id = $1 and state = 'unread'`, [req.userId])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No unread messages'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No unread messages'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
@@ -52,7 +52,7 @@ class Message {
     pool
     .query(`SELECT * from messages WHERE senderid = $1 AND status != 'draft'`, [req.userId])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages sent yet'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No messages sent yet'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
@@ -60,7 +60,7 @@ class Message {
     .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
   }
 
-  // Delete an email
+  // Read an email
   static async specificEmail(req, res) {
     // find email message
     pool
@@ -69,7 +69,7 @@ class Message {
     WHERE id = $1    
     `, [req.params.id])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'The message is not found'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'The message is not found'});
       
       if(!response.rows[0].groupid && req.userId == response.rows[0].receiverid){
         pool
@@ -182,7 +182,7 @@ class Message {
     receiverid = $1
     `, [req.userId])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'No messages received yet'});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No messages received yet'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 

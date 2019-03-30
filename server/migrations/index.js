@@ -70,15 +70,15 @@ const create = () => {
     "createdon" timestamp without time zone NOT NULL,
     "updatedat" timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_senderid FOREIGN KEY (senderid) REFERENCES users (id),
-    CONSTRAINT fk_receiverid FOREIGN KEY (receiverid) REFERENCES users (id)
+    CONSTRAINT fk_receiverid FOREIGN KEY (receiverid) REFERENCES users (id) 
   )`;
   // group table
   const groupTable = `CREATE TABLE IF NOT EXISTS
   groups(
     id SERIAL PRIMARY KEY,
-    "name" VARCHAR(600) UNIQUE NOT NULL,
+    "name" VARCHAR(600) NOT NULL,
     "userid" INTEGER NULL,
-    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id),
+    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     "createdon" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`;
   // group member table
@@ -89,9 +89,10 @@ const create = () => {
     "groupid" INTEGER NOT NULL,
     "userrole" VARCHAR(60) NOT NULL,
     "createdon" timestamp without time zone NOT NULL,
+    "isadmin" BOOLEAN DEFAULT FALSE,
     "updatedat" timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_groupid FOREIGN KEY (groupid) REFERENCES groups (id),
-    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id)
+    CONSTRAINT fk_groupid FOREIGN KEY (groupid) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES users (id)  ON DELETE CASCADE ON UPDATE CASCADE
   )`;
   // SMS table
   const smsTable = `CREATE TABLE IF NOT EXISTS

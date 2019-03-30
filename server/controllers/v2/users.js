@@ -10,7 +10,7 @@ class Users {
     pool
     .query(`SELECT  id, firstname, lastname, email, phone, profile, createdon, isadmin  from users where id = $1`, [req.userId])
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'This account is not longer active '});
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
@@ -34,7 +34,7 @@ class Users {
     [user.firstname, user.lastname, user.phone, user.profile, req.userId])
     .then(response => {  
       console.log(req.userId);
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'This account is not longer active '});
       return res.status(ST.OK).send({status: ST.OK, data: response.rows[0] });
 
     })
@@ -44,7 +44,7 @@ class Users {
     pool
     .query(`SELECT id, firstname, lastname, email, phone, profile, createdon, isadmin from users`)
     .then(response => {  
-      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUNT).send({status: ST.NOT_FOUNT, error: 'This account is not longer active '});
+      if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'This account is not longer active '});
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
