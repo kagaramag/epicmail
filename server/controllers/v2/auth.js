@@ -12,18 +12,16 @@ import Joi from "joi";
 import ST from "../../config/status";
 import pool from "../../config/db";
 import moment from "moment";
-import { stat } from "fs";
 
 dotenv.config();
 
 class Auth {
-  static async signup(req, res) {  
+  static async signup(req, res) { 
     // validate inputs    
     const { error } = validateUser(req.body);
-    if (error)
-      return res
-        .status(ST.BAD_REQUEST)
-        .send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+    
+    if (error) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: error.details[0].message });
+
     try {
       // hashing the password      
       // generate random data
@@ -38,11 +36,11 @@ class Auth {
         isadmin: true,
         createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       };
-      const text =
-        "INSERT INTO users( firstname, lastname, email, password, isadmin, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+      const text = `
+        INSERT INTO users( firstname, lastname, email, password, isadmin, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *
+        `;
       const values = [user.firstname, user.lastname, user.email, user.password, user.isadmin, user.createdon];
-      
-     await pool.query(text, values)
+       await pool.query(text, values)
       .then(response => {
         const verify = bcrypt.compare(hash, req.body.password);
         if (verify) {
@@ -63,11 +61,11 @@ class Auth {
       .catch(e => {
         if(e.routine === "scanner_yyerror") return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: "Error in your query occured" });
         if(e.routine === "_bt_check_unique") return res.status(ST.EXIST).send({ status: ST.EXIST, error: " Account already exists "});
-        if(e) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: " Error occured "});
+        if(e) return res.status(ST.BAD_REQUEST).send({ status: ST.BAD_REQUEST, error: e});
       }); 
     } catch (err) {
       res.send({
-        message: `Error occured. Try again later`
+        message: `Error occured. Try again later.`
       });
     }
   }

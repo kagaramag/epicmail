@@ -42,11 +42,11 @@ app.engine("handlebars", hbs.engine);
 // CORS
 app.use(cors());
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.SITES);
-  res.header("Access-Control-Allow-Methods", "PUT, GET, POST");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, PATCH");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept",
   );
   next();
 });
