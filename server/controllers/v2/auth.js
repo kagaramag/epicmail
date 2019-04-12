@@ -91,7 +91,11 @@ class Auth {
       const verify = bcrypt.compare(user.password, response.rows[0].password);   
       if(verify){
         const token = jwt.sign({ user: response.rows[0].id, admin: admin }, process.env.SECRET );
-        return res.status(ST.OK).send({status:ST.OK, data: [token]});
+        return res.status(ST.OK)
+        .send({
+          status: ST.OK,
+          token
+        });
       }else{
           return res.status(401).send({
               message:"Sorry, your password is incorrect."

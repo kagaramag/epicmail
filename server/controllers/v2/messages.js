@@ -17,12 +17,14 @@ class Message {
     SELECT 
     messages.id, messages.subject, messages.message, 
     messages.status, messages.senderid, messages.receiverid, 
-    messages.groupid, messages.parentmessageid, messages.createdon, 
-    users.email 
+    messages.groupid, messages.parentmessageid, messages.createdon,
+    users.email
     FROM messages 
-    LEFT JOIN users on users.id = messages.receiverid 
-    AND 
+    LEFT JOIN users 
+    ON users.id = messages.receiverid
+    WHERE
     messages.receiverid = $1
+    ORDER BY id DESC
     `, [req.userId])
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No messages received yet'});
@@ -30,7 +32,9 @@ class Message {
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
 
     })
-    .catch(e => res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e }));
+    .catch(e => {
+      res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: e })
+      });
   }
 
   // list of unread messages
@@ -38,6 +42,7 @@ class Message {
     pool
     .query(`SELECT * from messages where id = $1 and state = 'unread'`, [req.userId])
     .then(response => {  
+      console.log(response.rows);
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'No unread messages'});
 
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
@@ -85,6 +90,7 @@ class Message {
 
   // compose message
   static async compose(req, res, next) {
+    console.log(req.body)
     // validate message   
     const { error } = validateMessage(req.body);
     if (error)
@@ -96,21 +102,35 @@ class Message {
      const message = {
         subject: req.body.subject,
         message: req.body.message,
-        receiverid: req.body.receiverid,
+        email: req.body.email,
         createdon: moment().format("YYYY-MM-DD HH:mm:ss")
       }
-      // save email first
-      const query ="INSERT INTO messages(subject, message, status, senderid, receiverid, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
-      const values = [message.subject, message.message, 'sent', req.userId, message.receiverid, message.createdon];
-      
+      console.log(message.email)
       pool
-      .query(query, values)
-      .then(response => {  
-        if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows });
+      .query('SELECT id from users WHERE email = $1', [message.email])
+      .then(resp => {
+        // save email first
+        const query ="INSERT INTO messages(subject, message, status, senderid, receiverid, createdon) VALUES($1, $2, $3, $4, $5, $6) RETURNING *";
+        const values = [message.subject, message.message, 'sent', req.userId, resp.rows[0].id, message.createdon];
+        
+        pool
+        .query(query, values)
+        .then(response => {  
+          if(response.rowCount === 1 ) return res.status(ST.CREATED).send({status: ST.CREATED, data: response.rows });
+        })
+        .catch(e => { 
+          return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" })
+        });
       })
       .catch(e => { 
-        return res.status(ST.BAD_REQUEST).send({status: ST.BAD_REQUEST, error: "Error occured, try again" })
+        res
+        .send({
+          status: ST.NOT_FOUND, error: "User does not exist." 
+        })
+        return;
       });
+
+    
   }
   // send to group
   static async sendEmailGroup(req, res, next) {
@@ -195,7 +215,8 @@ function validateMessage(email) {
   const schema = {
     subject: Joi.string().min(2).max(60).required(),
     message: Joi.string().min(3).max(1600).required(),
-    receiverid: Joi.number().integer().required(),
+    email: Joi.string().email().min(2).max(30),
+    receiverid: Joi.number().integer(),
     groupid: Joi.number().integer()
   };
   return Joi.validate(email, schema);

@@ -42,7 +42,7 @@ class Users {
   }
   static all(req, res) {
     pool
-    .query(`SELECT id, firstname, lastname, email, phone, profile, createdon, isadmin from users`)
+    .query(`SELECT id, firstname, lastname, email from users`)
     .then(response => {  
       if(response.rowCount === 0 ) return res.status(ST.NOT_FOUND).send({status: ST.NOT_FOUND, error: 'This account is not longer active '});
       return res.status(ST.OK).send({status: ST.OK, data: response.rows });
