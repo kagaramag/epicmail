@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 const hbs = exphbs.create();
 app.set("views", path.join(__dirname, "views"));
