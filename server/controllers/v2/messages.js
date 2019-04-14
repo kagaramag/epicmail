@@ -18,10 +18,12 @@ class Message {
     messages.id, messages.subject, messages.message, 
     messages.status, messages.senderid, messages.receiverid, 
     messages.groupid, messages.parentmessageid, messages.createdon,
-    users.email
+    users.email,
+    users.lastname,
+    users.firstname
     FROM messages 
     LEFT JOIN users 
-    ON users.id = messages.receiverid
+    ON users.id = messages.senderid
     WHERE
     messages.receiverid = $1
     ORDER BY id DESC
